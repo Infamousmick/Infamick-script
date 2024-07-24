@@ -19,4 +19,4 @@ jobs:
             _Repository:_ ${{ github.repository }}
 
             _See changes:_ [Link](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-          parse_mode: markdown
+          parse_mode: markdownV2
