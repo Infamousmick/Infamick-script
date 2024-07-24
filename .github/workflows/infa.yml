@@ -1,0 +1,40 @@
+name: Upload to Telegram
+
+on:
+  workflow_dispatch:  # Permette l'esecuzione manuale del workflow
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: ""
+          format: html
+          disable_web_page_preview: false
+          message: |
+            <b>New Infamick Script MAGISK Update...! 🎉</b>                   
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            
+            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            
+            <b>Installation :</b> <a href="uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          document: "out/LPoS*.zip,out/KSU*.zip"
+          format: html
+          disable_web_page_preview: false
+          message: |
+            <b>New Kernel Build found..! 🎉</b>
+
+            <b>Device :</b> S10 5G   
+            <b>Kernel Version :</b> ${{ env.LPOS_KERNEL_VERSION }}                    
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            
+            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            
+            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>">Click here</a>
