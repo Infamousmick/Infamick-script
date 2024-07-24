@@ -37,3 +37,8 @@ Available commands:
 infamick boosta
 infamick gmsd
 infamick temp
+```
+
+## Contacts
+[@InfamousMick](https://t.me/InfamousMick)
+[InfaChannel](https://t.me/InfaScript), 
