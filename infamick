@@ -460,7 +460,7 @@ sot_calculator() {
     read percentage
     
      result=$(echo "scale=2; ($minutes * 100) / ($percentage * 60)" | bc)
-     harshrate=$(echo "scale=2; (60 / ($minutes / $percentage))" | bc)
+     harshrate=$(echo "scale=2; (100 / $result)" | bc)
     echo "Estimated SOT with 100% battery: ${YELLOW}${BOLD}$result hrs${RESET}"
     echo "Harshrate: ${YELLOW}${BOLD}$harshrate%/hr${RESET}"
 }
