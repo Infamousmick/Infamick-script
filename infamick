@@ -1,0 +1,116 @@
+#!/system/bin/sh
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+temp_check() {
+    while true; do
+    # Ottieni la temperatura della batteria
+    battery_temp_file="/sys/class/power_supply/battery/temp"
+    if [ -f "$battery_temp_file" ]; then
+        battery_temp=$(cat "$battery_temp_file")
+        # La temperatura della batteria è espressa in decimi di grado Celsius
+        battery_temp=$((battery_temp / 10))
+    else
+        battery_temp="N/A"
+    fi
+
+    # Ottieni la temperatura della CPU
+    cpu_temp_file="/sys/class/thermal/thermal_zone1/temp"
+    if [ -f "$cpu_temp_file" ]; then
+        cpu_temp=$(cat "$cpu_temp_file")
+        # La temperatura della CPU è in millesimi di grado Celsius
+        cpu_temp=$((cpu_temp / 1000))
+    else
+        cpu_temp="N/A"
+    fi
+
+    # Ottieni la temperatura della GPU
+    gpu_temp_file="/sys/class/thermal/thermal_zone3/temp"
+    if [ -f "$gpu_temp_file" ]; then
+        gpu_temp=$(cat "$gpu_temp_file")
+        # La temperatura della GPU è in millesimi di grado Celsius
+        gpu_temp=$((gpu_temp / 1000))
+    else
+        gpu_temp="N/A"
+    fi
+
+    # Usa \033[1A per muoversi su una riga e \033[K per pulire la riga
+    # Iniziamo con \033[1A per muoverci su 3 righe precedenti
+    for i in $(seq 1 $line_count); do
+        echo -ne "\033[1A\033[K"
+    done
+
+    # Stampa le nuove temperature
+    echo -ne "Temperatura batteria: ${YELLOW}${battery_temp}°C${RESET}\n"
+    echo -ne "Temperatura CPU: ${YELLOW}${cpu_temp}°C${RESET}\n"
+    echo -ne "Temperatura GPU: ${YELLOW}${gpu_temp}°C${RESET}\n"
+    echo -ne "\n${GREEN}${BOLD}Premi ${RED}CTRL+C${GREEN} per uscire${RESET}\n"
+    # Attendi 2 secondi prima di eseguire nuovamente
+    sleep 2
+    clear
+done
+}
+boot() {
+    settings put global boot_count 0
+    settings put global Phenotype_boot_count 0
+    echo "Boot settings applied successfully."
+}
+battery() {
+printf "\n%.0s" {1..100} ; clear
+    battery_info=$(/system/bin/dumpsys battery)
+    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+
+    # Dividi il valore di mSavedBatteryUsage per 100
+    cycles=$((cycles_raw / 100))
+    printf "\n    ${WHITE}${BOLD}Your Battery health is ${RED}$health${RESET}"
+    printf "\n    ${WHITE}${BOLD}Your battery charging cycles are ${RED}$cycles${RESET}\n"
+    exit 0
+}
+case "$1" in
+    boot)
+        boot
+        ;;
+    temp)
+        temp_check
+        ;;
+    battery)
+        battery
+        ;;
+    info|--help|-h)
+        echo -e "${BOLD}infamick - System Utility Script${RESET}"
+        echo
+        echo -e "${GREEN}Usage:${RESET} infamick <command>"
+        echo
+        echo -e "${YELLOW}Available commands:${RESET}"
+        echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
+        echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
+        echo
+        echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
+        echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
+        echo -e "            Press CTRL+C to exit temperature monitoring"
+        echo
+        echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+        echo -e "            Shows the current battery health percentage and"
+        echo -e "            the number of charging cycles"
+        echo
+        echo -e "  ${BOLD}info${RESET}    - Display this help message"
+        echo -e "  ${BOLD}--help${RESET}  - Alias for info"
+        echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+        echo
+        echo -e "${GREEN}Examples:${RESET}"
+        echo -e "  infamick boot"
+        echo -e "  infamick temp"
+        echo -e "  infamick battery"
+        echo
+        echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+        ;;
+    *)
+        echo -e "${RED}Error: Unknown command '$1'${RESET}"
+        echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+        exit 1
+        ;;
+esac

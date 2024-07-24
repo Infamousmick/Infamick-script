@@ -1,0 +1,9 @@
+id=Infamick_script
+name=Infamick script
+version=v1.0
+versionCode=1
+author=Infamousmick
+description=Infamous Script
+changeBoot=false
+needRamdisk=false
+support=https://github.com/Infamousmick
