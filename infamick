@@ -7,69 +7,68 @@ RESET='\033[0m'
 
 temp_check() {
     while true; do
-    # Ottieni la temperatura della batteria
-    battery_temp_file="/sys/class/power_supply/battery/temp"
-    if [ -f "$battery_temp_file" ]; then
-        battery_temp=$(cat "$battery_temp_file")
-        # La temperatura della batteria è espressa in decimi di grado Celsius
-        battery_temp=$((battery_temp / 10))
-    else
-        battery_temp="N/A"
-    fi
+        # Ottieni la temperatura della batteria
+        battery_temp_file="/sys/class/power_supply/battery/temp"
+        if [ -f "$battery_temp_file" ]; then
+            battery_temp=$(cat "$battery_temp_file")
+            battery_temp=$((battery_temp / 10))
+        else
+            battery_temp="N/A"
+        fi
 
-    # Ottieni la temperatura della CPU
-    cpu_temp_file="/sys/class/thermal/thermal_zone1/temp"
-    if [ -f "$cpu_temp_file" ]; then
-        cpu_temp=$(cat "$cpu_temp_file")
-        # La temperatura della CPU è in millesimi di grado Celsius
-        cpu_temp=$((cpu_temp / 1000))
-    else
-        cpu_temp="N/A"
-    fi
+        # Ottieni la temperatura della CPU
+        cpu_temp_file="/sys/class/thermal/thermal_zone1/temp"
+        if [ -f "$cpu_temp_file" ]; then
+            cpu_temp=$(cat "$cpu_temp_file")
+            cpu_temp=$((cpu_temp / 1000))
+        else
+            cpu_temp="N/A"
+        fi
 
-    # Ottieni la temperatura della GPU
-    gpu_temp_file="/sys/class/thermal/thermal_zone3/temp"
-    if [ -f "$gpu_temp_file" ]; then
-        gpu_temp=$(cat "$gpu_temp_file")
-        # La temperatura della GPU è in millesimi di grado Celsius
-        gpu_temp=$((gpu_temp / 1000))
-    else
-        gpu_temp="N/A"
-    fi
+        # Ottieni la temperatura della GPU
+        gpu_temp_file="/sys/class/thermal/thermal_zone3/temp"
+        if [ -f "$gpu_temp_file" ]; then
+            gpu_temp=$(cat "$gpu_temp_file")
+            gpu_temp=$((gpu_temp / 1000))
+        else
+            gpu_temp="N/A"
+        fi
 
-    # Usa \033[1A per muoversi su una riga e \033[K per pulire la riga
-    # Iniziamo con \033[1A per muoverci su 3 righe precedenti
-    for i in $(seq 1 $line_count); do
-        echo -ne "\033[1A\033[K"
+        # Usa \033[1A per muoversi su una riga e \033[K per pulire la riga
+        for i in $(seq 1 $line_count); do
+            echo -ne "\033[1A\033[K"
+        done
+
+        # Stampa le nuove temperature
+        echo -ne "Battery temperature: ${YELLOW}${battery_temp}°C${RESET}\n"
+        echo -ne "CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}\n"
+        echo -ne "GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}\n"
+        echo -ne "\n${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
+        sleep 2
+        clear
     done
-
-    # Stampa le nuove temperature
-    echo -ne "Battery temperature: ${YELLOW}${battery_temp}°C${RESET}\n"
-    echo -ne "CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}\n"
-    echo -ne "GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}\n"
-    echo -ne "\n${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
-    # Attendi 2 secondi prima di eseguire nuovamente
-    sleep 2
-    clear
-done
 }
+
 boot() {
     settings put global boot_count 0
     settings put global Phenotype_boot_count 0
     echo "Boot count resetted successfully."
 }
+
 boost_app() {
     echo "Boosting apps"
     cmd package compile -m speed-profile -a
     echo "Done"
 }
+
 boost_battery() {
     echo "Boosting battery"
     cmd package bg-dexopt-job
     echo "Done"
 }
+
 battinfo() {
-printf "\n%.0s" {1..100} ; clear
+    printf "\n%.0s" {1..100} ; clear
     battery_info=$(/system/bin/dumpsys battery)
     health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
     cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
@@ -80,6 +79,7 @@ printf "\n%.0s" {1..100} ; clear
     printf "\n    ${WHITE}${BOLD}Your battery charging cycles are ${RED}$cycles${RESET}\n"
     exit 0
 }
+
 services=(
 "com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService"
 "com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService"
@@ -392,6 +392,7 @@ services=(
 "com.google.android.gms/.stats.service.DropBoxEntryAddedService"
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
+
 gms_disable() {
     echo "Disabling GMS"
     sleep 2
@@ -400,6 +401,7 @@ gms_disable() {
     done
     echo "\nDone"
 }
+
 gms_enable() {
     echo "Enabling GMS"
     sleep 2
@@ -408,6 +410,44 @@ gms_enable() {
     done
     echo "\nDone"
 }
+
+help() {
+    echo -e "${BOLD}infamick - System Utility Script${RESET}"
+    echo
+    echo -e "${GREEN}Usage:${RESET} infamick <command>"
+    echo
+    echo -e "${YELLOW}Available commands:${RESET}"
+    echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+    echo -e "            Shows the current battery health percentage and"
+    echo -e "            the number of charging cycles"
+    echo
+    echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
+    echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
+    echo -e "            Run only while charging at 100%"
+    echo
+    echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
+    echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
+    echo
+    echo -e "  ${BOLD}gmsd${RESET}    -  Disables GMS services"
+    echo -e "  ${BOLD}gmse${RESET}    -  Enables GMS services"
+    echo
+    echo -e "  ${BOLD}info${RESET}    - Display this help message"
+    echo -e "  ${BOLD}--help${RESET}  - Alias for info"
+    echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+    echo
+    echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
+    echo -e "            Press CTRL+C to exit temperature monitoring"
+    echo
+    echo -e "${GREEN}Examples:${RESET}"
+    echo -e "  infamick boot"
+    echo -e "  infamick temp"
+    echo -e "  infamick battery"
+    echo -e "  infamick boosta"
+    echo
+    echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+}
+
 case "$1" in
     battery)
         battinfo
@@ -431,40 +471,7 @@ case "$1" in
         temp_check
         ;;
     info|--help|-h)
-        echo -e "${BOLD}infamick - System Utility Script${RESET}"
-        echo
-        echo -e "${GREEN}Usage:${RESET} infamick <command>"
-        echo
-        echo -e "${YELLOW}Available commands:${RESET}"
-        echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
-        echo -e "            Shows the current battery health percentage and"
-        echo -e "            the number of charging cycles"
-        echo
-        echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
-        echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
-        echo -e "            Run only while charging at 100%"
-        echo
-        echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
-        echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
-        echo
-        echo -e "  ${BOLD}gmsd${RESET}    -  Disables GMS services"
-        echo -e "  ${BOLD}gmse${RESET}    -  Enables GMS services"
-        echo
-        echo -e "  ${BOLD}info${RESET}    - Display this help message"
-        echo -e "  ${BOLD}--help${RESET}  - Alias for info"
-        echo -e "  ${BOLD}-h${RESET}      - Alias for info"
-        echo
-        echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
-        echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
-        echo -e "            Press CTRL+C to exit temperature monitoring"
-        echo
-        echo -e "${GREEN}Examples:${RESET}"
-        echo -e "  infamick boot"
-        echo -e "  infamick temp"
-        echo -e "  infamick battery"
-        echo -e "  infamick boosta"
-        echo
-        echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+        help
         ;;
     *)
         echo -e "${RED}Error: Unknown command '$1'${RESET}"
