@@ -7,7 +7,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **Boot Count Reset**: Reset system boot counters
 - **Temperature Monitoring**: Real-time display of battery, CPU, and GPU temperatures
 - **Battery Health**: Check battery health status and charging cycles
-- **Boost Perfocmance**: Boost the performance of each app
+- **Boost Performance**: Boost the performance of each app
 - **Boost Battery**: Improves battery draining
 - **GMS servives** : Disable or Enable GMS services
 - **User-Friendly Interface**: Color-coded output for better readability
