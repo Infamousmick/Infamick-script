@@ -17,7 +17,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 ## Installation
 This script is designed to be flashed as a module using Magisk, KernelSU, or APatch. 
 
-1. Download the latest release zip file.
+1. Download the latest release zip file [here](https://github.com/Infamousmick/Infamick-script/releases/download/v1.2/Infamick-script-v1.1-Magisk.zip).
 2. Flash the zip file through Magisk, KernelSU, or APatch in recovery mode.
 3. Reboot your device.
 
