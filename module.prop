@@ -1,9 +1,9 @@
 id=Infamick_script
-name=Infamick script
-version=v1.0
-versionCode=1
-author=Infamousmick
-description=Infamous Script
+name=Infamick Script
+version=v1.1
+versionCode=1.1
+author=@Infamousmick
+description=A powerful system utility script for rooted Android devices
 changeBoot=false
 needRamdisk=false
 support=https://github.com/Infamousmick

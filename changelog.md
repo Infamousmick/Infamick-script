@@ -1,5 +1,12 @@
 # Changelog for Infamick Script
-
+## v1.1 - First Update (July 24, 2024)
+- Boost Performance
+  - Boost the performance of each app
+- Boost Battery
+  - Improves battery draining
+- GMS services features
+  - Disable GMS services
+  - Enable GMS services
 ## v1.0 - Initial Release (July 24, 2024)
 
 ### Added
@@ -18,7 +25,7 @@
 - Magisk, KernelSU, or APatch installed
 
 ### Known Issues
-- None reported yet. Please submit issues on our GitHub page.
+- None reported yet. Please submit issues on my GitHub page.
 
 ### Coming Soon
 - Additional system information displays
