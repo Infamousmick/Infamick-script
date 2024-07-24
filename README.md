@@ -1,4 +1,4 @@
-# Infamick Script v1.1
+# Infamick Script v1.2
 
 ## Overview
 Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for advanced users and developers.
@@ -7,6 +7,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **Boot Count Reset**: Reset system boot counters
 - **Temperature Monitoring**: Real-time display of battery, CPU, and GPU temperatures
 - **Battery Health**: Check battery health status and charging cycles
+- **SOT Calculator**: Calculate the SOT with 100% battery
 - **Boost Performance**: Boost the performance of each app
 - **Boost Battery**: Improves battery draining
 - **GMS servives** : Disable or Enable GMS services
@@ -15,7 +16,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 ## Installation
 This script is designed to be flashed as a module using Magisk, KernelSU, or APatch. 
 
-1. Download the latest release zip file [here](https://github.com/Infamousmick/Infamick-script/releases/download/v1.1/Infamick-script-v1.1-Magisk.zip).
+1. Download the latest release zip file.
 2. Flash the zip file through Magisk, KernelSU, or APatch in recovery mode.
 3. Reboot your device.
 
@@ -30,6 +31,7 @@ Available commands:
 - `infamic gmsd`: Disable GMS services
 - `infamick gmse`: Enable GMS services
 - `infamick info`: Show help and usage information
+- `infamick sot` : Calculate the estimate of the sot with 100% battery 
 - `infamick temp`: Monitor system temperatures
 
 ## Examples
@@ -41,4 +43,4 @@ infamick temp
 
 ## Contacts
 [@InfamousMick](https://t.me/InfamousMick)
-[InfaChannel](https://t.me/InfaScript), 
+[InfaChannel](https://t.me/InfaScript)

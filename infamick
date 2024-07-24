@@ -392,6 +392,48 @@ services=(
 "com.google.android.gms/.stats.service.DropBoxEntryAddedService"
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
+help() {
+    echo -e "${BOLD}infamick - System Utility Script${RESET}"
+    echo
+    echo -e "${GREEN}Usage:${RESET} infamick <command>"
+    echo
+    echo -e "${YELLOW}Available commands:${RESET}"
+    echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+    echo -e "            Shows the current battery health percentage and"
+    echo -e "            the number of charging cycles"
+    echo
+    echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
+    echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
+    echo -e "            Run only while charging at 100%"
+    echo
+    echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
+    echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
+    echo
+    echo -e "  ${BOLD}gmsd${RESET}    - Disables GMS services"
+    echo -e "  ${BOLD}gmse${RESET}    - Enables GMS services"
+    echo
+    echo -e "  ${BOLD}info${RESET}    - Display this help message"
+    echo -e "  ${BOLD}--help${RESET}  - Alias for info"
+    echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+    echo
+    echo -e "  ${BOLD}sot${RESET}     -
+    Calculate how SOT is possible
+    with 100% battery"
+    echo -e "            Requires:
+          - Current SOT minutes value
+          - Discharged percentage value"
+    echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
+    echo -e "            Press CTRL+C to exit temperature monitoring"
+    echo
+    echo -e "${GREEN}Examples:${RESET}"
+    echo -e "  infamick boot"
+    echo -e "  infamick temp"
+    echo -e "  infamick battery"
+    echo -e "  infamick boosta"
+    echo
+    echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+}
 
 gms_disable() {
     echo "Disabling GMS"
@@ -411,42 +453,18 @@ gms_enable() {
     echo "\nDone"
 }
 
-help() {
-    echo -e "${BOLD}infamick - System Utility Script${RESET}"
-    echo
-    echo -e "${GREEN}Usage:${RESET} infamick <command>"
-    echo
-    echo -e "${YELLOW}Available commands:${RESET}"
-    echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
-    echo -e "            Shows the current battery health percentage and"
-    echo -e "            the number of charging cycles"
-    echo
-    echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
-    echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
-    echo -e "            Run only while charging at 100%"
-    echo
-    echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
-    echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
-    echo
-    echo -e "  ${BOLD}gmsd${RESET}    -  Disables GMS services"
-    echo -e "  ${BOLD}gmse${RESET}    -  Enables GMS services"
-    echo
-    echo -e "  ${BOLD}info${RESET}    - Display this help message"
-    echo -e "  ${BOLD}--help${RESET}  - Alias for info"
-    echo -e "  ${BOLD}-h${RESET}      - Alias for info"
-    echo
-    echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
-    echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
-    echo -e "            Press CTRL+C to exit temperature monitoring"
-    echo
-    echo -e "${GREEN}Examples:${RESET}"
-    echo -e "  infamick boot"
-    echo -e "  infamick temp"
-    echo -e "  infamick battery"
-    echo -e "  infamick boosta"
-    echo
-    echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+sot_calculator() {
+    echo "Enter minutes of your current SOT:"
+    read minutes
+    echo "Enter the discharged percentage:"
+    read percentage
+    
+     result=$(echo "scale=2; ($minutes * 100) / ($percentage * 60)" | bc)
+    echo "Estimated SOT with 100% battery: ${YELLOW}${BOLD}$result hrs${RESET}"
 }
+
+# Example usage:
+# infamick_sot 30 50
 
 case "$1" in
     battery)
@@ -466,6 +484,9 @@ case "$1" in
         ;;
     gmse)
         gms_enable
+        ;;
+    sot)
+        sot_calculator
         ;;
     temp)
         temp_check
