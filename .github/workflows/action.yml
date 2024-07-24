@@ -12,7 +12,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
+          message: test
             ${{ github.actor }} created commit:
             Commit message: ${{ github.event.commits[0].message }}
             
