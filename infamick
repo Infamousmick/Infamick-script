@@ -409,6 +409,9 @@ help() {
     echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
     echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
     echo
+    echo -e "  ${BOLD}cache${RESET}   -
+    Trim cache multiple times"
+    echo
     echo -e "  ${BOLD}gmsd${RESET}    - Disables GMS services"
     echo -e "  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
@@ -465,6 +468,41 @@ sot_calculator() {
     echo "Harshrate: ${YELLOW}${BOLD}$harshrate%/hr${RESET}"
 }
 
+clear_cache() {
+    num_iterations=44
+    error_occurred=false
+    echo "\nClearing cache"
+    for i in $(seq 1 $num_iterations); do
+        pm trim-caches 999999999999999999
+        
+        # Check if the command was successful
+        if [ $? -ne 0 ]; then
+            # An error occurred while executing the command
+            echo -e "\n${RED}Error: Command pm trim-caches failed.${RESET}"
+            error_occurred=true
+            break
+        fi
+        
+        if [ $i -eq 22 ]; then
+            echo -e "\n    ${YELLOW}Please wait ...${RESET}"
+        fi
+        
+        # Progress counter
+        progress=$((100 * i / num_iterations))
+        # Print the progress counter
+        echo -n -e "\r    ${GREEN}["
+        for j in $(seq 1 $((progress / 2))); do
+            echo -n "="
+        done
+        printf ">%02d%%]${RESET}" $progress
+    done
+    
+    if [ "$error_occurred" = false ]; then
+        sleep 2
+        clear
+        echo "\nDone"
+    fi
+}
 # Example usage:
 # infamick_sot 30 50
 
@@ -480,6 +518,9 @@ case "$1" in
         ;;
     boot)
         boot
+        ;;
+    cache)
+        clear_cache
         ;;
     gmsd)
         gms_disable

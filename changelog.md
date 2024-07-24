@@ -1,5 +1,7 @@
 # Changelog for Infamick Script
 ## V1.2 - New SOT calculator (July 24, 2024)
+- Cache Cleaner
+  - Trim cache multiple times
 - SOT calculator
   - Calculate the SOT with 100% battery
     Requires
