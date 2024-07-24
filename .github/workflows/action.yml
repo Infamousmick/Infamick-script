@@ -1,78 +1,21 @@
-name: build and release
+name: telegram message
 
-on:
-  workflow_dispatch:
-    inputs:      
-      tag:
-        description: 'Release Tag'
-        required: true        
+on: [push]
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: write    
-
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Install packages & setup
-        run: |
-          sudo apt update -y  
-          sudo apt install libncurses5-dev python2 libtinfo5 -y      
-          bash init_clang_13.sh
-          
-      - name: Set environment variable
-        run: |
-          echo "LPOS_KERNEL_VERSION=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
-          
-      - name: Building LPoS
-        run: |
-          export PATH=$HOME/:$PWD/toolchain/bin:$PATH
-          bash build.sh -c
-
-      - name: Building LPoS + KernelSU
-        run: |
-          export PATH=$HOME/:$PWD/toolchain/bin:$PATH
-          bash build.sh -k          
-
-      - name: Upload kernel
-        uses: actions/upload-artifact@v4
-        with:
-          name: "LPoS-${{ env.LPOS_KERNEL_VERSION }}-[S10 5G]"
-          path: |
-            out/LPoS*.zip
-            out/KSU*.zip
-
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ github.event.inputs.tag }}
-          name: "LPoS Kernel ${{ env.LPOS_KERNEL_VERSION }}"
-          draft: false
-          prerelease: false
-          token: ${{ secrets.TOKEN }}          
-          artifacts: "out/LPoS*.zip,out/KSU*.zip"
-          body: "Commit SHA: ${{ github.sha }}"
-
-      - name: Upload to Telegram
+      - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: "out/LPoS*.zip,out/KSU*.zip"
-          format: html
-          disable_web_page_preview: false
           message: |
-            <b>New Kernel Build found..! 🎉</b>
-
-            <b>Device :</b> S10 5G   
-            <b>Kernel Version :</b> ${{ env.LPOS_KERNEL_VERSION }}                    
-            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
             
-            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            Repository: ${{ github.repository }}
             
-            <b>Installation :</b> <a href="https://telegra.ph/LPoS-Kernel-Installation-Guide-02-09">Click here</a>
+            See changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
