@@ -6,40 +6,19 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Get latest release
-        id: get_release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const latestRelease = await github.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            return {
-              name: latestRelease.data.name,
-              body: latestRelease.data.body,
-            };
-          result-encoding: string
-
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: ""
           format: html
           disable_web_page_preview: false
           message: |
-            <b>New Infamick Script MAGISK Update...! 🎉</b>
+            <b>New Infamick Script MAGISK Update...! 🎉</b>                   
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
-
-            <b>Latest Release:</b> ${{ steps.get_release.outputs.name }}
-
-            <b>CHANGELOG:</b>
-            <pre>${{ steps.get_release.outputs.body }}</pre>
