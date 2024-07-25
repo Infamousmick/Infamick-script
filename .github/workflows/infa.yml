@@ -48,6 +48,7 @@ jobs:
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+            
             <b>USAGE:</b>
             Enter terminal with root and run
             <pre><code>infamick command</code></pre>
@@ -73,4 +74,4 @@ jobs:
             <pre><code>infamick temp</code></pre>
             Monitor system temperatures
 
-            <b>⚠️ This is a TESTING version. Use with caution! ⚠️</b>
+            <b>⚠️This is a TESTING version. Use with caution!⚠️</b>
