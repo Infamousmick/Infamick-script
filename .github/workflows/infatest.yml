@@ -1,4 +1,4 @@
-name: Upload to Telegram
+name: TEST upload to Telegram
 
 on:
   workflow_dispatch:  # Allows manual workflow execution
