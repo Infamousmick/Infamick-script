@@ -48,6 +48,7 @@ jobs:
           disable_web_page_preview: true
           message: |
             <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            
             <b>CHANGELOG:</b>
             <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
             
