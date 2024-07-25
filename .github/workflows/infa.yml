@@ -28,14 +28,6 @@ jobs:
           zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
 
-      - name: Create source code tar.gz
-        run: |
-          tar -czf Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.tar.gz *
-
-      - name: Create source code ZIP
-        run: |
-          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.zip *
-
       - name: Upload Magisk ZIP to latest release
         uses: actions/upload-release-asset@v1
         env:
@@ -44,26 +36,6 @@ jobs:
           upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
           asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
           asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
-          asset_content_type: application/zip
-
-      - name: Upload source code tar.gz to latest release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
-          asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.tar.gz
-          asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.tar.gz
-          asset_content_type: application/gzip
-
-      - name: Upload source code ZIP to latest release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
-          asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.zip
-          asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_source.zip
           asset_content_type: application/zip
 
       - name: Notify Telegram
