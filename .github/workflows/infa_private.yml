@@ -1,0 +1,70 @@
+name: Private upload to Telegram
+
+on:
+  workflow_dispatch:  # Allows manual workflow execution
+
+jobs:
+  upload_and_notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest release
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(release.data);
+            return release.data;
+            
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PRIVATE_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
+          format: html
+          disable_web_page_preview: true
+          message: |
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            
+            <b>CHANGELOG:</b>
+            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
+            
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            
+            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            
+            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+
+            <b>USAGE:</b>
+            Enter terminal with root and run
+            <pre><code>infamick command</code></pre>
+
+            <b>Available commands:</b>
+            <pre><code>infamick battery</code></pre>
+            Display battery health and charging cycles
+            <pre><code>infamick boosta</code></pre>
+            Boost Apps performances
+            <pre><code>infamick boostb</code></pre>
+            Improves Battery draining
+            <pre><code>infamick boot</code></pre>
+            Reset boot count settings
+            <pre><code>infamick cache</code></pre>
+            Trim cache multiple times
+            <pre><code>infamick gmsd</code></pre>
+            Disable GMS services
+            <pre><code>infamick gmse</code></pre>
+            Enable GMS services
+            <pre><code>infamick info</code></pre>
+            Show help and usage information
+            <pre><code>infamick sot</code></pre>
+            Calculate the SOT with 100% battery
+            <pre><code>infamick temp</code></pre>
+            Monitor system temperatures
