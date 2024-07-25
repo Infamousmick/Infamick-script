@@ -32,7 +32,8 @@ jobs:
           format: html
           disable_web_page_preview: true
           message: |
-            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            <b>⚠️ TESTING VERSION ⚠️</b>
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Test Update...! 🧪</b>    
             
             <b>CHANGELOG:</b>
             <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
@@ -42,11 +43,10 @@ jobs:
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
-
+            
             <b>USAGE:</b>
             Enter terminal with root and run
             <pre><code>infamick command</code></pre>
-
             <b>Available commands:</b>
             <pre><code>infamick battery</code></pre>
             Display battery health and charging cycles
@@ -68,3 +68,5 @@ jobs:
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
             Monitor system temperatures
+
+            <b>⚠️This is a TESTING version. Use with caution!⚠️</b>
