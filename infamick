@@ -409,8 +409,7 @@ help() {
     echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
     echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
     echo
-    echo -e "  ${BOLD}cache${RESET}   -
-    Trim cache multiple times"
+    echo -e "  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
     echo -e "  ${BOLD}gmsd${RESET}    - Disables GMS services"
     echo -e "  ${BOLD}gmse${RESET}    - Enables GMS services"
@@ -419,9 +418,7 @@ help() {
     echo -e "  ${BOLD}--help${RESET}  - Alias for info"
     echo -e "  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    echo -e "  ${BOLD}sot${RESET}     -
-    Calculate how SOT is possible
-    with 100% battery"
+    echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
     echo -e "            Requires:
           - Current SOT minutes value
           - Discharged percentage value"
