@@ -27,7 +27,7 @@ jobs:
 
             <b>USAGE:</b>
             Enter terminal with root and run
-            <pre><code>infamick &lt;command&gt;</code></pre>
+            <pre><code>infamick command</code></pre>
 
             <b>Available commands:</b>
             <pre><code>
