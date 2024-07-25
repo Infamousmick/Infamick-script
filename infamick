@@ -458,14 +458,28 @@ gms_enable() {
 
 sot_calculator() {
     echo "Enter minutes of your current SOT:"
-    read minutes
-    echo "Enter the discharged percentage:"
-    read percentage
-    
-     result=$(echo "scale=2; ($minutes * 100) / ($percentage * 60)" | bc)
-     harshrate=$(echo "scale=2; (100 / $result)" | bc)
-    echo "Estimated SOT with 100% battery: ${YELLOW}${BOLD}$result hrs${RESET}"
-    echo "Harshrate: ${YELLOW}${BOLD}$harshrate%/hr${RESET}"
+read minutes
+echo "Enter the discharged percentage:"
+read percentage
+
+# Calculate estimated SOT in hours
+result=$(awk "BEGIN {printf \"%.2f\", ($minutes * 100) / ($percentage * 60)}")
+
+# Convert result to integer hours and minutes
+hours=$(echo $result | cut -d'.' -f1)
+decimal_part=$(echo $result | cut -d'.' -f2)
+minutes=$(awk "BEGIN {printf \"%.0f\", ($decimal_part * 60) / 100}")
+
+# Calculate harshrate
+harshrate=$(awk "BEGIN {printf \"%.2f\", 100 / $result}")
+
+# Define color codes
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+echo "Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
+echo "Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 }
 
 clear_cache() {
