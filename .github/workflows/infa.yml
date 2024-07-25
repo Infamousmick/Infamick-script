@@ -20,51 +20,53 @@ jobs:
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
-            <b>Download :</b> <a href="https://github.com/Infamousmick/Infamick-script/releases/download/v1.2/Infamick-script-v1.2-Magisk.zip">Here</a>
+            
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+
+            <b>Download:</b> Download latest zip release <a href="https://github.com/${{ github.repository }}/releases/latest">here</a>
+
             <b>USAGE:</b>
             Enter terminal with root and run
-            ```
-            infamick <command>
-            ``` 
+            <pre><code>infamick &lt;command&gt;</code></pre>
+
             <b>Available commands:</b>
-            ```
+            <pre><code>
             infamick battery
-            ```
+            </code></pre>
             Display battery health and charging cycles
-            ```
+            <pre><code>
             infamick boosta
-            ```
-            Boost Apps perfomances
-            ```
+            </code></pre>
+            Boost Apps performances
+            <pre><code>
             infamick boostb
-            ```
+            </code></pre>
             Improves Battery draining
-            ```
+            <pre><code>
             infamick boot
-            ```
+            </code></pre>
             Reset boot count settings
-            ```
+            <pre><code>
             infamick cache
-            ```
-            Trim cache multiple time
-            ```
+            </code></pre>
+            Trim cache multiple times
+            <pre><code>
             infamick gmsd
-            ```
+            </code></pre>
             Disable GMS services
-            ```
+            <pre><code>
             infamick gmse
-            ```
+            </code></pre>
             Enable GMS services
-            ```
+            <pre><code>
             infamick info
-            ```
+            </code></pre>
             Show help and usage information
-            ```
+            <pre><code>
             infamick sot
-            ```
+            </code></pre>
             Calculate the SOT with 100% battery
-            ```
+            <pre><code>
             infamick temp
-            ```
+            </code></pre>
             Monitor system temperatures
