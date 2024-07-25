@@ -1,4 +1,37 @@
-- name: Notify Telegram
+name: TEST upload to Telegram
+
+on:
+  workflow_dispatch:  # Allows manual workflow execution
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: infatest  # Checkout the infatest branch
+
+      - name: Get latest release
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.MY_TOKEN}}
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(release.data);
+            return release.data;
+
+      - name: Download and rename release asset
+        run: |
+          asset_url=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assets[0].browser_download_url')
+          tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
+          wget $asset_url -O "Infamick-script-${tag_name}-Magisk-TEST.zip"
+
+      - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
