@@ -1,22 +1,20 @@
-name: TEST upload to Telegram
+name: Upload to Telegram (Testing Version)
 
 on:
   workflow_dispatch:  # Allows manual workflow execution
 
 jobs:
-  notify:
+  upload_and_notify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: infatest  # Checkout the infatest branch
 
       - name: Get latest release
         id: get_release
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.MY_TOKEN}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const release = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
@@ -25,81 +23,54 @@ jobs:
             console.log(release.data);
             return release.data;
 
-      - name: Create ZIP file
+      - name: Create Magisk ZIP file
         run: |
-          tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
-          zip -r "INFAMICK-test-${tag_name}.zip" changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
+          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip \
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: INFAMICK-test-${{ fromJson(steps.get_release.outputs.result).tag_name }}.zip
-          format: markdown
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip
+          format: html
           disable_web_page_preview: true
           message: |
-            *TEST: New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉*    
+            <b>⚠️ TESTING VERSION ⚠️</b>
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Test Update...! 🧪</b>    
             
-            *CHANGELOG:*
-            ```
-            ${{ fromJson(steps.get_release.outputs.result).body }}
-            ```
+            <b>CHANGELOG:</b>
+            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
             
-            *Repository:* [${{ github.repository }} (infatest branch)](https://github.com/${{ github.repository }}/tree/infatest)
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
-            *Commit SHA:* [Click here](https://github.com/${{ github.repository }}/commit/${{github.sha}})
+            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
-            *Installation :* [Click here](https://github.com/Infamousmick/Infamick-script/blob/infatest/README.md#installation)
-
-            *USAGE:*
+            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+            <b>USAGE:</b>
             Enter terminal with root and run
-            ```
-            infamick command
-            ```
-
-            *Available commands:*
-            ```
-            infamick battery
-            ```
+            <pre><code>infamick command</code></pre>
+            <b>Available commands:</b>
+            <pre><code>infamick battery</code></pre>
             Display battery health and charging cycles
-            ```
-            infamick boosta
-            ```
+            <pre><code>infamick boosta</code></pre>
             Boost Apps performances
-            ```
-            infamick boostb
-            ```
+            <pre><code>infamick boostb</code></pre>
             Improves Battery draining
-            ```
-            infamick boot
-            ```
+            <pre><code>infamick boot</code></pre>
             Reset boot count settings
-            ```
-            infamick cache
-            ```
+            <pre><code>infamick cache</code></pre>
             Trim cache multiple times
-            ```
-            infamick gmsd
-            ```
+            <pre><code>infamick gmsd</code></pre>
             Disable GMS services
-            ```
-            infamick gmse
-            ```
+            <pre><code>infamick gmse</code></pre>
             Enable GMS services
-            ```
-            infamick info
-            ```
+            <pre><code>infamick info</code></pre>
             Show help and usage information
-            ```
-            infamick sot
-            ```
+            <pre><code>infamick sot</code></pre>
             Calculate the SOT with 100% battery
-            ```
-            infamick temp
-            ```
+            <pre><code>infamick temp</code></pre>
             Monitor system temperatures
 
-            *⚠️ THIS IS A TEST VERSION ⚠️*
-
-            [Join Telegram Channel](https://t.me/your_channel_name)
+            <b>⚠️ This is a TESTING version. Use with caution! ⚠️</b>
