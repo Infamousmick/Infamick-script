@@ -1,6 +1,6 @@
 # Changelog for Infamick Script
 ## V1.3 - Autoupdate in Magisk (July 25, 2024)
-- Added autopudate in Magisk
+- Added autoupdate in Magisk
 - Added minutes in sot_calculator
 ## V1.2 - New SOT calculator (July 24, 2024)
 - Cache Cleaner
