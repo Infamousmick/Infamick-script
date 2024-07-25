@@ -38,14 +38,15 @@ jobs:
           format: html
           disable_web_page_preview: true
           message: |
-            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>                   
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            <b>CHANGELOG:</b>
+            ${{ fromJson(steps.get_release.outputs.result).body }}
+            
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
-
-            <b>Download:</b> Download latest zip release <a href="https://github.com/${{ github.repository }}/releases/latest">here</a>
 
             <b>USAGE:</b>
             Enter terminal with root and run
