@@ -23,21 +23,22 @@ jobs:
             console.log(release.data);
             return release.data;
 
-      - name: Download release asset
+      - name: Download and rename release asset
         run: |
           asset_url=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assets[0].browser_download_url')
-          wget $asset_url -O latest_release.zip
+          tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
+          wget $asset_url -O "Infamick-script-${tag_name}-Magisk.zip"
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: latest_release.zip
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk.zip
           format: html
-          disable_web_page_preview: false
+          disable_web_page_preview: true
           message: |
-            <b>New Infamick Script MAGISK Update...! 🎉</b>                   
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>                   
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
