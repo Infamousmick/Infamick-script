@@ -52,25 +52,8 @@ set_perm_recursive $MODPATH 0 0 0755 0755
 set_perm $MODPATH/system/bin/infamick 0 2000 0755
 }
 
-# Show changelog
-show_changelog() {
-  ui_print " "
-  ui_print "Changelog for Infamick Script v1.1:"
-  ui_print "- Initial release of Infamick script"
-  ui_print "- Boot count reset functionality"
-  ui_print "- Temperature monitoring feature"
-  ui_print "- Battery health check"
-  ui_print "- Boost apps and battery"
-  ui_print "- GMS enable and disable"
-  ui_print "- Color-coded output for better readability"
-  ui_print " "
-}
-
 # Final adjustment
 ADDON && FINALIZE
-
-# Display changelog
-show_changelog
 
 ui_print "Installation completed!"
 ui_print "Use 'infamick' command to run the script."
