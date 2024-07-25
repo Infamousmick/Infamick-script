@@ -30,43 +30,23 @@ jobs:
             <pre><code>infamick command</code></pre>
 
             <b>Available commands:</b>
-            <pre><code>
-            infamick battery
-            </code></pre>
+            <pre><code>infamick battery</code></pre>
             Display battery health and charging cycles
-            <pre><code>
-            infamick boosta
-            </code></pre>
+            <pre><code>infamick boosta</code></pre>
             Boost Apps performances
-            <pre><code>
-            infamick boostb
-            </code></pre>
+            <pre><code>infamick boostb</code></pre>
             Improves Battery draining
-            <pre><code>
-            infamick boot
-            </code></pre>
+            <pre><code>infamick boot</code></pre>
             Reset boot count settings
-            <pre><code>
-            infamick cache
-            </code></pre>
+            <pre><code>infamick cache</code></pre>
             Trim cache multiple times
-            <pre><code>
-            infamick gmsd
-            </code></pre>
+            <pre><code>infamick gmsd</code></pre>
             Disable GMS services
-            <pre><code>
-            infamick gmse
-            </code></pre>
+            <pre><code>infamick gmse</code></pre>
             Enable GMS services
-            <pre><code>
-            infamick info
-            </code></pre>
+            <pre><code>infamick info</code></pre>
             Show help and usage information
-            <pre><code>
-            infamick sot
-            </code></pre>
+            <pre><code>infamick sot</code></pre>
             Calculate the SOT with 100% battery
-            <pre><code>
-            infamick temp
-            </code></pre>
+            <pre><code>infamick temp</code></pre>
             Monitor system temperatures
