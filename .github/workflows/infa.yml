@@ -40,7 +40,7 @@ jobs:
           message: |
             <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
             <b>CHANGELOG:</b>
-            ${{ fromJson(steps.get_release.outputs.result).body }}
+            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
             
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
