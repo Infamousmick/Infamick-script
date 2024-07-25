@@ -37,45 +37,70 @@ jobs:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk-TEST.zip
-          format: html
+          format: markdown
           disable_web_page_preview: true
           message: |
-            <b>TEST: New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            *TEST: New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉*    
             
-            <b>CHANGELOG:</b>
-            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
+            *CHANGELOG:*
+            ```
+            ${{ fromJson(steps.get_release.outputs.result).body }}
+            ```
             
-            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}/tree/infatest">${{ github.repository }} (infatest branch)</a>
+            *Repository:* [${{ github.repository }} (infatest branch)](https://github.com/${{ github.repository }}/tree/infatest)
             
-            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            *Commit SHA:* [Click here](https://github.com/${{ github.repository }}/commit/${{github.sha}})
             
-            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script/blob/infatest/README.md#installation">Click here</a>
+            *Installation :* [Click here](https://github.com/Infamousmick/Infamick-script/blob/infatest/README.md#installation)
 
-            <b>USAGE:</b>
+            *USAGE:*
             Enter terminal with root and run
-            <pre><code>infamick command</code></pre>
+            ```
+            infamick command
+            ```
 
-            <b>Available commands:</b>
-            <pre><code>infamick battery</code></pre>
+            *Available commands:*
+            ```
+            infamick battery
+            ```
             Display battery health and charging cycles
-            <pre><code>infamick boosta</code></pre>
+            ```
+            infamick boosta
+            ```
             Boost Apps performances
-            <pre><code>infamick boostb</code></pre>
+            ```
+            infamick boostb
+            ```
             Improves Battery draining
-            <pre><code>infamick boot</code></pre>
+            ```
+            infamick boot
+            ```
             Reset boot count settings
-            <pre><code>infamick cache</code></pre>
+            ```
+            infamick cache
+            ```
             Trim cache multiple times
-            <pre><code>infamick gmsd</code></pre>
+            ```
+            infamick gmsd
+            ```
             Disable GMS services
-            <pre><code>infamick gmse</code></pre>
+            ```
+            infamick gmse
+            ```
             Enable GMS services
-            <pre><code>infamick info</code></pre>
+            ```
+            infamick info
+            ```
             Show help and usage information
-            <pre><code>infamick sot</code></pre>
+            ```
+            infamick sot
+            ```
             Calculate the SOT with 100% battery
-            <pre><code>infamick temp</code></pre>
+            ```
+            infamick temp
+            ```
             Monitor system temperatures
 
-            <b>⚠️ THIS IS A TEST VERSION ⚠️</b>
-          reply_markup: '{"inline_keyboard":[[{"text":"Join Telegram Channel", "url":"https://t.me/your_channel_name"}]]}'
+            *⚠️ THIS IS A TEST VERSION ⚠️*
+
+            [Join Telegram Channel](https://t.me/your_channel_name)
