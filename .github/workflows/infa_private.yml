@@ -26,7 +26,7 @@ jobs:
       - name: Create Magisk ZIP file
         run: |
           zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip \
-          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
             
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
