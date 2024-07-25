@@ -25,18 +25,17 @@ jobs:
             console.log(release.data);
             return release.data;
 
-      - name: Download and rename release asset
+      - name: Create ZIP file
         run: |
-          asset_url=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assets[0].browser_download_url')
           tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
-          wget $asset_url -O "Infamick-script-${tag_name}-Magisk-TEST.zip"
+          zip -r "INFAMICK-test-${tag_name}.zip" changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk-TEST.zip
+          document: INFAMICK-test-${{ fromJson(steps.get_release.outputs.result).tag_name }}.zip
           format: markdown
           disable_web_page_preview: true
           message: |
