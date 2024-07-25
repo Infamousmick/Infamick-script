@@ -1,10 +1,10 @@
-name: Upload to Telegram
+name: Upload to Telegram and Latest Release
 
 on:
   workflow_dispatch:  # Allows manual workflow execution
 
 jobs:
-  notify:
+  upload_and_notify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -14,7 +14,7 @@ jobs:
         id: get_release
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.MY_TOKEN}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const release = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
@@ -23,18 +23,27 @@ jobs:
             console.log(release.data);
             return release.data;
 
-      - name: Download and rename release asset
+      - name: Create ZIP file
         run: |
-          asset_url=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assets[0].browser_download_url')
-          tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
-          wget $asset_url -O "Infamick-script-${tag_name}-Magisk.zip"
+          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
+
+      - name: Upload to latest release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
+          asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
+          asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
+          asset_content_type: application/zip
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk.zip
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
           format: html
           disable_web_page_preview: true
           message: |
