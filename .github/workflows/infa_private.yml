@@ -31,7 +31,7 @@ jobs:
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          to: ${{ secrets.TELEGRAM_PRIVATE_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
           format: html
