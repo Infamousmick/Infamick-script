@@ -22,6 +22,11 @@ jobs:
             });
             console.log(release.data);
             return release.data;
+
+      - name: Create Magisk ZIP file
+        run: |
+          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh update.json
             
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
