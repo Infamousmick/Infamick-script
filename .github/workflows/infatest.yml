@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: infatest  # Checkout the infatest branch
 
       - name: Get latest release
         id: get_release
@@ -27,27 +29,27 @@ jobs:
         run: |
           asset_url=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assets[0].browser_download_url')
           tag_name=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.tag_name')
-          wget $asset_url -O "Infamick-script-${tag_name}-Magisk.zip"
+          wget $asset_url -O "Infamick-script-${tag_name}-Magisk-TEST.zip"
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk.zip
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}-Magisk-TEST.zip
           format: html
           disable_web_page_preview: true
           message: |
-            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
+            <b>TEST: New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
             
             <b>CHANGELOG:</b>
             <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
             
-            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}/tree/infatest">${{ github.repository }} (infatest branch)</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
-            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script/blob/infatest/README.md#installation">Click here</a>
 
             <b>USAGE:</b>
             Enter terminal with root and run
@@ -74,3 +76,5 @@ jobs:
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
             Monitor system temperatures
+
+            <b>⚠️ THIS IS A TEST VERSION ⚠️</b>
