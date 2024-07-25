@@ -20,7 +20,7 @@ jobs:
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
-            <D>Download :</b> <a href="https://github.com/Infamousmick/Infamick-script/releases/download/v1.2/Infamick-script-v1.2-Magisk.zip">Here</a>
+            <b>Download :</b> <a href="https://github.com/Infamousmick/Infamick-script/releases/download/v1.2/Infamick-script-v1.2-Magisk.zip">Here</a>
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
             <b>USAGE:</b>
             Enter terminal with root and run
