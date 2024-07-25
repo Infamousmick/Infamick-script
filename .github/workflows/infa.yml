@@ -20,5 +20,51 @@ jobs:
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
-            
+            <D>Download :</b> <a href="https://github.com/Infamousmick/Infamick-script/releases/download/v1.2/Infamick-script-v1.2-Magisk.zip">Here</a>
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+            <b>USAGE:</b>
+            Enter terminal with root and run
+            ```
+            infamick <command>
+            ``` 
+            <b>Available commands:</b>
+            ```
+            infamick battery
+            ```
+            Display battery health and charging cycles
+            ```
+            infamick boosta
+            ```
+            Boost Apps perfomances
+            ```
+            infamick boostb
+            ```
+            Improves Battery draining
+            ```
+            infamick boot
+            ```
+            Reset boot count settings
+            ```
+            infamick cache
+            ```
+            Trim cache multiple time
+            ```
+            infamick gmsd
+            ```
+            Disable GMS services
+            ```
+            infamick gmse
+            ```
+            Enable GMS services
+            ```
+            infamick info
+            ```
+            Show help and usage information
+            ```
+            infamick sot
+            ```
+            Calculate the SOT with 100% battery
+            ```
+            infamick temp
+            ```
+            Monitor system temperatures
