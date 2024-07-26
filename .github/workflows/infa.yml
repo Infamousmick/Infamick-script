@@ -19,7 +19,7 @@ jobs:
       - name: Extract changelog
         id: extract_changelog
         run: |
-          CHANGELOG=$(sed -n "/## ${VERSION}/,/## /p" changelog.md | sed '$d')
+          CHANGELOG=$(awk '/^## '"$VERSION"'/,/^## / {if (!/^## / || $0 ~ /^## '"$VERSION"'/) print}' changelog.md | sed '$d')
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -121,3 +121,15 @@ jobs:
             Monitor system temperatures
 
             <b>⚠️This is a TESTING version. Use with caution!⚠️</b>
+```
+
+The key change is in the "Extract changelog" step:
+
+```yaml
+      - name: Extract changelog
+        id: extract_changelog
+        run: |
+          CHANGELOG=$(awk '/^## '"$VERSION"'/,/^## / {if (!/^## / || $0 ~ /^## '"$VERSION"'/) print}' changelog.md | sed '$d')
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
