@@ -549,7 +549,7 @@ smg_ntw() {
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 smg_band() {
     printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
@@ -557,7 +557,7 @@ smg_band() {
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
     am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 
 extradim() {
@@ -565,14 +565,14 @@ extradim() {
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a  
     am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures(){
     printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a  
     am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 # Example usage:
 # infamick_sot 30 50
