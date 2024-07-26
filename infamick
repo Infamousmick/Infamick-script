@@ -597,33 +597,68 @@ gestures(){
 # Example usage:
 # infamick_sot 30 50
 
-deknox_disable() {
-    pm disable-user --user 0 com.samsung.android.knox.analytics.uploader
-    pm disable-user --user 0 com.samsung.android.bbc.bbcagent
-    pm disable-user --user 0 com.knox.vpn.proxyhandler
-    pm disable-user --user 0 com.samsung.android.knox.containercore
-    pm disable-user --user 0 com.samsung.knox.keychain
-    pm disable-user --user 0 com.sec.enterprise.knox.attestation
-    pm disable-user --user 0 com.sec.enterprise.knox.cloudmdm.smdms
-    pm disable-user --user 0 com.samsung.android.knox.kpecore
-    pm disable-user --user 0 com.samsung.android.knox.pushmanager
-    pm disable-user --user 0 com.samsung.knox.securefolder
-
-    printf "\n   ${YELLOW}[i] Knox disabled.${RESET}\n"
+disable_package() {
+    package_name="$1"
+    if pm disable-user --user 0 "$package_name" > /dev/null 2>&1; then
+        printf "   ${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
+    else
+        printf "   ${BOLD${RED}[-] Failed to disable: ${package_name}${RESET}\n"
+    fi
 }
-deknox_enable() {
-    pm enable com.samsung.android.knox.analytics.uploader
-    pm enable com.samsung.android.bbc.bbcagent
-    pm enable com.knox.vpn.proxyhandler
-    pm enable com.samsung.android.knox.containercore
-    pm enable com.samsung.knox.keychain
-    pm enable com.sec.enterprise.knox.attestation
-    pm enable com.sec.enterprise.knox.cloudmdm.smdms
-    pm enable com.samsung.android.knox.kpecore
-    pm enable com.samsung.android.knox.pushmanager
-    pm enable com.samsung.knox.securefolder
 
-        printf "\n   ${YELLOW}[i] Knox Enabled.${RESET}\n"
+enable_package() {
+    package_name="$1"
+    if pm enable "$package_name" > /dev/null 2>&1; then
+        printf "   ${BOLD}${GREEN}[+] Successfully enabled: ${package_name}${RESET}\n"
+    else
+        printf "   ${BOLD}${RED}[-] Failed to enable: ${package_name}${RESET}\n"
+    fi
+}
+
+deknox_disable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${YELLOW}[i] Starting Knox disable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        disable_package "$package"
+    done
+
+    printf "\n${YELLOW}[i] Knox disable process completed.${RESET}\n"
+}
+
+deknox_enable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${YELLOW}[i] Starting Knox enable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        enable_package "$package"
+    done
+
+    printf "\n${YELLOW}[i] Knox enable process completed.${RESET}\n"
 }
 change_csc() {
     printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
