@@ -544,7 +544,7 @@ smg_ntw() {
 
     printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
-    printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n  then come back again.${RESET}\n" ; sleep 2
+    printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
@@ -606,13 +606,13 @@ deknox_enable() {
         printf "\n   ${YELLOW}[i] Knox Enabled.${RESET}\n"
 }
 change_csc() {
-    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n  folder is available.${RESET}\n"
-    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n  will break.${RESET}\n"
+    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
+    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n   will break.${RESET}\n"
     printf "   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
-    printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n\n" "$current_csc"
+    printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
     if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
         printf "\n   ${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
         exit 1
