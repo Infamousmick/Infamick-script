@@ -471,9 +471,9 @@ help_menu() {
     echo
     echo -e "${GREEN}Examples:${RESET}"
     echo -e "  infamick boot"
-    echo -e "  infamick temp"
-    echo -e "  infamick battery"
-    echo -e "  infamick boosta"
+    echo -e "  infamick gmsd"
+    echo -e "  infamick exdim"
+    echo -e "  infamick ntw_l"
     echo
     echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
 }

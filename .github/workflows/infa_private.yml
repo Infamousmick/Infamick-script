@@ -23,9 +23,15 @@ jobs:
             console.log(release.data);
             return release.data;
 
+      - name: Get version from update.json
+        id: get_version
+        run: |
+            VERSION=$(jq -r .version update.json)
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Create Magisk ZIP file
         run: |
-          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip \
+          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
             
       - name: Notify Telegram
@@ -69,6 +75,20 @@ jobs:
             Enable GMS services
             <pre><code>infamick info</code></pre>
             Show help and usage information
+            <pre><code>infamick smg csc</code></pre>
+            Change current CSC
+            <pre><code>infamick smg dex_d</code></pre>
+            Disable knox packages
+            <pre><code>infamick smg dex_e</code></pre>
+            Enable knox packages
+            <pre><code>infamick smg exdim</code></pre>
+            Open hidden Extra Dim menu
+            <pre><code>infamick smg gest</code></pre>
+            Open hidden Gestures menu
+            <pre><code>infamick smg ntw_b</code></pre>
+            Open 5G Network Bands guide
+            <pre><code>infamick smg ntw_l</code></pre>
+            Open Network Bands settings
             <pre><code>infamick sot</code></pre>
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>

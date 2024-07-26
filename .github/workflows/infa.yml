@@ -69,6 +69,20 @@ jobs:
             Enable GMS services
             <pre><code>infamick info</code></pre>
             Show help and usage information
+            <pre><code>infamick smg csc</code></pre>
+            Change current CSC
+            <pre><code>infamick smg dex_d</code></pre>
+            Disable knox packages
+            <pre><code>infamick smg dex_e</code></pre>
+            Enable knox packages
+            <pre><code>infamick smg exdim</code></pre>
+            Open hidden Extra Dim menu
+            <pre><code>infamick smg gest</code></pre>
+            Open hidden Gestures menu
+            <pre><code>infamick smg ntw_b</code></pre>
+            Open 5G Network Bands guide
+            <pre><code>infamick smg ntw_l</code></pre>
+            Open Network Bands settings
             <pre><code>infamick sot</code></pre>
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
