@@ -573,6 +573,11 @@ case "$1" in
         gms_enable
         ;;
     smg)
+        if [ -z "$arg2" ]; then
+            echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
+            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+        fi
         smg_check || return 
         case "$2" in
             ntw)
@@ -598,7 +603,7 @@ case "$1" in
         help
         ;;
     *)
-        echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
+        echo -e "${RED}Error: Unknown command '$1'${RESET}"
         echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
         exit 1
         ;;
