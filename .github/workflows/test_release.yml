@@ -22,18 +22,18 @@ jobs:
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "## ${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
           - Added Samsung Tweaks
-            1. CSC changer
-              - Change current CSC
-            2. Deknoxer
-              - Disable or Enable knox packages
-            3. Extra Dim
-              - Open hidden Extra Dim menu
-            4. Gesture
-             - Open hidden Gestures menu
-            5. Change Network Bands
-             - Open 5G Network Bands guide
-            6. Lock Network Bands
-             - Open Network Bands settings" >> $GITHUB_OUTPUT
+          1. CSC changer
+          - Change current CSC
+          2. Deknoxer
+          - Disable or Enable knox packages
+          3. Extra Dim
+          - Open hidden Extra Dim menu
+          4. Gesture
+          - Open hidden Gestures menu
+          5. Change Network Bands
+          - Open 5G Network Bands guide
+          6. Lock Network Bands
+          - Open Network Bands settings" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create and push tag
