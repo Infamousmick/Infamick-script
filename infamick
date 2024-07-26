@@ -521,6 +521,27 @@ clear_cache() {
 smg_test() {
     echo "test worked"
 }
+smg_check() {
+            if echo "$brand" | grep -iq "samsung"; then
+            export IS_SAMSUNG=1
+            export brand="$brand"
+            export model="$model"
+        else
+            export IS_SAMSUNG=0
+            export brand="$brand"
+        fi
+
+        if echo "$IS_SAMSUNG" | grep -iq "1"; then
+            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
+            sleep 2
+            return 0
+        else
+            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
+            sleep 1
+            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
+            return 1
+        fi
+}
 # Example usage:
 # infamick_sot 30 50
 
@@ -547,24 +568,8 @@ case "$1" in
         gms_enable
         ;;
     smg)
-        if echo "$brand" | grep -iq "samsung"; then
-            export IS_SAMSUNG=1
-            export brand="$brand"
-            export model="$model"
-        else
-            export IS_SAMSUNG=0
-            export brand="$brand"
-        fi
-
-        if echo "$IS_SAMSUNG" | grep -iq "1"; then
-            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
-            sleep 2
-            smg_test
-        else
-            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
-            sleep 1
-            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
-        fi
+        smg_check || return 
+        smg_test
         ;;
     sot)
         sot_calculator
