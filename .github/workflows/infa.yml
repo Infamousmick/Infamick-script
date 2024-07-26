@@ -23,6 +23,12 @@ jobs:
             console.log(release.data);
             return release.data;
 
+      - name: Get version from update.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version update.json)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT     
+            
       - name: Create Magisk ZIP file
         run: |
           zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip \
