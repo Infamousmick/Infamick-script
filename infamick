@@ -586,7 +586,7 @@ extradim() {
     am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
     printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
-gestures(){
+gestures() {
     printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
@@ -602,9 +602,10 @@ disable_package() {
     if pm disable-user --user 0 "$package_name" > /dev/null 2>&1; then
         printf "   ${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
     else
-        printf "   ${BOLD${RED}[-] Failed to disable: ${package_name}${RESET}\n"
+        printf "   ${BOLD}${RED}[-] Failed to disable: ${package_name}${RESET}\n"
     fi
 }
+
 
 enable_package() {
     package_name="$1"
