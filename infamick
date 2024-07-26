@@ -578,14 +578,13 @@ case "$1" in
             echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
+        case "$2" in
             ntw)
-                smg_check || return 
-                case "$2" in
+            smg_check || return 
                 smg_ntw
                 ;;
             band)
                 smg_check || return 
-                case "$2" in
                 smg_band
                 ;;
             *)
