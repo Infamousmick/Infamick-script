@@ -544,9 +544,9 @@ smg_ntw() {
 
     printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
-    printf "   ${YELLOW}[i] Refer to the guide below for better understanding, then come back again.${RESET}\n\n" ; sleep 2
+    printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n  then come back again.${RESET}\n" ; sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver
     printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
@@ -564,14 +564,14 @@ extradim() {
     printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a  
-    am start -n 'com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity'
+    am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity
     printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures(){
     printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a  
-    am start -n 'com.android.settings/.Settings\$GestureNavigationSettingsActivity'
+    am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity
     printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
 }
 # Example usage:
@@ -606,8 +606,8 @@ deknox_enable() {
         printf "\n   ${YELLOW}[i] Knox Enabled.${RESET}\n"
 }
 change_csc() {
-    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC folder is available.${RESET}\n"
-    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features will break.${RESET}\n"
+    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n  folder is available.${RESET}\n"
+    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n  will break.${RESET}\n"
     printf "   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
     printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n\n"
     read -r a  
@@ -615,14 +615,14 @@ change_csc() {
     printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n\n" "$current_csc"
     if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
         printf "\n   ${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
-        change_csc
+        exit 1
         return
         fi
 
             # Check for simple letters in CSC code
     if [[ "$csc_code" != *[!\ ]* ]]; then
         printf "\n   ${RED}[!] Error: CSC code should contain at least one non-space character.${RESET}\n\n"
-        change_csc
+        exit 1
         return
     fi
 
@@ -684,11 +684,11 @@ case "$1" in
                 smg_check || return 
                 gestures
                 ;;
-            ntw_band)
+            ntw_b)
                 smg_check || return 
                 smg_ntw
                 ;;
-            ntw_lock)
+            ntw_l)
                 smg_check || return 
                 smg_band
                 ;;
