@@ -36,39 +36,10 @@ jobs:
              - Open Network Bands settings" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Create and push tag
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git tag -a "Test-${{ steps.get_version.outputs.VERSION }}" -m "Test release ${{ steps.get_version.outputs.VERSION }}"
-          git push origin "Test-${{ steps.get_version.outputs.VERSION }}"
-
       - name: Create Magisk ZIP file
         run: |
           zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
-
-      - name: Create Test Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: Test-${{ steps.get_version.outputs.VERSION }}
-          release_name: Test Release ${{ steps.get_version.outputs.VERSION }}
-          body: ${{ steps.set_changelog.outputs.CHANGELOG }}
-          draft: false
-          prerelease: true
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
-          asset_name: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
-          asset_content_type: application/zip
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
@@ -88,8 +59,6 @@ jobs:
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
-            
-            <b>Test Release:</b> <a href="${{ steps.create_release.outputs.html_url }}">Click here</a>
             
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
             
