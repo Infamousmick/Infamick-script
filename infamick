@@ -445,9 +445,9 @@ help() {
     echo -e "  ${BOLD}-h${RESET}      - Alias for info"
     echo
     echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
-    echo -e "            Requires:
-          - Current SOT minutes value
-          - Discharged percentage value"
+    echo -e "               Requires:"
+    echo -e "                  - Current SOT minutes value"
+    echo -e "                  - Discharged percentage value"
     echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
     echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
     echo -e "            Press CTRL+C to exit temperature monitoring"
@@ -541,15 +541,100 @@ clear_cache() {
     fi
 }
 smg_ntw() {
-    echo "NTW test worked"
+
+    printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
+    sleep 1
+    printf "   ${YELLOW}[i] Refer to the guide below for better understanding, then come back again.${RESET}\n\n" ; sleep 2
+    nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n\n"
+    read -r a
+    am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver
+    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
 }
 smg_band() {
-    echo "Band test worked" 
+    printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
+    sleep 1
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    read -r a
+    am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity
+    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
 }
 
+extradim() {
+    printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    read -r a  
+    am start -n 'com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity'
+    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+}
+gestures(){
+    printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    read -r a  
+    am start -n 'com.android.settings/.Settings\$GestureNavigationSettingsActivity'
+    printf "   ${BOLD_GREEN}\n\n[+] Execution Succeed..! \n${RESET}"
+}
 # Example usage:
 # infamick_sot 30 50
 
+deknox_disable() {
+    pm disable-user --user 0 com.samsung.android.knox.analytics.uploader
+    pm disable-user --user 0 com.samsung.android.bbc.bbcagent
+    pm disable-user --user 0 com.knox.vpn.proxyhandler
+    pm disable-user --user 0 com.samsung.android.knox.containercore
+    pm disable-user --user 0 com.samsung.knox.keychain
+    pm disable-user --user 0 com.sec.enterprise.knox.attestation
+    pm disable-user --user 0 com.sec.enterprise.knox.cloudmdm.smdms
+    pm disable-user --user 0 com.samsung.android.knox.kpecore
+    pm disable-user --user 0 com.samsung.android.knox.pushmanager
+    pm disable-user --user 0 com.samsung.knox.securefolder
+
+    printf "\n   ${YELLOW}[i] Knox disabled.${RESET}\n"
+}
+deknox_enable() {
+    pm enable com.samsung.android.knox.analytics.uploader
+    pm enable com.samsung.android.bbc.bbcagent
+    pm enable com.knox.vpn.proxyhandler
+    pm enable com.samsung.android.knox.containercore
+    pm enable com.samsung.knox.keychain
+    pm enable com.sec.enterprise.knox.attestation
+    pm enable com.sec.enterprise.knox.cloudmdm.smdms
+    pm enable com.samsung.android.knox.kpecore
+    pm enable com.samsung.android.knox.pushmanager
+    pm enable com.samsung.knox.securefolder
+
+        printf "\n   ${YELLOW}[i] Knox Enabled.${RESET}\n"
+}
+change_csc() {
+    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC folder is available.${RESET}\n"
+    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features will break.${RESET}\n"
+    printf "   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n\n"
+    read -r a  
+    current_csc=$(cat /efs/imei/mps_code.dat)
+    printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n\n" "$current_csc"
+    if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
+        printf "\n   ${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
+        change_csc
+        return
+        fi
+
+            # Check for simple letters in CSC code
+    if [[ "$csc_code" != *[!\ ]* ]]; then
+        printf "\n   ${RED}[!] Error: CSC code should contain at least one non-space character.${RESET}\n\n"
+        change_csc
+        return
+    fi
+
+    # Update the CSC code
+    printf "\n"
+
+    # To printf "\n%.0s" {1..100} ; clear the current values
+    > /efs/imei/mps_code.dat ; > /efs/imei/omcnw_code.dat
+    echo "$csc_code" > /efs/imei/mps_code.dat ; echo "$csc_code" > /efs/imei/omcnw_code.dat
+    printf "   ${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
+    printf "   ${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+}
 case "$1" in
     battery)
         battinfo
@@ -579,11 +664,31 @@ case "$1" in
             exit 1
         fi
         case "$2" in
-            ntw)
-            smg_check || return 
+            csc)
+                smg_check || return 
+                change_csc
+                ;;
+            dex_d)
+                smg_check || return 
+                deknox_disable
+                ;;
+            dex_e)
+                smg_check || return 
+                deknox_enable
+                ;;
+            exdim)
+                smg_check || return 
+                extradim
+                ;;
+            gest)
+                smg_check || return 
+                gestures
+                ;;
+            ntw_band)
+                smg_check || return 
                 smg_ntw
                 ;;
-            band)
+            ntw_lock)
                 smg_check || return 
                 smg_band
                 ;;
