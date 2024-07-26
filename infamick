@@ -1,5 +1,6 @@
 #!/system/bin/sh
 RED='\033[0;31m'
+BLUE='\033[1;34m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BOLD='\033[1m'
@@ -418,10 +419,10 @@ services=(
 "com.google.android.gms/.stats.service.DropBoxEntryAddedService"
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
-help() {
+help_menu() {
     echo -e "${BOLD}infamick - System Utility Script${RESET}"
     echo
-    echo -e "${GREEN}Usage:${RESET} infamick <command>"
+    echo -e "${GREEN}Usage:${RESET} infamick <command> ${BLUE}<2ndcommand>${RESET}"
     echo
     echo -e "${YELLOW}Available commands:${RESET}"
     echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
@@ -443,6 +444,22 @@ help() {
     echo -e "  ${BOLD}info${RESET}    - Display this help message"
     echo -e "  ${BOLD}--help${RESET}  - Alias for info"
     echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+    echo
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}<2ndcommand>${RESET}    - Samsung Tweaks" 
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}csc${RESET}   - Change current CSC"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}dex_d${RESET} - Disable knox packages"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}dex_e${RESET} - Dnable knox packages"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}exdim${RESET} - Open hidden Extra Dim menu"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}gest${RESET}  - Open hidden Gestures menu"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}ntw_b${RESET} - Open 5G Network Bands guide"
+    echo
+    echo -e "  ${BOLD}smg${RESET}  ${BLUE}ntw_l${RESET} - Open Network Bands settings"
     echo
     echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
     echo -e "               Requires:"
@@ -708,7 +725,7 @@ case "$1" in
         temp_check
         ;;
     info|--help|-h)
-        help
+        help_menu
         ;;
     *)
         echo -e "${RED}Error: Unknown command '$1'${RESET}"
