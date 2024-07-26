@@ -16,13 +16,24 @@ jobs:
           VERSION=$(jq -r .version update.json)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Extract changelog
-        id: extract_changelog
+      - name: Set changelog
+        id: set_changelog
         run: |
-          VERSION=$(jq -r .version update.json)
-          CHANGELOG=$(awk '/^## '"$VERSION"'/,/^## / {print} /^## / && $0 !~ /^## '"$VERSION"'/ {exit}' changelog.md | sed '$d')
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "## V${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
+          - Added Samsung Tweaks
+            1. CSC changer
+              - Change current CSC
+            2. Deknoxer
+              - Disable or Enable knox packages
+            3. Extra Dim
+              - Open hidden Extra Dim menu
+            4. Gesture
+             - Open hidden Gestures menu
+            5. Change Network Bands
+             - Open 5G Network Bands guide
+            6. Lock Network Bands
+             - Open Network Bands settings" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create and push tag
@@ -45,7 +56,7 @@ jobs:
         with:
           tag_name: Test-${{ steps.get_version.outputs.VERSION }}
           release_name: Test Release ${{ steps.get_version.outputs.VERSION }}
-          body: ${{ steps.extract_changelog.outputs.CHANGELOG }}
+          body: ${{ steps.set_changelog.outputs.CHANGELOG }}
           draft: false
           prerelease: true
 
@@ -72,7 +83,7 @@ jobs:
             <b>New Infamick Script ${{ steps.get_version.outputs.VERSION }} MAGISK Test Update...! 🧪</b>    
             
             <b>CHANGELOG:</b>
-            <pre><code>${{ steps.extract_changelog.outputs.CHANGELOG }}</code></pre>
+            <pre><code>${{ steps.set_changelog.outputs.CHANGELOG }}</code></pre>
             
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
@@ -122,4 +133,3 @@ jobs:
             Monitor system temperatures
 
             <b>⚠️This is a TESTING version. Use with caution!⚠️</b>
-
