@@ -465,6 +465,7 @@ help_menu() {
     echo -e "               Requires:"
     echo -e "                  - Current SOT minutes value"
     echo -e "                  - Discharged percentage value"
+    echo
     echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
     echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
     echo -e "            Press CTRL+C to exit temperature monitoring"
