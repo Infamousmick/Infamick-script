@@ -31,7 +31,7 @@ jobs:
             
       - name: Create Magisk ZIP file
         run: |
-          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip \
+          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
 
       - name: Notify Telegram
@@ -39,12 +39,12 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK_TEST.zip
+          document: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
           format: html
           disable_web_page_preview: true
           message: |
             <b>⚠️ TESTING VERSION ⚠️</b>
-            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Test Update...! 🧪</b>    
+            <b>New Infamick Script ${{ steps.get_version.outputs.VERSION }} MAGISK Test Update...! 🧪</b>    
             
             <b>CHANGELOG:</b>
             <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
