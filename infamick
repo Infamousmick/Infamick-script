@@ -9,6 +9,28 @@ LIGHT_YELLOW='\033[1;93m'
 brand=$(getprop ro.product.system.brand)
 model=$(getprop ro.product.system.model)
 
+smg_check() {
+            if echo "$brand" | grep -iq "samsung"; then
+            export IS_SAMSUNG=1
+            export brand="$brand"
+            export model="$model"
+        else
+            export IS_SAMSUNG=0
+            export brand="$brand"
+        fi
+
+        if echo "$IS_SAMSUNG" | grep -iq "1"; then
+            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
+            sleep 2
+            return 0
+        else
+            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
+            sleep 1
+            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
+            return 1
+        fi
+}
+
 temp_check() {
     while true; do
         # Ottieni la temperatura della batteria
@@ -518,30 +540,13 @@ clear_cache() {
         echo "\nDone"
     fi
 }
-smg_test() {
-    echo "test worked"
+smg_ntw() {
+    echo "NTW test worked"
 }
-smg_check() {
-            if echo "$brand" | grep -iq "samsung"; then
-            export IS_SAMSUNG=1
-            export brand="$brand"
-            export model="$model"
-        else
-            export IS_SAMSUNG=0
-            export brand="$brand"
-        fi
+smg_band() {
+    echo "Band test worked" 
+}
 
-        if echo "$IS_SAMSUNG" | grep -iq "1"; then
-            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
-            sleep 2
-            return 0
-        else
-            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
-            sleep 1
-            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
-            return 1
-        fi
-}
 # Example usage:
 # infamick_sot 30 50
 
@@ -569,7 +574,19 @@ case "$1" in
         ;;
     smg)
         smg_check || return 
-        smg_test
+        case "$" in
+            ntw)
+                smg_ntw
+                ;;
+            band)
+                smg_band
+                ;;
+            *)
+                echo -e "${RED}Error: Unknown command '$1'${RESET}"
+            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+                ;;
+            esac
         ;;
     sot)
         sot_calculator
