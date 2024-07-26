@@ -4,6 +4,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BOLD='\033[1m'
 RESET='\033[0m'
+BOLD_WHITE='\033[1;37m'
+LIGHT_YELLOW='\033[1;93m'
+brand=$(getprop ro.product.system.brand)
+model=$(getprop ro.product.system.model)
 
 temp_check() {
     while true; do
@@ -514,6 +518,9 @@ clear_cache() {
         echo "\nDone"
     fi
 }
+smg_test() {
+    echo "test worked"
+}
 # Example usage:
 # infamick_sot 30 50
 
@@ -538,6 +545,26 @@ case "$1" in
         ;;
     gmse)
         gms_enable
+        ;;
+    smg)
+        if echo "$brand" | grep -iq "samsung"; then
+            export IS_SAMSUNG=1
+            export brand="$brand"
+            export model="$model"
+        else
+            export IS_SAMSUNG=0
+            export brand="$brand"
+        fi
+
+        if echo "$IS_SAMSUNG" | grep -iq "1"; then
+            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
+            sleep 2
+            smg_test
+        else
+            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
+            sleep 1
+            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
+        fi
         ;;
     sot)
         sot_calculator
