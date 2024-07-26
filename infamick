@@ -582,7 +582,7 @@ case "$1" in
                 smg_band
                 ;;
             *)
-                echo -e "${RED}Error: Unknown command '$1'${RESET}"
+                echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
             echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
                 ;;
@@ -598,7 +598,7 @@ case "$1" in
         help
         ;;
     *)
-        echo -e "${RED}Error: Unknown command '$1'${RESET}"
+        echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
         echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
         exit 1
         ;;
