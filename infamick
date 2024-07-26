@@ -574,7 +574,7 @@ case "$1" in
         ;;
     smg)
         smg_check || return 
-        case "$" in
+        case "$2" in
             ntw)
                 smg_ntw
                 ;;
