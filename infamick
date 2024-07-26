@@ -574,16 +574,18 @@ case "$1" in
         ;;
     smg)
         if [ -z "$2" ]; then
-            echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
+            echo -e "${RED}Error: Need second argument '$1' '$2'${RESET}"
             echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
-        smg_check || return 
-        case "$2" in
             ntw)
+                smg_check || return 
+                case "$2" in
                 smg_ntw
                 ;;
             band)
+                smg_check || return 
+                case "$2" in
                 smg_band
                 ;;
             *)
