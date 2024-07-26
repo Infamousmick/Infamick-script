@@ -422,7 +422,7 @@ services=(
 help_menu() {
     echo -e "${BOLD}infamick - System Utility Script${RESET}"
     echo
-    echo -e "${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BOLD}${BLUE}<2ndcommand>${RESET}"
+    echo -e "${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
     echo -e "${YELLOW}Available commands:${RESET}"
     echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
@@ -445,21 +445,21 @@ help_menu() {
     echo -e "  ${BOLD}--help${RESET}  - Alias for info"
     echo -e "  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}<2ndcommand>${RESET}    ${BOLD}${YELLOW}Samsung Tweaks${RESET}" 
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}csc${RESET}   - Change current CSC"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}dex_d${RESET} - Disable knox packages"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}dex_e${RESET} - Dnable knox packages"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}exdim${RESET} - Open hidden Extra Dim menu"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}gest${RESET}  - Open hidden Gestures menu"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}ntw_b${RESET} - Open 5G Network Bands guide"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BOLD}${BLUE}ntw_l${RESET} - Open Network Bands settings"
+    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
     echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
     echo -e "               Requires:"
