@@ -19,6 +19,7 @@ jobs:
       - name: Extract changelog
         id: extract_changelog
         run: |
+          VERSION=$(jq -r .version update.json)
           CHANGELOG=$(awk '/^## '"$VERSION"'/,/^## / {if (!/^## / || $0 ~ /^## '"$VERSION"'/) print}' changelog.md | sed '$d')
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
