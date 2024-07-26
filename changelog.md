@@ -18,12 +18,12 @@
 - Added minutes in sot_calculator
 ## V1.2 - New SOT calculator (July 24, 2024)
 - Added Cache Cleaner
-  - Trim cache multiple times
+  1. Trim cache multiple times
 - Added SOT calculator
   1. Calculate the SOT with 100% battery
     Requires
-    -. Current SOT minutes value
-    -. Discharged percentage value
+    - Current SOT minutes value
+    - Discharged percentage value
 ## v1.1 - First Update (July 24, 2024)
 - Added Boost Performance
   1. Boost the performance of each app
