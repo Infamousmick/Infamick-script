@@ -546,7 +546,7 @@ smg_ntw() {
     sleep 1
     printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
     printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
@@ -554,7 +554,7 @@ smg_ntw() {
 smg_band() {
     printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
     printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
@@ -562,15 +562,17 @@ smg_band() {
 
 extradim() {
     printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
     printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures(){
     printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
     printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
@@ -609,7 +611,7 @@ change_csc() {
     printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
     printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n   will break.${RESET}\n"
     printf "   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
     printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
