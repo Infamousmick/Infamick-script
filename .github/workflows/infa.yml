@@ -10,24 +10,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get latest release
-        id: get_release
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const release = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            console.log(release.data);
-            return release.data;
-
       - name: Get version from update.json
         id: get_version
         run: |
           VERSION=$(jq -r .version update.json)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog
+        id: extract_changelog
+        run: |
+          CHANGELOG=$(sed -n "/## ${VERSION}/,/## /p" changelog.md | sed '$d')
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create and push tag
         run: |
@@ -49,6 +44,7 @@ jobs:
         with:
           tag_name: Test-${{ steps.get_version.outputs.VERSION }}
           release_name: Test Release ${{ steps.get_version.outputs.VERSION }}
+          body: ${{ steps.extract_changelog.outputs.CHANGELOG }}
           draft: false
           prerelease: true
 
@@ -75,7 +71,7 @@ jobs:
             <b>New Infamick Script ${{ steps.get_version.outputs.VERSION }} MAGISK Test Update...! 🧪</b>    
             
             <b>CHANGELOG:</b>
-            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
+            <pre><code>${{ steps.extract_changelog.outputs.CHANGELOG }}</code></pre>
             
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
