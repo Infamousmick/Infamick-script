@@ -500,49 +500,25 @@ gms_enable() {
 }
 
 sot_calculator() {
-    minutes=""
-    while [ -z "$minutes" ]; do
-        printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:\n"
-        read minutes
-        case $minutes in
-            ''|*[!0-9]*)
-                echo "${INDENTN}${RED}${BOLD}Please enter a valid number for minutes.${RESET}"
-                minutes=""
-                ;;
-        esac
-    done
+printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:\n"
+read minutes
+printf "${INDENTN}${GREEN}${BOLD}Enter the discharged percentage:\n"
+read percentage
 
-    percentage=""
-    while [ -z "$percentage" ]; do
-        printf "${INDENTN}${GREEN}${BOLD}Enter the discharged percentage:\n"
-        read percentage
-        case $percentage in
-            ''|*[!0-9]*)
-                echo "${INDENTN}${RED}${BOLD}Please enter a valid number for percentage.${RESET}"
-                percentage=""
-                ;;
-            *)
-                if [ "$percentage" -le 0 ] || [ "$percentage" -gt 100 ]; then
-                    echo "${INDENTN}${RED}${BOLD}Please enter a percentage between 1 and 100.${RESET}"
-                    percentage=""
-                fi
-                ;;
-        esac
-    done
+# Calculate estimated SOT in hours
+result=$(awk "BEGIN {printf \"%.2f\", ($minutes * 100) / ($percentage * 60)}")
 
-    # Calculate estimated SOT in hours
-    result=$(echo "scale=2; ($minutes * 100) / ($percentage * 60)" | bc)
+# Convert result to integer hours and minutes
+hours=$(echo $result | cut -d'.' -f1)
+decimal_part=$(echo $result | cut -d'.' -f2)
+minutes=$(awk "BEGIN {printf \"%.0f\", ($decimal_part * 60) / 100}")
 
-    # Convert result to integer hours and minutes
-    hours=$(echo $result | cut -d'.' -f1)
-    decimal_part=$(echo $result | cut -d'.' -f2)
-    minutes=$(echo "scale=0; ($decimal_part * 60) / 100" | bc)
+# Calculate harshrate
+harshrate=$(awk "BEGIN {printf \"%.2f\", 100 / $result}")
 
-    # Calculate harshrate
-    harshrate=$(echo "scale=2; 100 / $result" | bc)
 
-    echo "${INDENTN}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
-    echo "${INDENTN}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
+echo "${INDENTN}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
+echo "${INDENTN}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 }
 
 clear_cache() {
