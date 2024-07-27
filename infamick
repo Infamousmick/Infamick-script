@@ -400,14 +400,15 @@ help_menu() {
     printf "\n${YELLOW}Available commands:${RESET}"
     printf "\n  ${BOLD}batt_b${RESET}  - Improves battery draining"
     printf "\n  ${BOLD}batt_i${RESET}  - Display battery health and charging cycles"
-    printf "\n            Shows the current battery health percentage and"
-    printf "\n            the number of charging cycles"
+    printf "\n            Shows the current battery health percentage"
+    printf "\n            and the number of charging cycles"
     printf "\n  ${BOLD}batt_s${RESET}  - Open battery optimizations setting"
     echo
     printf "\n            Run only while charging at 100"
     echo
     printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
-    printf "\n            Sets global boot_count and Phenotype_boot_count to 0"
+    printf "\n            Sets global boot_count and"
+    printf "\n            Phenotype_boot_count to 0"
     echo
     printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
@@ -432,7 +433,7 @@ help_menu() {
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
     echo
-    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dim${RESET} - Open hidden Extra Dim menu"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dim${RESET}   - Open hidden Extra Dim menu"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
     echo
@@ -441,12 +442,13 @@ help_menu() {
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
     printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
-    printf "\n               Requires:"
-    printf "\n                  - Current SOT minutes value"
-    printf "\n                  - Discharged percentage value"
+    printf "\n            Requires:"
+    printf "\n              - Current SOT minutes value"
+    printf "\n              - Discharged percentage value"
     echo
     printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
     printf "\n            Displays real-time temperatures for Battery, CPU, and GPU"
+    printf "\n            Battery, CPU, and GPU"
     printf "\n            Press CTRL+C to exit temperature monitoring"
     echo
     printf "\n${GREEN}Examples:${RESET}"
