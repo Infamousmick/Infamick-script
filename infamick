@@ -403,7 +403,6 @@ help_menu() {
     printf "\n            Shows the current battery health percentage"
     printf "\n            and the number of charging cycles"
     printf "\n  ${BOLD}batt_s${RESET}  - Open battery optimizations setting"
-    echo
     printf "\n            Run only while charging at 100"
     echo
     printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
@@ -447,15 +446,18 @@ help_menu() {
     printf "\n              - Discharged percentage value"
     echo
     printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
-    printf "\n            Displays real-time temperatures for Battery, CPU, and GPU"
+    printf "\n            Displays real-time temperatures for"
     printf "\n            Battery, CPU, and GPU"
     printf "\n            Press CTRL+C to exit temperature monitoring"
     echo
     printf "\n${GREEN}Examples:${RESET}"
-    printf "\n  infamick boot"
+    printf "\n  infamick batt_i"
     printf "\n  infamick gmsd"
     printf "\n  infamick exdim"
-    printf "\n  infamick ntw_l"
+    printf "\n  infamick perf"
+    printf "\n  infamick smg dim"
+    printf "\n  infamick smg ntw_l"
+    printf "\n  infamick temp"
     echo
     printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly."
 }
