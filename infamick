@@ -69,10 +69,10 @@ temp_check() {
         done
 
         # Stampa le nuove temperature
-        echo -ne "Battery temperature: ${YELLOW}${battery_temp}°C${RESET}\n"
-        echo -ne "CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}\n"
-        echo -ne "GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}\n"
-        echo -ne "\n${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
+        echo -ne "${INDENTN}Battery temperature: ${YELLOW}${battery_temp}°C${RESET}"
+        echo -ne "${INDENTN}CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
         sleep 2
         clear
     done
@@ -455,7 +455,7 @@ help_menu() {
 boot() {
     settings put global boot_count 0
     settings put global Phenotype_boot_count 0
-    printf "${INDENT}${GREEN}[i]Boot count resetted successfully.${RESET}\n"
+    printf "${INDENTN}${GREEN}[i]Boot count resetted successfully.${RESET}\n"
 }
 
 boost_app() {
@@ -465,7 +465,7 @@ boost_app() {
 }
 
 boost_battery() {
-    printf "${INDENT}${YELLOW}[i]Boosting battery${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
     cmd package bg-dexopt-job
     printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
 }
@@ -478,8 +478,8 @@ battinfo() {
 
     # Dividi il valore di mSavedBatteryUsage per 100
     cycles=$((cycles_raw / 100))
-    printf "${INDENT}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
-    printf "${INDENT}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
+    printf "${INDENTN}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
+    printf "${INDENTN}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
     exit 0
 }
 
@@ -526,7 +526,7 @@ echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 clear_cache() {
     num_iterations=44
     error_occurred=false
-    printf "${INDENT}${GREEN}Clearing cache\n"
+    printf "${INDENTN}${YELLOW}[i]Clearing cache\n"
     for i in $(seq 1 $num_iterations); do
         pm trim-caches 999999999999999999
         
@@ -539,7 +539,7 @@ clear_cache() {
         fi
         
         if [ $i -eq 22 ]; then
-            printf "${INDENT}${YELLOW}Please wait ...${RESET}"
+            printf "${INDENT}${YELLOW}[i]Please wait ...${RESET}\n"
         fi
         
         # Progress counter
@@ -559,30 +559,30 @@ clear_cache() {
     fi
 }
 smg_ntw() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
     printf "${INDENT}${YELLOW}menu.${RESET}"
     sleep 2
-    printf "${INDENT}${YELLOW}[i] Refer to the guide below for better ${RESET}\n"
-    printf "${INDENT}${YELLOW}understanding, then come back again.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Refer to the guide below for better ${RESET}\n"
+    printf "${INDENTN}${YELLOW}understanding, then come back again.${RESET}"
     sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
-    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
     printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 smg_band() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
     printf "${INDENT}${YELLOW}menu.${RESET}"
     sleep 2
-    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
     printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 
 extradim() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
     printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
@@ -591,9 +591,9 @@ extradim() {
 }
 gestures() {
     printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
-    printf "${INDENT}${YELLOW}[menu.${RESET}"
+    printf "${INDENT}${YELLOW}menu.${RESET}"
     sleep 1
-    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
@@ -667,15 +667,15 @@ deknox_enable() {
     printf "${INDENT}${YELLOW}[i] Knox enable process completed.${RESET}\n"
 }
 change_csc() {
-    printf "${INDENT}${YELLOW}[i] Always check /optics or /product to ensure the required CSC${RESET}"
-    printf "${INDENT}${YELLOW}folder is available.${RESET}"
-    printf "${INDENT}${INDENT}${YELLOW}[${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features${RESET}"
-    printf "${INDENT}${YELLOW}will break.${RESET}"
-    printf "${INDENT}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
-    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Always check /optics or /product to ensure the required CSC${RESET}"
+    printf "${INDENTN}${YELLOW}folder is available.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features${RESET}"
+    printf "${INDENTN}${YELLOW}will break.${RESET}"
+    printf "${INDENT}N${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
-    printf "${INDENT}${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
+    printf "${INDENTN}${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
     if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
         printf "${INDENT}${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
         exit 1
@@ -700,7 +700,7 @@ change_csc() {
 }
 
 battsettings() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
@@ -708,7 +708,7 @@ battsettings() {
     printf "${INDENT}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
 }
 display_reset() {
-    printf "${INDENT}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     wm size reset
@@ -719,17 +719,17 @@ display_see() {
     wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
     wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
     dpi=$(wm density | awk '{print $3}')
-    printf "${INDENT}${GREEN}[i]Your screen resolution is"
+    printf "${INDENTN}${GREEN}[i]Your screen resolution is"
     printf "${INDENTN}${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}"
     printf "${INDENTN}${BLUE}${BOLD}Override size: $wm_size_override${RESET}"
     printf "${INDENTN}${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
 }
 display_set() {
-    printf "${INDENT}${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
+    printf "${INDENT}${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}${INDENT}"
     read -r screenres
-    printf "${INDENT}${YELLOW}[i] Choose Dpi${RESET}\n"
+    printf "${INDENT}${YELLOW}[i] Choose Dpi${RESET}${INDENT}"
     read -r dpisize
-    printf "${INDENT}${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}"
+    printf "${INDENT}${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}\n"
     wm size $screenres
     wm density $dpisize
 }
