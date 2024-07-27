@@ -389,63 +389,63 @@ services=(
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
 help_menu() {
-    printf "${BOLD}infamick - System Utility Script${RESET}"
+    printf "\n${BOLD}infamick - System Utility Script${RESET}"
     echo
-    printf "${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
+    printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
-    printf "${YELLOW}Available commands:${RESET}"
-    printf "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
-    printf "            Shows the current battery health percentage and"
-    printf "            the number of charging cycles"
+    printf "\n${YELLOW}Available commands:${RESET}"
+    printf "\n  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+    printf "\n            Shows the current battery health percentage and"
+    printf "\n            the number of charging cycles"
     echo
-    printf "  ${BOLD}boosta${RESET}  - Boost all apps"
-    printf "  ${BOLD}boostb${RESET}  - Improves battery draining"
-    printf "            Run only while charging at 100%"
+    printf "\n  ${BOLD}boosta${RESET}  - Boost all apps"
+    printf "\n  ${BOLD}boostb${RESET}  - Improves battery draining"
+    printf "\n            Run only while charging at 100%"
     echo
-    printf "  ${BOLD}boot${RESET}    - Reset boot count settings"
-    printf "            Sets global boot_count and Phenotype_boot_count to 0"
+    printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
+    printf "\n            Sets global boot_count and Phenotype_boot_count to 0"
     echo
-    printf "  ${BOLD}cache${RESET}   - Trim cache multiple times"
+    printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
-    printf "  ${BOLD}gmsd${RESET}    - Disables GMS services"
-    printf "  ${BOLD}gmse${RESET}    - Enables GMS services"
+    printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
+    printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
-    printf "  ${BOLD}info${RESET}    - Display this help message"
-    printf "  ${BOLD}--help${RESET}  - Alias for info"
-    printf "  ${BOLD}-h${RESET}      - Alias for info"
+    printf "\n  ${BOLD}info${RESET}    - Display this help message"
+    printf "\n  ${BOLD}--help${RESET}  - Alias for info"
+    printf "\n  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
     echo
-    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
-    printf "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
-    printf "               Requires:"
-    printf "                  - Current SOT minutes value"
-    printf "                  - Discharged percentage value"
+    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
+    printf "\n               Requires:"
+    printf "\n                  - Current SOT minutes value"
+    printf "\n                  - Discharged percentage value"
     echo
-    printf "  ${BOLD}temp${RESET}    - Monitor system temperatures"
-    printf "            Displays real-time temperatures for Battery, CPU, and GPU"
-    printf "            Press CTRL+C to exit temperature monitoring"
+    printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    printf "\n            Displays real-time temperatures for Battery, CPU, and GPU"
+    printf "\n            Press CTRL+C to exit temperature monitoring"
     echo
-    printf "${GREEN}Examples:${RESET}"
-    printf "  infamick boot"
-    printf "  infamick gmsd"
-    printf "  infamick exdim"
-    printf "  infamick ntw_l"
+    printf "\n${GREEN}Examples:${RESET}"
+    printf "\n  infamick boot"
+    printf "\n  infamick gmsd"
+    printf "\n  infamick exdim"
+    printf "\n  infamick ntw_l"
     echo
-    printf "${YELLOW}Note:${RESET} This script requires root access to function properly."
+    printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly."
 }
 
 boot() {
@@ -559,39 +559,39 @@ clear_cache() {
     fi
 }
 smg_ntw() {
-    printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
-    printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
+    printf "\n   ${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 smg_band() {
-    printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 
 extradim() {
-    printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures() {
-    printf "   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 # Example usage:
 # infamick_sot 30 50
@@ -599,9 +599,9 @@ gestures() {
 disable_package() {
     package_name="$1"
     if pm disable-user --user 0 "$package_name" > /dev/null 2>&1; then
-        printf "   ${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
+        printf "\n   ${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
     else
-        printf "   ${BOLD}${RED}[-] Failed to disable: ${package_name}${RESET}\n"
+        printf "\n   ${BOLD}${RED}[-] Failed to disable: ${package_name}${RESET}\n"
     fi
 }
 
@@ -609,9 +609,9 @@ disable_package() {
 enable_package() {
     package_name="$1"
     if pm enable "$package_name" > /dev/null 2>&1; then
-        printf "   ${BOLD}${GREEN}[+] Successfully enabled: ${package_name}${RESET}\n"
+        printf "\n   ${BOLD}${GREEN}[+] Successfully enabled: ${package_name}${RESET}\n"
     else
-        printf "   ${BOLD}${RED}[-] Failed to enable: ${package_name}${RESET}\n"
+        printf "\n   ${BOLD}${RED}[-] Failed to enable: ${package_name}${RESET}\n"
     fi
 }
 
@@ -629,13 +629,13 @@ deknox_disable() {
         "com.samsung.knox.securefolder"
     )
 
-    printf "${YELLOW}[i] Starting Knox disable process...${RESET}\n"
+    printf "\n${YELLOW}[i] Starting Knox disable process...${RESET}\n"
 
     for package in "${knox_packages[@]}"; do
         disable_package "$package"
     done
 
-    printf "\n${YELLOW}[i] Knox disable process completed.${RESET}\n"
+    printf "\n\n${YELLOW}[i] Knox disable process completed.${RESET}\n"
 }
 
 deknox_enable() {
@@ -652,19 +652,19 @@ deknox_enable() {
         "com.samsung.knox.securefolder"
     )
 
-    printf "${YELLOW}[i] Starting Knox enable process...${RESET}\n"
+    printf "\n${YELLOW}[i] Starting Knox enable process...${RESET}\n"
 
     for package in "${knox_packages[@]}"; do
         enable_package "$package"
     done
 
-    printf "\n${YELLOW}[i] Knox enable process completed.${RESET}\n"
+    printf "\n\n${YELLOW}[i] Knox enable process completed.${RESET}\n"
 }
 change_csc() {
-    printf "   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
-    printf "   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n   will break.${RESET}\n"
-    printf "   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
+    printf "\n   ${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n   will break.${RESET}\n"
+    printf "\n   ${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
     printf "\n   ${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
@@ -687,45 +687,45 @@ change_csc() {
     # To printf "\n%.0s" {1..100} ; clear the current values
     > /efs/imei/mps_code.dat ; > /efs/imei/omcnw_code.dat
     echo "$csc_code" > /efs/imei/mps_code.dat ; echo "$csc_code" > /efs/imei/omcnw_code.dat
-    printf "   ${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
-    printf "   ${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+    printf "\n   ${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
+    printf "\n   ${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
 
 battsettings() {
-    printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 display_reset() {
-    printf "   ${YELLOW}[i] This will reset your dislay settings.${RESET}\n" ; sleep 1
-    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    printf "\n   ${YELLOW}[i] This will reset your dislay settings.${RESET}\n" ; sleep 1
+    printf "\n   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     wm size reset
     wm density reset
-    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "\n   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
 }
 see_display() {
     wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
     wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
     dpi=$(wm density | awk '{print $3}')
     printf "\n    ${GREEN} [i]Your screen resolution is\n"
-    printf "    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n"
-    printf "    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n"
-    printf "    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+    printf "\n    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n"
+    printf "\n    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n"
+    printf "\n    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
 }
 set_display() {
-    printf "   ${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
+    printf "\n   ${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
     read -r screenres
-    printf "  ${BLUE}${BOLD}[!] You choosed ${RED}${BOLD}$screenres${RESET}"
+    printf "\n  ${BLUE}${BOLD}[!] You choosed ${RED}${BOLD}$screenres${RESET}"
     confirm_and_execute || return
-    printf "   ${YELLOW}[i] Choose Dpi${RESET}\n"
+    printf "\n   ${YELLOW}[i] Choose Dpi${RESET}\n"
     read -r dpisize
-    printf "  ${BLUE}${BOLD} [!]You choosed ${RED}${BOLD}$dpisize${RESET}"
+    printf "\n  ${BLUE}${BOLD} [!]You choosed ${RED}${BOLD}$dpisize${RESET}"
     confirm_and_execute || return
-    printf "   ${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}"
+    printf "\n   ${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}"
     wm size $screenres
     wm density $dpisize
 }
@@ -747,8 +747,8 @@ case "$1" in
         ;;
     dsp)
         if [ -z "$2" ]; then
-            printf "${RED}Error: Need second argument '$1' '$2'${RESET}"
-            printf "Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "\n${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "\nUse '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
         case "$2" in
@@ -764,8 +764,8 @@ case "$1" in
                 see_display
                 ;;
             *)
-                printf "${RED}Error: Unknown command '$1' '$2'${RESET}"
-                printf "Use '${BOLD}infamick info${RESET}' for usage information."
+                printf "\n${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "\nUse '${BOLD}infamick info${RESET}' for usage information."
                 exit 1
                 ;;
             esac
@@ -781,8 +781,8 @@ case "$1" in
         ;;
     smg)
         if [ -z "$2" ]; then
-            printf "${RED}Error: Need second argument '$1' '$2'${RESET}"
-            printf "Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "\n${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "\nUse '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
         case "$2" in
@@ -815,9 +815,9 @@ case "$1" in
                 smg_band
                 ;;
             *)
-                printf "${RED}Error: Unknown command '$1' '$2'${RESET}"
-            printf "Use '${BOLD}infamick info${RESET}' for usage information."
-            exit 1
+                printf "\n${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "\nUse '${BOLD}infamick info${RESET}' for usage information."
+                exit 1
                 ;;
             esac
         ;;
@@ -831,8 +831,8 @@ case "$1" in
         help_menu
         ;;
     *)
-        printf "${RED}Error: Unknown command '$1'${RESET}"
-        printf "Use '${BOLD}infamick info${RESET}' for usage information."
+        printf "\n${RED}Error: Unknown command '$1'${RESET}"
+        printf "\nUse '${BOLD}infamick info${RESET}' for usage information."
         exit 1
         ;;
 esac
