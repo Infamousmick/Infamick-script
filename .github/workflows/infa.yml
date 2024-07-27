@@ -63,22 +63,44 @@ jobs:
             <pre><code>infamick command</code></pre>
 
             <b>Available commands:</b>
-            <pre><code>infamick battery</code></pre>
-            Display battery health and charging cycles
-            <pre><code>infamick boosta</code></pre>
-            Boost Apps performances
-            <pre><code>infamick boostb</code></pre>
+            <pre><code>infamick batt_b</code></pre>
             Improves Battery draining
+            <pre><code>infamick batt_i</code></pre>
+            <pre><code>infamick batt_s</code></pre>
+            Open battery optimizations setting
+            Display battery health and charging cycles
             <pre><code>infamick boot</code></pre>
             Reset boot count settings
             <pre><code>infamick cache</code></pre>
             Trim cache multiple times
+            <pre><code>infamick dsp_rs</code></pre>
+            Reset current display size and dpi
+            <pre><code>infamick dsp_set</code></pre>
+            Change display size and dpi 
+            <pre><code>infamick dsp_sw</code></pre>
+            Show current display size and dpi
             <pre><code>infamick gmsd</code></pre>
             Disable GMS services
             <pre><code>infamick gmse</code></pre>
             Enable GMS services
             <pre><code>infamick info</code></pre>
             Show help and usage information
+            <pre><code>infamick perf</code></pre>
+            Boost Apps performances
+            <pre><code>infamick smg csc</code></pre>
+            Change current CSC
+            <pre><code>infamick smg dex_d</code></pre>
+            Disable knox packages
+            <pre><code>infamick smg dex_e</code></pre>
+            Enable knox packages
+            <pre><code>infamick smg dim</code></pre>
+            Open hidden Extra Dim menu
+            <pre><code>infamick smg gest</code></pre>
+            Open hidden Gestures menu
+            <pre><code>infamick smg ntw_b</code></pre>
+            Open 5G Network Bands guide
+            <pre><code>infamick smg ntw_l</code></pre>
+            Open Network Bands settings
             <pre><code>infamick sot</code></pre>
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
