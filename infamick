@@ -1,9 +1,38 @@
 #!/system/bin/sh
 RED='\033[0;31m'
+BLUE='\033[1;34m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BOLD='\033[1m'
 RESET='\033[0m'
+BOLD_WHITE='\033[1;37m'
+LIGHT_YELLOW='\033[1;93m'
+brand=$(getprop ro.product.system.brand)
+model=$(getprop ro.product.system.model)
+INDENT="    "
+INDENTN="\n    "
+
+smg_check() {
+            if echo "$brand" | grep -iq "samsung"; then
+            export IS_SAMSUNG=1
+            export brand="$brand"
+            export model="$model"
+        else
+            export IS_SAMSUNG=0
+            export brand="$brand"
+        fi
+
+        if echo "$IS_SAMSUNG" | grep -iq "1"; then
+            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
+            sleep 2
+            return 0
+        else
+            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
+            sleep 1
+            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
+            return 1
+        fi
+}
 
 temp_check() {
     while true; do
@@ -40,44 +69,13 @@ temp_check() {
         done
 
         # Stampa le nuove temperature
-        echo -ne "Battery temperature: ${YELLOW}${battery_temp}°C${RESET}\n"
-        echo -ne "CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}\n"
-        echo -ne "GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}\n"
-        echo -ne "\n${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
+        echo -ne "${INDENTN}${BOLD}Battery temperature: ${YELLOW}${battery_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
         sleep 2
         clear
     done
-}
-
-boot() {
-    settings put global boot_count 0
-    settings put global Phenotype_boot_count 0
-    echo "Boot count resetted successfully."
-}
-
-boost_app() {
-    echo "Boosting apps"
-    cmd package compile -m speed-profile -a
-    echo "Done"
-}
-
-boost_battery() {
-    echo "Boosting battery"
-    cmd package bg-dexopt-job
-    echo "Done"
-}
-
-battinfo() {
-    printf "\n%.0s" {1..100} ; clear
-    battery_info=$(/system/bin/dumpsys battery)
-    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
-    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
-
-    # Dividi il valore di mSavedBatteryUsage per 100
-    cycles=$((cycles_raw / 100))
-    printf "\n    ${WHITE}${BOLD}Your Battery health is ${RED}$health${RESET}"
-    printf "\n    ${WHITE}${BOLD}Your battery charging cycles are ${RED}$cycles${RESET}\n"
-    exit 0
 }
 
 services=(
@@ -392,71 +390,131 @@ services=(
 "com.google.android.gms/.stats.service.DropBoxEntryAddedService"
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
-help() {
-    echo -e "${BOLD}infamick - System Utility Script${RESET}"
+help_menu() {
     echo
-    echo -e "${GREEN}Usage:${RESET} infamick <command>"
+    printf "\n${BOLD}infamick - System Utility Script${RESET}"
+    printf "\n${RED}${BOLD}v1.4 (202407275)"
     echo
-    echo -e "${YELLOW}Available commands:${RESET}"
-    echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
-    echo -e "            Shows the current battery health percentage and"
-    echo -e "            the number of charging cycles"
+    printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
-    echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
-    echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
-    echo -e "            Run only while charging at 100%"
+    printf "\n${YELLOW}Available commands:${RESET}"
+    printf "\n  ${BOLD}batt_b${RESET}  - Improves battery draining"
+    printf "\n  ${BOLD}batt_i${RESET}  - Display battery health and charging cycles"
+    printf "\n            Shows the current battery health percentage"
+    printf "\n            and the number of charging cycles"
+    printf "\n  ${BOLD}batt_s${RESET}  - Open battery optimizations setting"
+    printf "\n            Run only while charging at 100"
     echo
-    echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
-    echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
+    printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
+    printf "\n            Sets global boot_count and"
+    printf "\n            Phenotype_boot_count to 0"
     echo
-    echo -e "  ${BOLD}cache${RESET}   - Trim cache multiple times"
+    printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
-    echo -e "  ${BOLD}gmsd${RESET}    - Disables GMS services"
-    echo -e "  ${BOLD}gmse${RESET}    - Enables GMS services"
+    printf "\n  ${BOLD}dsp_rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
+    printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
     echo
-    echo -e "  ${BOLD}info${RESET}    - Display this help message"
-    echo -e "  ${BOLD}--help${RESET}  - Alias for info"
-    echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+    printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
+    printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
-    echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
-    echo -e "            Requires:
-          - Current SOT minutes value
-          - Discharged percentage value"
-    echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
-    echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
-    echo -e "            Press CTRL+C to exit temperature monitoring"
+    printf "\n  ${BOLD}info${RESET}    - Display this help message"
+    printf "\n  ${BOLD}--help${RESET}  - Alias for info"
+    printf "\n  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    echo -e "${GREEN}Examples:${RESET}"
-    echo -e "  infamick boot"
-    echo -e "  infamick temp"
-    echo -e "  infamick battery"
-    echo -e "  infamick boosta"
+    printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
     echo
-    echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dim${RESET}   - Open hidden Extra Dim menu"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
+    echo
+    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
+    printf "\n            Requires:"
+    printf "\n              - Current SOT minutes value"
+    printf "\n              - Discharged percentage value"
+    echo
+    printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    printf "\n            Displays real-time temperatures for"
+    printf "\n            Battery, CPU, and GPU"
+    printf "\n            Press CTRL+C to exit temperature monitoring"
+    echo
+    printf "\n${GREEN}Examples:${RESET}"
+    printf "\n  infamick batt_i"
+    printf "\n  infamick gmsd"
+    printf "\n  infamick exdim"
+    printf "\n  infamick perf"
+    printf "\n  infamick smg dim"
+    printf "\n  infamick smg ntw_l"
+    printf "\n  infamick temp"
+    echo
+    printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly."
+}
+
+boot() {
+    settings put global boot_count 0
+    settings put global Phenotype_boot_count 0
+    printf "${INDENTN}${GREEN}[i]Boot count resetted successfully.${RESET}\n"
+}
+
+boost_app() {
+    printf "${INDENTN}${YELLOW}[i]Boosting apps${RESET}\n"
+    cmd package compile -m speed-profile -a
+    printf "${INDENT}${GREEN}[i]Done${RESET}\n"
+}
+
+boost_battery() {
+    printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
+    cmd package bg-dexopt-job >/dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+}
+
+battinfo() {
+
+    battery_info=$(/system/bin/dumpsys battery)
+    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+
+    # Dividi il valore di mSavedBatteryUsage per 100
+    cycles=$((cycles_raw / 100))
+    printf "${INDENTN}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
+    printf "${INDENTN}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
+    exit 0
 }
 
 gms_disable() {
-    echo "Disabling GMS"
+    printf "${INDENTN}${YELLOW}[i]Disabling GMS${RESET}\n"
     sleep 2
     for service in "${services[@]}"; do
         pm disable "$service"
     done
-    echo "\nDone"
+    printf "${INDENT}${GREEN}[i]GMS disable process completed.${RESET}\n"
 }
 
 gms_enable() {
-    echo "Enabling GMS"
+    printf "${INDENTN}${YELLOW}[i]Enabling GMS${RESET}\n"
     sleep 2
     for service in "${services[@]}"; do
         pm enable "$service"
     done
-    echo "\nDone"
+    printf "${INDENT}${GREEN}[i]GMS enable process completed.${RESET}\n"
 }
 
 sot_calculator() {
-    echo "Enter minutes of your current SOT:"
+printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}${INDENTN}"
 read minutes
-echo "Enter the discharged percentage:"
+printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}${INDENTN}"
 read percentage
 
 # Calculate estimated SOT in hours
@@ -470,32 +528,28 @@ minutes=$(awk "BEGIN {printf \"%.0f\", ($decimal_part * 60) / 100}")
 # Calculate harshrate
 harshrate=$(awk "BEGIN {printf \"%.2f\", 100 / $result}")
 
-# Define color codes
-YELLOW='\033[1;33m'
-BOLD='\033[1m'
-RESET='\033[0m'
 
-echo "Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
-echo "Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
+echo "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
+echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 }
 
 clear_cache() {
     num_iterations=44
     error_occurred=false
-    echo "\nClearing cache"
+    printf "${INDENTN}${YELLOW}[i]Clearing cache\n"
     for i in $(seq 1 $num_iterations); do
         pm trim-caches 999999999999999999
         
         # Check if the command was successful
         if [ $? -ne 0 ]; then
             # An error occurred while executing the command
-            echo -e "\n${RED}Error: Command pm trim-caches failed.${RESET}"
+            printf "${INDENT}${RED}Error: Command pm trim-caches failed.${RESET}"
             error_occurred=true
             break
         fi
         
         if [ $i -eq 22 ]; then
-            echo -e "\n    ${YELLOW}Please wait ...${RESET}"
+            printf "${INDENT}${YELLOW}[i]Please wait ...${RESET}\n"
         fi
         
         # Progress counter
@@ -511,21 +565,194 @@ clear_cache() {
     if [ "$error_occurred" = false ]; then
         sleep 2
         clear
-        echo "\nDone"
+        printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
     fi
+}
+smg_ntw() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}"
+    printf "${INDENTN}${YELLOW}menu.${RESET}"
+    sleep 2
+    printf "${INDENTN}${YELLOW}[i] Refer to the guide below for better ${RESET}"
+    printf "${INDENTN}${YELLOW}understanding, then come back again.${RESET}"
+    sleep 2
+    nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+    am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+smg_band() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 2
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+    am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+
+extradim() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+gestures() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 # Example usage:
 # infamick_sot 30 50
 
+disable_package() {
+    package_name="$1"
+    if pm disable-user --user 0 "$package_name" > /dev/null 2>&1; then
+        printf "${INDENT}${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
+    else
+        printf "${INDENT}${BOLD}${RED}[-] Failed to disable: ${package_name}${RESET}\n"
+    fi
+}
+
+
+enable_package() {
+    package_name="$1"
+    if pm enable "$package_name" > /dev/null 2>&1; then
+        printf "${INDENT}${BOLD}${GREEN}[+] Successfully enabled: ${package_name}${RESET}\n"
+    else
+        printf "${INDENT}${BOLD}${RED}[-] Failed to enable: ${package_name}${RESET}\n"
+    fi
+}
+
+deknox_disable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${INDENTN}${YELLOW}[i] Starting Knox disable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        disable_package "$package"
+    done
+
+    printf "${INDENTN}${YELLOW}[i] Knox disable process completed.${RESET}\n"
+}
+
+deknox_enable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${INDENTN}${YELLOW}[i] Starting Knox enable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        enable_package "$package"
+    done
+
+    printf "${INDENTN}${YELLOW}[i] Knox enable process completed.${RESET}\n"
+}
+change_csc() {
+    printf "${INDENTN}${YELLOW}[i] Always check /optics or /product to ensure${RESET}"
+    printf "${INDENTN}${YELLOW}the required CSC folder is available.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC${RESET}"
+    printf "${INDENTN}${YELLOW}features will break.${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    current_csc=$(cat /efs/imei/mps_code.dat)
+    printf "${INDENTN}${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
+    if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
+        printf "${INDENT}${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
+        exit 1
+        return
+        fi
+
+            # Check for simple letters in CSC code
+    if [[ "$csc_code" != *[!\ ]* ]]; then
+        printf "${INDENT}${RED}[!] Error: CSC code should contain at least one non-space character.${RESET}\n\n"
+        exit 1
+        return
+    fi
+
+    # Update the CSC code
+    printf "${INDENT}"
+
+    # To printf "\n%.0s" {1..100} ; clear the current values
+    > /efs/imei/mps_code.dat ; > /efs/imei/omcnw_code.dat
+    echo "$csc_code" > /efs/imei/mps_code.dat ; echo "$csc_code" > /efs/imei/omcnw_code.dat
+    printf "${INDENT}${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
+    printf "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+}
+
+battsettings() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
+}
+display_reset() {
+    printf "${INDENTN}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    wm size reset
+    wm density reset
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+display_see() {
+    wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
+    wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
+    dpi=$(wm density | awk '{print $3}')
+    printf "${INDENTN}${GREEN}[i]Your screen resolution is"
+    printf "${INDENTN}${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}"
+    printf "${INDENTN}${BLUE}${BOLD}Override size: $wm_size_override${RESET}"
+    printf "${INDENTN}${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+}
+display_set() {
+    printf "${INDENT}${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}${INDENT}"
+    read -r screenres
+    printf "${INDENT}${YELLOW}[i] Choose Dpi${RESET}${INDENT}"
+    read -r dpisize
+    printf "${INDENT}${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}\n"
+    wm size $screenres
+    wm density $dpisize
+}
+#Main logic
 case "$1" in
-    battery)
+    batt_b)
+        boost_battery
+        ;;
+    batt_i)
         battinfo
         ;;
-    boosta)
-        boost_app
-        ;;
-    boostb)
-        boost_battery
+    batt_s)
+        battsettings
         ;;
     boot)
         boot
@@ -533,11 +760,65 @@ case "$1" in
     cache)
         clear_cache
         ;;
+    dsp_rs)
+        display_reset
+        ;;
+    dps_set)
+        display_set
+        ;;
+    dsp_sw)
+        display_see
+        ;;
     gmsd)
         gms_disable
         ;;
     gmse)
         gms_enable
+        ;;
+    perf)
+        boost_app
+        ;;
+    smg)
+        if [ -z "$2" ]; then
+            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+        fi
+        case "$2" in
+            csc)
+                smg_check || return 
+                change_csc
+                ;;
+            dex_d)
+                smg_check || return 
+                deknox_disable
+                ;;
+            dex_e)
+                smg_check || return 
+                deknox_enable
+                ;;
+            dim)
+                smg_check || return 
+                extradim
+                ;;
+            gest)
+                smg_check || return 
+                gestures
+                ;;
+            ntw_b)
+                smg_check || return 
+                smg_ntw
+                ;;
+            ntw_l)
+                smg_check || return 
+                smg_band
+                ;;
+            *)
+                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+                exit 1
+                ;;
+            esac
         ;;
     sot)
         sot_calculator
@@ -546,11 +827,11 @@ case "$1" in
         temp_check
         ;;
     info|--help|-h)
-        help
+        help_menu
         ;;
     *)
-        echo -e "${RED}Error: Unknown command '$1'${RESET}"
-        echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+        printf "${INDENT}${RED}Error: Unknown command '$1'${RESET}"
+        printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
         exit 1
         ;;
 esac
