@@ -398,22 +398,22 @@ help_menu() {
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
     printf "\n${YELLOW}Available commands:${RESET}"
-    printf "\n  ${BOLD}boost_b${RESET}  - Improves battery draining"
-    printf "\n  ${BOLD}batt_i${RESET} - Display battery health and charging cycles"
+    printf "\n  ${BOLD}batt_b${RESET}  - Improves battery draining"
+    printf "\n  ${BOLD}batt_i${RESET}  - Display battery health and charging cycles"
     printf "\n            Shows the current battery health percentage and"
     printf "\n            the number of charging cycles"
-    printf "\n  ${BOLD}batt_s${RESET} - Open battery optimizations setting"
+    printf "\n  ${BOLD}batt_s${RESET}  - Open battery optimizations setting"
     echo
-    printf "\n            Run only while charging at 100%"
+    printf "\n            Run only while charging at 100"
     echo
     printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
     printf "\n            Sets global boot_count and Phenotype_boot_count to 0"
     echo
     printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
-    printf "\n  ${BOLD}dsp_rs${RESET}   - Reset current display size and dpi"
-    printf "\n  ${BOLD}dsp_set${RESET}  - Change display size and dpi "
-    printf "\n  ${BOLD}dsp_sw${RESET}   - Show current display size and dpi"
+    printf "\n  ${BOLD}dsp_rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
+    printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
     echo
     printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
     printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
@@ -422,7 +422,7 @@ help_menu() {
     printf "\n  ${BOLD}--help${RESET}  - Alias for info"
     printf "\n  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    printf "\n  ${BOLD}perf${RESET}  - Boost all apps"
+    printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
