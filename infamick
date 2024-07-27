@@ -686,6 +686,8 @@ change_csc() {
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
     printf "${INDENTN}${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
+    printf "${INDENT}${YELLOW}[?] Enter your Desired CSC: ${RESET}"
+    read -r csc_code
     if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
         printf "${INDENT}${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
         exit 1
