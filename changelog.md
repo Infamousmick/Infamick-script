@@ -1,4 +1,17 @@
 # Changelog for Infamick Script
+## V1.5 - New Features (July 27, 2024)
+- Added Display commands:
+  1. Reset current display size and dpi
+  2. Change display size and dpi 
+  3. Show current display size and dpi
+- Battery commands:
+  1. Changed `boostb` to `batt_b`
+  2. Changed `battery` to `batt_i`
+  3. New `batt_s` command to open Battery optimizations settings
+- Samsung Tweaks commands
+  1. Changed `smg exdim` to `smg dim`
+- Fixed help info
+- Fixed alignment and other stuff
 ## V1.4 - Samsung Tweaks (July 26, 2024)
 - Added Samsung Tweaks
   1. CSC changer

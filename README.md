@@ -1,16 +1,18 @@
-# Infamick Script v1.4
+# Infamick Script v1.5
 
 ## Overview
 Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for advanced users and developers.
 
 ## Features
 - **Battery Health**: Check battery health status and charging cycles
+- **Battery optimizations settings**: Open Battery optimizations settings
 - **Boost Battery**: Improves battery draining
 - **Boost Performance**: Boost the performance of each app
 - **Boot Count Reset**: Reset system boot counters
 - **Cache cleaner**: Trim caches multiple times
 - **Change Network Bands**: Open 5G Network Bands guide
 - **CSC Changer**: Change current CSC
+- **Display commands**: Show, Set and Reset current display size and dpi
 - **Deknoxer**:  Disable or Enable knox packages
 - **Extra Dim**: Open hidden Extra Dim menu
 - **Gesture**: Open hidden Gestures menu
@@ -26,22 +28,28 @@ This script is designed to be flashed as a module using Magisk, KernelSU, or APa
 1. Download the latest release zip file [here](https://github.com/Infamousmick/Infamick-script/releases).
 2. Flash the zip file through Magisk, KernelSU, or APatch in recovery mode.
 3. Reboot your device.
+4. To update u can find them into Magisk/KSU/Apatch app
 
 ## Usage
 After installation, you can use the script by running `infamick` in a terminal with root access.
 
 Available commands:
-- `infamick battery`: Display battery health and charging cycles
-- `infamick boosta`: Boost Apps perfomances
-- `infamick boostb`: Improves Battery draining
+- `infamick batt_b`: Improves Battery draining
+- `infamick batt_i`: Display battery health and charging cycles
+- `infamick batt_s`: Open battery optimizations setting
 - `infamick boot`: Reset boot count settings
-- `infamic gmsd`: Disable GMS services
+- `infamick cache`: Trim cache multiple times
+- `infamick dsp_rs`: Reset current display size and dpi
+- `infamick dsp_set`: Change display size and dpi 
+- `infamick dsp_sw`: Show current display size and dpi
+- `infamick gmsd`: Disable GMS services
 - `infamick gmse`: Enable GMS services
 - `infamick info`: Show help and usage information
+- `infamick perf`: Boost Apps perfomances
 - `infamick smg csc`: Change current CSC
 - `infamick smg dex_d`: Disable knox packages
 - `infamick smg dex_e`: Enable knox packages
-- `infamick smg exdim`: Open hidden Extra Dim menu
+- `infamick smg dim`: Open hidden Extra Dim menu
 - `infamick smg gest`: Open hidden Gestures menu
 - `infamick smg ntw_b`: Open 5G Network Bands guide
 - `infamick smg ntw_l`: Open Network Bands settings
@@ -50,13 +58,15 @@ Available commands:
 
 ## Examples
 ```bash
-infamick boosta
+infamick batt_i
 infamick gmsd
-infamick smg exdim
+infamick exdim
+infamick perf
+infamick smg dim
 infamick smg ntw_l
 infamick temp
 ```
 
 ## Contacts
 [@InfamousMick](https://t.me/InfamousMick)
-[InfaChannel](https://t.me/InfaScript)
+[@InfaChannel](https://t.me/InfaScript)
