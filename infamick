@@ -389,63 +389,63 @@ services=(
 "com.google.android.gms/.chimera.GmsIntentOperationService"
 )
 help_menu() {
-    echo -e "${BOLD}infamick - System Utility Script${RESET}"
+    printf "${BOLD}infamick - System Utility Script${RESET}"
     echo
-    echo -e "${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
+    printf "${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
-    echo -e "${YELLOW}Available commands:${RESET}"
-    echo -e "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
-    echo -e "            Shows the current battery health percentage and"
-    echo -e "            the number of charging cycles"
+    printf "${YELLOW}Available commands:${RESET}"
+    printf "  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+    printf "            Shows the current battery health percentage and"
+    printf "            the number of charging cycles"
     echo
-    echo -e "  ${BOLD}boosta${RESET}  - Boost all apps"
-    echo -e "  ${BOLD}boostb${RESET}  - Improves battery draining"
-    echo -e "            Run only while charging at 100%"
+    printf "  ${BOLD}boosta${RESET}  - Boost all apps"
+    printf "  ${BOLD}boostb${RESET}  - Improves battery draining"
+    printf "            Run only while charging at 100%"
     echo
-    echo -e "  ${BOLD}boot${RESET}    - Reset boot count settings"
-    echo -e "            Sets global boot_count and Phenotype_boot_count to 0"
+    printf "  ${BOLD}boot${RESET}    - Reset boot count settings"
+    printf "            Sets global boot_count and Phenotype_boot_count to 0"
     echo
-    echo -e "  ${BOLD}cache${RESET}   - Trim cache multiple times"
+    printf "  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
-    echo -e "  ${BOLD}gmsd${RESET}    - Disables GMS services"
-    echo -e "  ${BOLD}gmse${RESET}    - Enables GMS services"
+    printf "  ${BOLD}gmsd${RESET}    - Disables GMS services"
+    printf "  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
-    echo -e "  ${BOLD}info${RESET}    - Display this help message"
-    echo -e "  ${BOLD}--help${RESET}  - Alias for info"
-    echo -e "  ${BOLD}-h${RESET}      - Alias for info"
+    printf "  ${BOLD}info${RESET}    - Display this help message"
+    printf "  ${BOLD}--help${RESET}  - Alias for info"
+    printf "  ${BOLD}-h${RESET}      - Alias for info"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
     echo
-    echo -e "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
+    printf "  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
-    echo -e "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
-    echo -e "               Requires:"
-    echo -e "                  - Current SOT minutes value"
-    echo -e "                  - Discharged percentage value"
+    printf "  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
+    printf "               Requires:"
+    printf "                  - Current SOT minutes value"
+    printf "                  - Discharged percentage value"
     echo
-    echo -e "  ${BOLD}temp${RESET}    - Monitor system temperatures"
-    echo -e "            Displays real-time temperatures for Battery, CPU, and GPU"
-    echo -e "            Press CTRL+C to exit temperature monitoring"
+    printf "  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    printf "            Displays real-time temperatures for Battery, CPU, and GPU"
+    printf "            Press CTRL+C to exit temperature monitoring"
     echo
-    echo -e "${GREEN}Examples:${RESET}"
-    echo -e "  infamick boot"
-    echo -e "  infamick gmsd"
-    echo -e "  infamick exdim"
-    echo -e "  infamick ntw_l"
+    printf "${GREEN}Examples:${RESET}"
+    printf "  infamick boot"
+    printf "  infamick gmsd"
+    printf "  infamick exdim"
+    printf "  infamick ntw_l"
     echo
-    echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
+    printf "${YELLOW}Note:${RESET} This script requires root access to function properly."
 }
 
 boot() {
@@ -533,13 +533,13 @@ clear_cache() {
         # Check if the command was successful
         if [ $? -ne 0 ]; then
             # An error occurred while executing the command
-            echo -e "\n${RED}Error: Command pm trim-caches failed.${RESET}"
+            printf "\n${RED}Error: Command pm trim-caches failed.${RESET}"
             error_occurred=true
             break
         fi
         
         if [ $i -eq 22 ]; then
-            echo -e "\n    ${YELLOW}Please wait ...${RESET}"
+            printf "\n    ${YELLOW}Please wait ...${RESET}"
         fi
         
         # Progress counter
@@ -711,7 +711,10 @@ see_display() {
     wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
     wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
     dpi=$(wm density | awk '{print $3}')
-    printf "    ${GREEN}[i]Your screen resolution is\n    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+    printf "\n    ${GREEN} [i]Your screen resolution is\n"
+    printf "    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n"
+    printf "    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n"
+    printf "    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
 }
 set_display() {
     printf "   ${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
@@ -744,8 +747,8 @@ case "$1" in
         ;;
     dsp)
         if [ -z "$2" ]; then
-            echo -e "${RED}Error: Need second argument '$1' '$2'${RESET}"
-            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
         case "$2" in
@@ -761,8 +764,8 @@ case "$1" in
                 see_display
                 ;;
             *)
-                echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
-                echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+                printf "${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "Use '${BOLD}infamick info${RESET}' for usage information."
                 exit 1
                 ;;
             esac
@@ -778,8 +781,8 @@ case "$1" in
         ;;
     smg)
         if [ -z "$2" ]; then
-            echo -e "${RED}Error: Need second argument '$1' '$2'${RESET}"
-            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
         fi
         case "$2" in
@@ -812,8 +815,8 @@ case "$1" in
                 smg_band
                 ;;
             *)
-                echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
-            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+                printf "${RED}Error: Unknown command '$1' '$2'${RESET}"
+            printf "Use '${BOLD}infamick info${RESET}' for usage information."
             exit 1
                 ;;
             esac
@@ -828,8 +831,8 @@ case "$1" in
         help_menu
         ;;
     *)
-        echo -e "${RED}Error: Unknown command '$1'${RESET}"
-        echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+        printf "${RED}Error: Unknown command '$1'${RESET}"
+        printf "Use '${BOLD}infamick info${RESET}' for usage information."
         exit 1
         ;;
 esac
