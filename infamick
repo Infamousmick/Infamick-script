@@ -69,9 +69,9 @@ temp_check() {
         done
 
         # Stampa le nuove temperature
-        echo -ne "${INDENTN}Battery temperature: ${YELLOW}${battery_temp}°C${RESET}"
-        echo -ne "${INDENTN}CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}"
-        echo -ne "${INDENTN}GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}Battery temperature: ${YELLOW}${battery_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}"
         echo -ne "${INDENTN}${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
         sleep 2
         clear
@@ -393,7 +393,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\nv1.4 (202407275)"
+    printf "\n${RED}${BOLD}v1.4 (202407275)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -502,7 +502,7 @@ gms_enable() {
 }
 
 sot_calculator() {
-printf "${INDENT}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}\\n"
+printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}\\n"
 read minutes
 printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}\\n"
 read percentage
@@ -559,10 +559,10 @@ clear_cache() {
     fi
 }
 smg_ntw() {
-    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
-    printf "${INDENT}${YELLOW}menu.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}"
+    printf "${INDENTN}${YELLOW}menu.${RESET}"
     sleep 2
-    printf "${INDENTN}${YELLOW}[i] Refer to the guide below for better ${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Refer to the guide below for better ${RESET}"
     printf "${INDENTN}${YELLOW}understanding, then come back again.${RESET}"
     sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
@@ -590,7 +590,7 @@ extradim() {
     printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
     printf "${INDENT}${YELLOW}menu.${RESET}"
     sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
@@ -635,13 +635,13 @@ deknox_disable() {
         "com.samsung.knox.securefolder"
     )
 
-    printf "${INDENT}${YELLOW}[i] Starting Knox disable process...${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Starting Knox disable process...${RESET}\n"
 
     for package in "${knox_packages[@]}"; do
         disable_package "$package"
     done
 
-    printf "${INDENT}${YELLOW}[i] Knox disable process completed.${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Knox disable process completed.${RESET}\n"
 }
 
 deknox_enable() {
@@ -658,20 +658,20 @@ deknox_enable() {
         "com.samsung.knox.securefolder"
     )
 
-    printf "${INDENT}${YELLOW}[i] Starting Knox enable process...${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Starting Knox enable process...${RESET}\n"
 
     for package in "${knox_packages[@]}"; do
         enable_package "$package"
     done
 
-    printf "${INDENT}${YELLOW}[i] Knox enable process completed.${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Knox enable process completed.${RESET}\n"
 }
 change_csc() {
-    printf "${INDENTN}${YELLOW}[i] Always check /optics or /product to ensure the required CSC${RESET}"
-    printf "${INDENTN}${YELLOW}folder is available.${RESET}"
-    printf "${INDENTN}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features${RESET}"
-    printf "${INDENTN}${YELLOW}will break.${RESET}"
-    printf "${INDENT}N${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Always check /optics or /product to ensure${RESET}"
+    printf "${INDENTN}${YELLOW}the required CSC folder is available.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC${RESET}"
+    printf "${INDENTN}${YELLOW}features will break.${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     current_csc=$(cat /efs/imei/mps_code.dat)
@@ -804,7 +804,7 @@ case "$1" in
                 smg_check || return 
                 deknox_enable
                 ;;
-            exdim)
+            dim)
                 smg_check || return 
                 extradim
                 ;;
