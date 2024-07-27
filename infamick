@@ -398,12 +398,12 @@ help_menu() {
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
     printf "\n${YELLOW}Available commands:${RESET}"
-    printf "\n  ${BOLD}battery${RESET} - Display battery health and charging cycles"
+    printf "\n  ${BOLD}boost_b${RESET}  - Improves battery draining"
+    printf "\n  ${BOLD}batt_i${RESET} - Display battery health and charging cycles"
     printf "\n            Shows the current battery health percentage and"
     printf "\n            the number of charging cycles"
+    printf "\n  ${BOLD}batt_s${RESET} - Open battery optimizations setting"
     echo
-    printf "\n  ${BOLD}boosta${RESET}  - Boost all apps"
-    printf "\n  ${BOLD}boostb${RESET}  - Improves battery draining"
     printf "\n            Run only while charging at 100%"
     echo
     printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
@@ -411,12 +411,18 @@ help_menu() {
     echo
     printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
+    printf "\n  ${BOLD}dsp_rs${RESET}   - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp_set${RESET}  - Change display size and dpi "
+    printf "\n  ${BOLD}dsp_sw${RESET}   - Show current display size and dpi"
+    echo
     printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
     printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
     printf "\n  ${BOLD}info${RESET}    - Display this help message"
     printf "\n  ${BOLD}--help${RESET}  - Alias for info"
     printf "\n  ${BOLD}-h${RESET}      - Alias for info"
+    echo
+    printf "\n  ${BOLD}perf${RESET}  - Boost all apps"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
@@ -426,7 +432,7 @@ help_menu() {
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
     echo
-    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}exdim${RESET} - Open hidden Extra Dim menu"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dim${RESET} - Open hidden Extra Dim menu"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
     echo
@@ -459,7 +465,7 @@ boot() {
 }
 
 boost_app() {
-    printf "${INDENT}${YELLOW}[i]Boosting apps${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]Boosting apps${RESET}\n"
     cmd package compile -m speed-profile -a
     printf "${INDENT}${GREEN}[i]Done${RESET}\n"
 }
@@ -484,7 +490,7 @@ battinfo() {
 }
 
 gms_disable() {
-    printf "${INDENT}${YELLOW}[i]Disabling GMS${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]Disabling GMS${RESET}\n"
     sleep 2
     for service in "${services[@]}"; do
         pm disable "$service"
@@ -493,7 +499,7 @@ gms_disable() {
 }
 
 gms_enable() {
-    printf "${INDENT}${YELLOW}[i]Enabling GMS${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]Enabling GMS${RESET}\n"
     sleep 2
     for service in "${services[@]}"; do
         pm enable "$service"
@@ -502,9 +508,9 @@ gms_enable() {
 }
 
 sot_calculator() {
-printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}\\n"
+printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}${INDENTN}"
 read minutes
-printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}\\n"
+printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}${INDENTN}"
 read percentage
 
 # Calculate estimated SOT in hours
@@ -750,32 +756,15 @@ case "$1" in
     cache)
         clear_cache
         ;;
-    dsp)
-        if [ -z "$2" ]; then
-            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
-            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
-            exit 1
-        fi
-        case "$2" in
-            calc)
-
-                ;;
-            reset)
-                display_reset
-                ;;
-            set)
-                display_set
-                ;;
-            show)
-                display_see
-                ;;
-            *)
-                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
-                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
-                exit 1
-                ;;
-            esac
-            ;;
+    dsp_rs)
+        display_reset
+        ;;
+    dps_set)
+        display_set
+        ;;
+    dsp_sw)
+        display_see
+        ;;
     gmsd)
         gms_disable
         ;;
