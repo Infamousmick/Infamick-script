@@ -76,37 +76,6 @@ temp_check() {
     done
 }
 
-boot() {
-    settings put global boot_count 0
-    settings put global Phenotype_boot_count 0
-    echo "Boot count resetted successfully."
-}
-
-boost_app() {
-    echo "Boosting apps"
-    cmd package compile -m speed-profile -a
-    echo "Done"
-}
-
-boost_battery() {
-    echo "Boosting battery"
-    cmd package bg-dexopt-job
-    echo "Done"
-}
-
-battinfo() {
-    printf "\n%.0s" {1..100} ; clear
-    battery_info=$(/system/bin/dumpsys battery)
-    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
-    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
-
-    # Dividi il valore di mSavedBatteryUsage per 100
-    cycles=$((cycles_raw / 100))
-    printf "\n    ${WHITE}${BOLD}Your Battery health is ${RED}$health${RESET}"
-    printf "\n    ${WHITE}${BOLD}Your battery charging cycles are ${RED}$cycles${RESET}\n"
-    exit 0
-}
-
 services=(
 "com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService"
 "com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService"
@@ -479,6 +448,37 @@ help_menu() {
     echo -e "${YELLOW}Note:${RESET} This script requires root access to function properly."
 }
 
+boot() {
+    settings put global boot_count 0
+    settings put global Phenotype_boot_count 0
+    echo "Boot count resetted successfully."
+}
+
+boost_app() {
+    echo "Boosting apps"
+    cmd package compile -m speed-profile -a
+    echo "Done"
+}
+
+boost_battery() {
+    echo "Boosting battery"
+    cmd package bg-dexopt-job
+    echo "Done"
+}
+
+battinfo() {
+
+    battery_info=$(/system/bin/dumpsys battery)
+    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+
+    # Dividi il valore di mSavedBatteryUsage per 100
+    cycles=$((cycles_raw / 100))
+    printf "   ${GREEN}[i] Your Battery health is ${RED}{BOLD}$health${RESET}"
+    printf "   ${GREEN}[i] Your battery charging cycles are ${RED}{BOLD}$cycles${RESET}\n"
+    exit 0
+}
+
 gms_disable() {
     echo "Disabling GMS"
     sleep 2
@@ -559,7 +559,6 @@ clear_cache() {
     fi
 }
 smg_ntw() {
-
     printf "   ${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
     sleep 1
     printf "   ${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
@@ -712,7 +711,7 @@ see_display() {
     wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
     wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
     dpi=$(wm density | awk '{print $3}')
-    printf "   ${GREEN}[i]Your screen resolution is\n    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+    printf "    ${GREEN}[i]Your screen resolution is\n    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
 }
 set_display() {
     printf "   ${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
