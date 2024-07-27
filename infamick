@@ -499,7 +499,7 @@ gms_enable() {
     printf "${INDENTN}${GREEN}[i]GMS enable process completed.${RESET}\n"
 }
 
-ssot_calculator() {
+sot_calculator() {
     minutes=""
     while [ -z "$minutes" ]; do
         printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:\n"
