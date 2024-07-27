@@ -466,7 +466,7 @@ boost_app() {
 
 boost_battery() {
     printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
-    cmd package bg-dexopt-job
+    cmd package bg-dexopt-job >/dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
 }
 
