@@ -452,7 +452,7 @@ help_menu() {
 boot() {
     settings put global boot_count 0
     settings put global Phenotype_boot_count 0
-    printf "${INDENT}${GREEN}[i]Boot count resetted successfully.${RESET}"
+    printf "${INDENT}${GREEN}[i]Boot count resetted successfully.${RESET}\n"
 }
 
 boost_app() {
@@ -486,16 +486,16 @@ gms_disable() {
     for service in "${services[@]}"; do
         pm disable "$service"
     done
-    printf "${INDENT}${GREEN}[i]]GMS disable process completed.${RESET}\n"
+    printf "${INDENT}${GREEN}[i]GMS disable process completed.${RESET}\n"
 }
 
 gms_enable() {
-    printf "${INDENT}${YELLOW}[i]Enabling GMS"
+    printf "${INDENT}${YELLOW}[i]Enabling GMS${RESET}"
     sleep 2
     for service in "${services[@]}"; do
         pm enable "$service"
     done
-    printf "${INDENT}${GREEN}[i]]GMS enable process completed.${RESET}\n"
+    printf "${INDENT}${GREEN}[i]GMS enable process completed.${RESET}\n"
 }
 
 sot_calculator() {
@@ -516,14 +516,14 @@ minutes=$(awk "BEGIN {printf \"%.0f\", ($decimal_part * 60) / 100}")
 harshrate=$(awk "BEGIN {printf \"%.2f\", 100 / $result}")
 
 
-printf "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
-printf "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
+edcho "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
+echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 }
 
 clear_cache() {
     num_iterations=44
     error_occurred=false
-    echo "\nClearing cache"
+    printf "${INDENT}${GREEN}Clearing cache"
     for i in $(seq 1 $num_iterations); do
         pm trim-caches 999999999999999999
         
@@ -536,7 +536,7 @@ clear_cache() {
         fi
         
         if [ $i -eq 22 ]; then
-            printf "${INDENT}    ${YELLOW}Please wait ...${RESET}"
+            printf "${INDENT}${YELLOW}Please wait ...${RESET}"
         fi
         
         # Progress counter
@@ -552,26 +552,30 @@ clear_cache() {
     if [ "$error_occurred" = false ]; then
         sleep 2
         clear
-        echo "\nDone"
+        printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
     fi
 }
 smg_ntw() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
-    sleep 1
-    printf "${INDENT}${YELLOW}[i] Refer to the guide below for better understanding,\n   then come back again.${RESET}\n" ; sleep 2
+    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 2
+    printf "${INDENT}${YELLOW}[i] Refer to the guide below for better ${RESET}\n"
+    printf "${INDENT}${YELLOW}understanding, then come back again.${RESET}"
+    sleep 2
     nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
     printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 smg_band() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode' menu.${RESET}\n" ; sleep 1
-    sleep 1
+    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 2
     printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
     am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 
 extradim() {
@@ -580,15 +584,17 @@ extradim() {
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 gestures() {
-    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Gesture Settigns' menu.${RESET}\n" ; sleep 1
+    printf "${INDENT}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
+    printf "${INDENT}${YELLOW}[menu.${RESET}"
+    sleep 1
     printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 # Example usage:
 # infamick_sot 30 50
@@ -658,8 +664,10 @@ deknox_enable() {
     printf "${INDENT}${YELLOW}[i] Knox enable process completed.${RESET}\n"
 }
 change_csc() {
-    printf "${INDENT}${YELLOW}[i] Always check /optics or /product to ensure the required CSC\n   folder is available.${RESET}\n"
-    printf "${INDENT}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features\n   will break.${RESET}\n"
+    printf "${INDENT}${YELLOW}[i] Always check /optics or /product to ensure the required CSC${RESET}"
+    printf "${INDENT}${YELLOW}folder is available.${RESET}"
+    printf "${INDENT}${INDENT}${YELLOW}[${YELLOW}[i] If you choose the wrong CSC code, the entire CSC features${RESET}"
+    printf "${INDENT}${YELLOW}will break.${RESET}"
     printf "${INDENT}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
     printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
@@ -694,7 +702,7 @@ battsettings() {
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
 display_reset() {
     printf "${INDENT}${YELLOW}[i] This will reset your dislay settings.${RESET}\n" ; sleep 1
@@ -702,18 +710,18 @@ display_reset() {
     read -r a  
     wm size reset
     wm density reset
-    printf "${INDENT}${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
 }
-see_display() {
+display_see() {
     wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
     wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
     dpi=$(wm density | awk '{print $3}')
-    printf "${INDENT}${GREEN} [i]Your screen resolution is\n"
+    printf "${INDENT}${GREEN}[i]Your screen resolution is\n"
     printf "${INDENT}${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n"
     printf "${INDENT}${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n"
     printf "${INDENT}${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
 }
-set_display() {
+display_set() {
     printf "${INDENT}${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
     read -r screenres
     printf "${INDENT}${BLUE}${BOLD}[!] You choosed ${RED}${BOLD}$screenres${RESET}"
@@ -726,6 +734,7 @@ set_display() {
     wm size $screenres
     wm density $dpisize
 }
+#Main logic
 case "$1" in
     batt_b)
         boost_battery
@@ -750,15 +759,16 @@ case "$1" in
         fi
         case "$2" in
             calc)
+
                 ;;
             reset)
                 display_reset
                 ;;
             set)
-                set_display
+                display_set
                 ;;
             show)
-                see_display
+                display_see
                 ;;
             *)
                 printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
