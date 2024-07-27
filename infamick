@@ -474,8 +474,8 @@ battinfo() {
 
     # Dividi il valore di mSavedBatteryUsage per 100
     cycles=$((cycles_raw / 100))
-    printf "\n   ${GREEN}[i] Your Battery health is ${RED}{BOLD}$health${RESET}"
-    printf "\n   ${GREEN}[i] Your battery charging cycles are ${RED}{BOLD}$cycles${RESET}\n"
+    printf "\n   ${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
+    printf "\n   ${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
     exit 0
 }
 
