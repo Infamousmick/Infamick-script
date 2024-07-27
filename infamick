@@ -691,15 +691,51 @@ change_csc() {
     printf "   ${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
     printf "   ${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
+
+battsettings() {
+    printf "   ${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+}
+display_reset() {
+    printf "   ${YELLOW}[i] This will reset your dislay settings.${RESET}\n" ; sleep 1
+    printf "   ${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    wm size reset
+    wm density reset
+    printf "   ${BOLD_GREEN}\n[+] Execution Succeed..! \n${RESET}"
+}
+see_display() {
+    wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
+    wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
+    dpi=$(wm density | awk '{print $3}')
+    printf "   ${GREEN}[i]Your screen resolution is\n    ${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}\n    ${BLUE}${BOLD}Override size: $wm_size_override${RESET}\n    ${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+}
+set_display() {
+    printf "   ${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}\n    "
+    read -r screenres
+    printf "  ${BLUE}${BOLD}[!] You choosed ${RED}${BOLD}$screenres${RESET}"
+    confirm_and_execute || return
+    printf "   ${YELLOW}[i] Choose Dpi${RESET}\n"
+    read -r dpisize
+    printf "  ${BLUE}${BOLD} [!]You choosed ${RED}${BOLD}$dpisize${RESET}"
+    confirm_and_execute || return
+    printf "   ${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}"
+    wm size $screenres
+    wm density $dpisize
+}
 case "$1" in
-    battery)
+    batt_b)
+        boost_battery
+        ;;
+    batt_i)
         battinfo
         ;;
-    boosta)
-        boost_app
-        ;;
-    boostb)
-        boost_battery
+    batt_s)
+        battsettings
         ;;
     boot)
         boot
@@ -707,11 +743,39 @@ case "$1" in
     cache)
         clear_cache
         ;;
+    dsp)
+        if [ -z "$2" ]; then
+            echo -e "${RED}Error: Need second argument '$1' '$2'${RESET}"
+            echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+        fi
+        case "$2" in
+            calc)
+                ;;
+            reset)
+                display_reset
+                ;;
+            set)
+                set_display
+                ;;
+            show)
+                see_display
+                ;;
+            *)
+                echo -e "${RED}Error: Unknown command '$1' '$2'${RESET}"
+                echo -e "Use '${BOLD}infamick info${RESET}' for usage information."
+                exit 1
+                ;;
+            esac
+            ;;
     gmsd)
         gms_disable
         ;;
     gmse)
         gms_enable
+        ;;
+    perf)
+        boost_app
         ;;
     smg)
         if [ -z "$2" ]; then
