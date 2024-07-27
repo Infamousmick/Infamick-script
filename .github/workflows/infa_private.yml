@@ -56,9 +56,9 @@ jobs:
             <pre><code>infamick batt_b</code></pre>
             Improves Battery draining
             <pre><code>infamick batt_i</code></pre>
+            Display battery health and charging cycles
             <pre><code>infamick batt_s</code></pre>
             Open battery optimizations setting
-            Display battery health and charging cycles
             <pre><code>infamick boot</code></pre>
             Reset boot count settings
             <pre><code>infamick cache</code></pre>
