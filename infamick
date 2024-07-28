@@ -724,6 +724,7 @@ button_mapper() {
 
     file1="/system/usr/keylayout/Generic.kl"
     file2="/system/usr/keylayout/Generic_internal.kl"
+    file3="/system/usr/keylayour/gpio_keys.kl"
     value=""
     file=""
 
@@ -737,6 +738,11 @@ button_mapper() {
     if [ -z "$value" ] && [ -f "$file2" ]; then
         value=$(grep "key 703" "$file2" | awk '{print $3}')
         file="$file2"
+    fi
+   
+    if [ -z "$value" ] && [ -f "$fil3" ]; then
+        value=$(grep "key 703" "$file3" | awk '{print $3}')
+        file="$file3"
     fi
 
     if [ -n "$value" ]; then
