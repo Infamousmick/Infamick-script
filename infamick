@@ -476,8 +476,12 @@ boost_app() {
 
 boost_battery() {
     printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
-    cmd package bg-dexopt-job >/dev/null 2>&1
-    printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+    if cmd package bg-dexopt-job >/dev/null 2>&1; then
+        printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+    else
+        printf "${INDENTN}${RED}[!]Failure${RESET}\n"
+        printf "${INDENTN}${YELLOW}[i]Please charge your phone to 100%%${RESET}\n"
+    fi
 }
 
 battinfo() {
