@@ -716,26 +716,70 @@ change_csc() {
 }
 
 button_mapper() {
-    local file1="/system/usr/keylayout/Generic.kl"
-    local file2="/system/usr/keylayout/Generic_internal.kl"
-    local value=""
+    echo "${INDENTN}${YELLOW}[i] This function will modify the value for key 703${RESET}"
+    echo "${INDENTN}${YELLOW}[i] in either Generic.kl or Generic_internal.kl${RESET}"
+    echo "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
+    echo "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read a
+
+    file1="/system/usr/keylayout/Generic.kl"
+    file2="/system/usr/keylayout/Generic_internal.kl"
+    value=""
+    file=""
 
     # Cerca in Generic.kl
     if [ -f "$file1" ]; then
         value=$(grep "key 703" "$file1" | awk '{print $3}')
+        file="$file1"
     fi
 
     # Se non trovato, cerca in Generic_internal.kl
     if [ -z "$value" ] && [ -f "$file2" ]; then
         value=$(grep "key 703" "$file2" | awk '{print $3}')
+        file="$file2"
     fi
 
-    # Stampa il risultato
     if [ -n "$value" ]; then
-        echo "Il valore per key 703 è: $value"
+        echo "${INDENTN}${YELLOW}[*] Current value for key 703: ${BOLD_WHITE}$value${RESET}"
     else
-        echo "Valore non trovato per key 703"
+        echo "${INDENTN}${RED}[!] Value not found for key 703${RESET}"
+        return
     fi
+
+    echo "${INDENT}${YELLOW}[?] Enter new value for key 703 : ${RESET}"
+    read new_value
+
+    if [ -z "$new_value" ] || echo "$new_value" | grep -q " "; then
+        echo "${INDENT}${RED}[!] Error: Invalid value. Please enter a valid value.${RESET}"
+        return
+    fi
+
+    # Update the value
+    if ! grep -q "key 703" "$file"; then
+        echo "${INDENT}${RED}[!] Error: 'key 703' not found in $file${RESET}"
+        return
+    fi
+
+    # Create a temporary file
+    temp_file="/data/local/tmp/temp_key_file"
+    grep -v "key 703" "$file" > "$temp_file"
+    echo "key 703   $new_value" >> "$temp_file"
+
+    # Check if we have write permission
+    if ! touch "$file" 2>/dev/null; then
+        echo "${INDENT}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}"
+        cp $temp_file $file
+        chmod 644 $file
+    else
+        cp "$temp_file" "$file"
+        chmod 644 "$file"
+    fi
+
+    rm "$temp_file"
+
+    echo "${INDENT}${GREEN}[+] Value for key 703 has been updated to: ${BOLD_WHITE}$new_value${RESET}"
+    echo "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}"
+    
 }
 
 
