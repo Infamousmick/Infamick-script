@@ -716,7 +716,26 @@ change_csc() {
 }
 
 button_mapper() {
+    local file1="/system/usr/keylayout/Generic.kl"
+    local file2="/system/usr/keylayout/Generic_internal.kl"
+    local value=""
 
+    # Cerca in Generic.kl
+    if [ -f "$file1" ]; then
+        value=$(grep "key 703" "$file1" | awk '{print $3}')
+    fi
+
+    # Se non trovato, cerca in Generic_internal.kl
+    if [ -z "$value" ] && [ -f "$file2" ]; then
+        value=$(grep "key 703" "$file2" | awk '{print $3}')
+    fi
+
+    # Stampa il risultato
+    if [ -n "$value" ]; then
+        echo "Il valore per key 703 è: $value"
+    else
+        echo "Valore non trovato per key 703"
+    fi
 }
 
 
