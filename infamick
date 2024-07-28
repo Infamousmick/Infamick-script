@@ -715,6 +715,11 @@ change_csc() {
     printf "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
 
+button_mapper() {
+
+}
+
+
 battsettings() {
     printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
@@ -791,6 +796,10 @@ case "$1" in
             exit 1
         fi
         case "$2" in
+            bixby)
+                smg_check || return
+                button_mapper
+                ;;
             csc)
                 smg_check || return 
                 change_csc
