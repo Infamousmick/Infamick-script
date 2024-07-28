@@ -740,7 +740,8 @@ button_mapper() {
 
 
 battsettings() {
-    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Battery${RESET}
+    printf "${INDENTN}${YELLOW} Optimizations setting` menu.${RESET}\n" ; sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
