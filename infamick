@@ -716,8 +716,9 @@ change_csc() {
 }
 
 button_mapper() {
-    printf "${INDENTN}${YELLOW}[i] This function will modify the value for key 703${RESET}"
-    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or gpio_keys.kl${RESET}"
+    printf "${INDENTN}${YELLOW}[i] This function will remap the Bixby button${RESET}"
+    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
+    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
     printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
@@ -740,22 +741,41 @@ button_mapper() {
     done
 
     if [ -n "$value" ]; then
-        printf "${INDENTN}${YELLOW}[*] Current value for key 703: ${BOLD_WHITE}%s${RESET}" "$value"
+        printf "${INDENTN}${YELLOW}[*] Current value for Bixby button: ${BOLD_WHITE}%s${RESET}" "$value"
     else
-        printf "${INDENTN}${RED}[!] Value not found for key 703${RESET}"
+        printf "${INDENTN}${RED}[!] Value not found for Bixby button${RESET}"
         return
     fi
 
-    printf "${INDENTN}${YELLOW}[?] Choose new value for key 703:${RESET}"
-    printf "${INDENTN}1. VOLUME_DOWN - sets volume down"
-    printf "${INDENTN}2. VOLUME_UP - sets volume up"
-    printf "${INDENTN}3. HOME - Homebutton"
-    printf "${INDENTN}4. POWER - Powermenu"
-    printf "${INDENTN}5. MUSIC - starts your favorite music player"
-    printf "${INDENTN}6. CAMERA - starts camera app"
-    printf "${INDENTN}7. APP_SWITCH - Recent apps button"
-    printf "${INDENTN}8. VOICE_ASSIST - Google Assistant"
-    printf "${INDENTN}${YELLOW}Enter your choice (1-8): ${RESET}"
+    printf "${INDENTN}${YELLOW}[?] Choose new value for Bixby button:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
+    printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
+    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
+    printf "${INDENTN}${WHITE_BOLD}4. CALENDAR - open calendar app"
+    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app"
+    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app"
+    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app"
+    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton"
+    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser"
+    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu"
+    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app"
+    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track"
+    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause"
+    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track "
+    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player"
+    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up"
+    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down"
+    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu"
+    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel"
+    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search"
+    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone"
+    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot"
+    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant"
+    printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
+    printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
+    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
+    printf "$20) new_value="" ;;{INDENTN}${BOLD_WHITE}26. WAKEUP - wakeup phone"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-26): ${RESET}"
     read -r choice
 
     case $choice in
@@ -767,8 +787,28 @@ button_mapper() {
         6) new_value="CAMERA" ;;
         7) new_value="APP_SWITCH" ;;
         8) new_value="VOICE_ASSIST" ;;
+        9) new_value="" ;;
+        10) new_value="" ;;
+        11) new_value="" ;;
+        12) new_value="" ;;
+        13) new_value="" ;;
+        14) new_value="" ;;
+        15) new_value="" ;;
+        16) new_value="" ;;
+        17) new_value="" ;;
+        18) new_value="" ;;
+        19) new_value="" ;;
+        20) new_value="" ;;
+        21) new_value="" ;;
+        22) new_value="" ;;
+        23) new_value="" ;;
+        24) new_value="" ;;
+        25) new_value="" ;;
+        26) new_value="" ;;
+                        
         *)
-            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter a number between 1 and 8.${RESET}\n"
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 26.${RESET}\n"
             return
             ;;
     esac
@@ -789,8 +829,9 @@ button_mapper() {
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for key 703 has been updated to: ${BOLD_WHITE}%s${RESET}" "$new_value"
-    printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}"
+    printf "${INDENTN}${GREEN}[+] Value for key 703 has been updated${RESET}"
+    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
+    printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
 
 
