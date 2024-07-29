@@ -904,7 +904,8 @@ dd_backup() {
     printf "${INDENT}${BOLD_WHITE}%s${RESET}\n" "$all_partitions"
 
     # Ask user which partition to backup
-    printf "${INDENTN}${YELLOW}[?] Enter the name of the partition you want to backup: ${RESET}"
+    printf "${INDENTN}${YELLOW}[?] Enter the name of the partition"
+    printf "${INDENTN}you want to backup: ${RESET}"
     read -r partition_name
 
     # Find the full path of the partition
@@ -922,12 +923,14 @@ dd_backup() {
     fi
 
     # Ask user for the backup file name
-    printf "${INDENT}${YELLOW}[?] Enter the name for the backup file (without extension): ${RESET}"
+    printf "${INDENT}${YELLOW}[?] Enter the name for the backup file"
+    printf "${INDENTN}(without extension): ${RESET}"
     read -r backup_name
 
     # Execute the backup
     backup_file="/sdcard/${backup_name}.img"
-    printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}%s${YELLOW} to ${BOLD_WHITE}%s${RESET}\n" "$partition_path" "$backup_file"
+    printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}$partition_name${YELLOW}"
+    printf "${INDENTN}to ${BOLD_WHITE}%s${RESET}\n" "$partition_path" "$backup_file"
     dd if="$partition_path" of="$backup_file" bs=4M
 
     printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
