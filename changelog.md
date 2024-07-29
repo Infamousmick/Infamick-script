@@ -5,7 +5,7 @@
   2. Remap Bixby Button
 - Added DD Backup
   1. Show all possible partitions to backup
-  2. Backup a chosen partition with a chosed name
+  2. Backup a chosen partition with a chosen name
 ## V1.5 - New Features (July 27, 2024)
 - Added Display commands:
   1. Reset current display size and dpi
