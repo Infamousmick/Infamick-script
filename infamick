@@ -871,6 +871,70 @@ display_set() {
     wm size $screenres
     wm density $dpisize
 }
+
+dd_backup() {
+    printf "${INDENTN}${YELLOW}[i] This script will backup a partition.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Make sure you have enough space on /sdcard.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    # List of possible partition directories
+    possible_partitions="/dev/block/by-name /dev/block/sdcard /dev/block/by-num /dev/block/bootdevice/by-name /dev/block/bootdevice/sdcard /dev/block/bootdevice/by-num /dev/block/platform/soc/1da4000.ufshc/by-name"
+
+    # Function to find partitions
+    find_partitions() {
+        for dir in $possible_partitions; do
+            if [ -d "$dir" ]; then
+                ls "$dir"
+            fi
+        done
+    }
+
+    # Find all partitions
+    all_partitions=$(find_partitions)
+
+    # Check if partitions were found
+    if [ -z "$all_partitions" ]; then
+        printf "${INDENTN}${RED}[!] Error: No partitions found in the specified directories.${RESET}"
+        return 1
+    fi
+
+    # Show found partitions
+    printf "${INDENTN}${YELLOW}[*] Partitions found:${RESET}"
+    printf "${INDENT}${BOLD_WHITE}%s${RESET}\n" "$all_partitions"
+
+    # Ask user which partition to backup
+    printf "${INDENTN}${YELLOW}[?] Enter the name of the partition you want to backup: ${RESET}"
+    read -r partition_name
+
+    # Find the full path of the partition
+    partition_path=""
+    for dir in $possible_partitions; do
+        if [ -e "$dir/$partition_name" ]; then
+            partition_path="$dir/$partition_name"
+            break
+        fi
+    done
+
+    if [ -z "$partition_path" ]; then
+        printf "${INDENT}${RED}[!] Error: Partition not found.${RESET}\n\n"
+        return 1
+    fi
+
+    # Ask user for the backup file name
+    printf "${INDENT}${YELLOW}[?] Enter the name for the backup file (without extension): ${RESET}"
+    read -r backup_name
+
+    # Execute the backup
+    backup_file="/sdcard/${backup_name}.img"
+    printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}%s${YELLOW} to ${BOLD_WHITE}%s${RESET}\n" "$partition_path" "$backup_file"
+    dd if="$partition_path" of="$backup_file" bs=4M
+
+    printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
+    printf "${INDENT}${YELLOW}[i] Execution Successful..! ${RESET}\n"
+
+}
+
 #Main logic
 case "$1" in
     batt_b)
@@ -887,6 +951,9 @@ case "$1" in
         ;;
     cache)
         clear_cache
+        ;;
+    dd)
+        dd_backup
         ;;
     dsp_rs)
         display_reset
