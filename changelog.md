@@ -1,4 +1,11 @@
 # Changelog for Infamick Script
+## V1.6 - New Features (July 29, 2024)
+- Added Bixby Buttonr Remapper
+  1. Show current Bixby Button action
+  2. Remap Bixby Button
+- Added DD Backup
+  1. Show all possible partitions to backup
+  2. Backup a chosen partition with a chosen name
 ## V1.5 - New Features (July 27, 2024)
 - Added Display commands:
   1. Reset current display size and dpi

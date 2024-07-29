@@ -393,7 +393,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}v1.5 (202407276)"
+    printf "\n${RED}${BOLD}v1.6 (202407291)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -411,6 +411,9 @@ help_menu() {
     echo
     printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
+    printf "\n  ${BOLD}dd${RESET}   - Backup all possible partitions"
+    printf "\n         chosing a name"
+    echo
     printf "\n  ${BOLD}dsp_rs${RESET}  - Reset current display size and dpi"
     printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
@@ -425,6 +428,9 @@ help_menu() {
     printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}bx${RESET}    - Show current Bixby button action and"
+    printf "\n              remap it"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
@@ -476,8 +482,12 @@ boost_app() {
 
 boost_battery() {
     printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
-    cmd package bg-dexopt-job >/dev/null 2>&1
-    printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+    if cmd package bg-dexopt-job >/dev/null 2>&1; then
+        printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+    else
+        printf "${INDENTN}${RED}[!]Failure${RESET}\n"
+        printf "${INDENTN}${YELLOW}[i]Please charge your phone to 100%%${RESET}\n"
+    fi
 }
 
 battinfo() {
@@ -711,8 +721,130 @@ change_csc() {
     printf "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
 
+button_mapper() {
+    printf "${INDENTN}${YELLOW}[i] This function will remap the Bixby button${RESET}"
+    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
+    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    file1="/system/usr/keylayout/Generic.kl"
+    file2="/system/usr/keylayout/Generic_internal.kl"
+    file3="/system/usr/keylayout/gpio_keys.kl"
+    value=""
+    file=""
+
+    # Cerca nei file
+    for f in "$file1" "$file2" "$file3"; do
+        if [ -f "$f" ]; then
+            value=$(grep "key 703" "$f" | awk '{print $3}')
+            if [ -n "$value" ]; then
+                file="$f"
+                break
+            fi
+        fi
+    done
+
+    if [ -n "$value" ]; then
+        printf "${INDENTN}${YELLOW}[*] Current value for Bixby button: ${BOLD_WHITE}%s${RESET}" "$value"
+    else
+        printf "${INDENTN}${RED}[!] Value not found for Bixby button${RESET}"
+        return
+    fi
+
+    printf "${INDENTN}${YELLOW}[?] Choose new value for Bixby button:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
+    printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
+    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
+    printf "${INDENTN}${WHITE_BOLD}4. CALENDAR - open calendar app"
+    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app"
+    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app"
+    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app"
+    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton"
+    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser"
+    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu"
+    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app"
+    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track"
+    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause"
+    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track "
+    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player"
+    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up"
+    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down"
+    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu"
+    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel"
+    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search"
+    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone"
+    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot"
+    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant"
+    printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
+    printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
+    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
+    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
+    read -r choice
+
+    case $choice in
+        1) new_value="APP_SWITCH" ;;
+        2) new_value="BACK" ;;
+        3) new_value="CALCULATOR" ;;
+        4) new_value="CALENDAR" ;;
+        5) new_value="CALL" ;;
+        6) new_value="CAMERA" ;;
+        7) new_value="CONTACTS" ;;
+        8) new_value="HOME" ;;
+        9) new_value="EXPLORER" ;;
+        10) new_value="MENU" ;;
+        11) new_value="MESSAGE" ;;
+        12) new_value="MEDIA_NEXT" ;;
+        13) new_value="MEDIA_PLAY_PAUSE" ;;
+        14) new_value="MEDIA_PREVIOUS" ;;
+        15) new_value="MUSIC" ;;
+        16) new_value="PAGE_UP" ;;
+        17) new_value="PAGE_DOWN" ;;
+        18) new_value="POWER" ;;
+        19) new_value="QPANEL_ON_OFF" ;;
+        20) new_value="SEARCH" ;;
+        21) new_value="SLEEP" ;;
+        22) new_value="SYSRQ" ;;
+        23) new_value="VOICE_ASSIST" ;;
+        24) new_value="VOLUME_DOWN" ;;
+        25) new_value="VOLUME_MUTE" ;;
+        26) new_value="VOLUME_UP" ;;
+        27) new_value="WAKEUP" ;;
+                        
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
+            return
+            ;;
+    esac
+
+    # Update the value
+    temp_file="/data/local/tmp/temp_key_file"
+    grep -v "key 703" "$file" > "$temp_file"
+    echo "key 703 $new_value" >> "$temp_file"
+
+    # Check if we have write permission
+    if ! touch "$file" 2>/dev/null; then
+        printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
+        su -c "cp $temp_file $file && chmod 644 $file"
+    else
+        cp "$temp_file" "$file"
+        chmod 644 "$file"
+    fi
+
+    rm "$temp_file"
+
+    printf "${INDENTN}${GREEN}[+] Value for key 703 has been updated${RESET}"
+    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
+    printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+}
+
+
 battsettings() {
-    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the Battery${RESET}"
+    printf "${INDENTN}${YELLOW}Optimizations settings.${RESET}" ; sleep 1
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
@@ -745,6 +877,73 @@ display_set() {
     wm size $screenres
     wm density $dpisize
 }
+
+dd_backup() {
+    printf "${INDENTN}${YELLOW}[i] This script will backup a partition.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Make sure you have enough space on /sdcard.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    # List of possible partition directories
+    possible_partitions="/dev/block/by-name /dev/block/sdcard /dev/block/by-num /dev/block/bootdevice/by-name /dev/block/bootdevice/sdcard /dev/block/bootdevice/by-num /dev/block/platform/soc/1da4000.ufshc/by-name"
+
+    # Function to find partitions
+    find_partitions() {
+        for dir in $possible_partitions; do
+            if [ -d "$dir" ]; then
+                ls "$dir"
+            fi
+        done
+    }
+
+    # Find all partitions
+    all_partitions=$(find_partitions)
+
+    # Check if partitions were found
+    if [ -z "$all_partitions" ]; then
+        printf "${INDENTN}${RED}[!] Error: No partitions found in the specified directories.${RESET}"
+        return 1
+    fi
+
+    # Show found partitions
+    printf "${INDENTN}${YELLOW}[*] Partitions found:${RESET}"
+    printf "${INDENT}${BOLD_WHITE}%s${RESET}\n" "$all_partitions"
+
+    # Ask user which partition to backup
+    printf "${INDENTN}${YELLOW}[?] Enter the name of the partition"
+    printf "${INDENTN}you want to backup: ${RESET}"
+    read -r partition_name
+
+    # Find the full path of the partition
+    partition_path=""
+    for dir in $possible_partitions; do
+        if [ -e "$dir/$partition_name" ]; then
+            partition_path="$dir/$partition_name"
+            break
+        fi
+    done
+
+    if [ -z "$partition_path" ]; then
+        printf "${INDENT}${RED}[!] Error: Partition not found.${RESET}\n\n"
+        return 1
+    fi
+
+    # Ask user for the backup file name
+    printf "${INDENT}${YELLOW}[?] Enter the name for the backup file"
+    printf "${INDENTN}(without extension): ${RESET}"
+    read -r backup_name
+
+    # Execute the backup
+    backup_file="/sdcard/${backup_name}.img"
+    printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}$partition_name${YELLOW}"
+    printf "${INDENTN}to ${BOLD_WHITE} $backup_file${RESET}\n"
+    dd if="$partition_path" of="$backup_file" bs=4M >/dev/null 2>&1
+
+    printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
+    printf "${INDENT}${YELLOW}[i] Execution Successful..! ${RESET}\n"
+
+}
+
 #Main logic
 case "$1" in
     batt_b)
@@ -761,6 +960,9 @@ case "$1" in
         ;;
     cache)
         clear_cache
+        ;;
+    dd)
+        dd_backup
         ;;
     dsp_rs)
         display_reset
@@ -787,6 +989,10 @@ case "$1" in
             exit 1
         fi
         case "$2" in
+            bx)
+                smg_check || return
+                button_mapper
+                ;;
             csc)
                 smg_check || return 
                 change_csc
