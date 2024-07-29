@@ -429,7 +429,8 @@ help_menu() {
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo
-    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}bx${RESET}    - Show current Bixby button action and remap it"
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}bx${RESET}    - Show current Bixby button action and"
+    printf "\n              remap it"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
