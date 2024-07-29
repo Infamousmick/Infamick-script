@@ -106,7 +106,7 @@ jobs:
             <pre><code>infamick perf</code></pre>
             Boost Apps performances
             <pre><code>infamick smg bx</code></pre>
-            Show current Bixby button action and remap it"
+            Show current Bixby button action and remap it
             <pre><code>infamick smg csc</code></pre>
             Change current CSC
             <pre><code>infamick smg dex_d</code></pre>
