@@ -774,41 +774,42 @@ button_mapper() {
     printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
     printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
     printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
-    printf "$20) new_value="" ;;{INDENTN}${BOLD_WHITE}26. WAKEUP - wakeup phone"
-    printf "${INDENTN}${YELLOW}Enter your choice (1-26): ${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
     read -r choice
 
     case $choice in
-        1) new_value="VOLUME_DOWN" ;;
-        2) new_value="VOLUME_UP" ;;
-        3) new_value="HOME" ;;
-        4) new_value="POWER" ;;
-        5) new_value="MUSIC" ;;
+        1) new_value="APP_SWITCH" ;;
+        2) new_value="BACK" ;;
+        3) new_value="CALCULATOR" ;;
+        4) new_value="CALENDAR" ;;
+        5) new_value="CALL" ;;
         6) new_value="CAMERA" ;;
-        7) new_value="APP_SWITCH" ;;
-        8) new_value="VOICE_ASSIST" ;;
-        9) new_value="" ;;
-        10) new_value="" ;;
-        11) new_value="" ;;
-        12) new_value="" ;;
-        13) new_value="" ;;
-        14) new_value="" ;;
-        15) new_value="" ;;
-        16) new_value="" ;;
-        17) new_value="" ;;
-        18) new_value="" ;;
-        19) new_value="" ;;
-        20) new_value="" ;;
-        21) new_value="" ;;
-        22) new_value="" ;;
-        23) new_value="" ;;
-        24) new_value="" ;;
-        25) new_value="" ;;
-        26) new_value="" ;;
+        7) new_value="CONTACTS" ;;
+        8) new_value="HOME" ;;
+        9) new_value="EXPLORER" ;;
+        10) new_value="MENU" ;;
+        11) new_value="MESSAGE" ;;
+        12) new_value="MEDIA_NEXT" ;;
+        13) new_value="MEDIA_PLAY_PAUSE" ;;
+        14) new_value="MEDIA_PREVIOUS" ;;
+        15) new_value="MUSIC" ;;
+        16) new_value="PAGE_UP" ;;
+        17) new_value="PAGE_DOWN" ;;
+        18) new_value="POWER" ;;
+        19) new_value="QPANEL_ON_OFF" ;;
+        20) new_value="SEARCH" ;;
+        21) new_value="SLEEP" ;;
+        22) new_value="SYSRQ" ;;
+        23) new_value="VOICE_ASSIST" ;;
+        24) new_value="VOLUME_DOWN" ;;
+        25) new_value="VOLUME_MUTE" ;;
+        26) new_value="VOLUME_UP" ;;
+        27) new_value="WAKEUP" ;;
                         
         *)
             printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
-            printf "${INDENTN}${RED}a number between 1 and 26.${RESET}\n"
+            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
             return
             ;;
     esac
