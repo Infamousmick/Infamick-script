@@ -393,7 +393,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}v1.5 (202407276)"
+    printf "\n${RED}${BOLD}v1.6 (202407291)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -411,6 +411,9 @@ help_menu() {
     echo
     printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
     echo
+    printf "\n  ${BOLD}dd${RESET}   - Backup all possible partitions"
+    printf "\n         chosing a name"
+    echo
     printf "\n  ${BOLD}dsp_rs${RESET}  - Reset current display size and dpi"
     printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
@@ -425,6 +428,8 @@ help_menu() {
     printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}bx${RESET}    - Show current Bixby button action and remap it"
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
     echo
@@ -983,7 +988,7 @@ case "$1" in
             exit 1
         fi
         case "$2" in
-            bixby)
+            bx)
                 smg_check || return
                 button_mapper
                 ;;

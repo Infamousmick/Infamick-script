@@ -89,6 +89,8 @@ jobs:
             Reset boot count settings
             <pre><code>infamick cache</code></pre>
             Trim cache multiple times
+            <pre><code>infamick dd</code></pre>
+            Backup all possible partitions chosing a name
             <pre><code>infamick dsp_rs</code></pre>
             Reset current display size and dpi
             <pre><code>infamick dsp_set</code></pre>
@@ -103,6 +105,8 @@ jobs:
             Show help and usage information
             <pre><code>infamick perf</code></pre>
             Boost Apps performances
+            <pre><code>infamick smg bx</code></pre>
+            Show current Bixby button action and remap it"
             <pre><code>infamick smg csc</code></pre>
             Change current CSC
             <pre><code>infamick smg dex_d</code></pre>
@@ -121,5 +125,5 @@ jobs:
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
             Monitor system temperatures
-
+            
             <b>⚠️This is a TESTING version. Use with caution!⚠️</b>

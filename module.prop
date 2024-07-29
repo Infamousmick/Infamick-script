@@ -1,7 +1,7 @@
 id=Infamick_script
 name=Infamick Script
-version=v1.5
-versionCode=202407276
+version=v1.6
+versionCode=202407291
 author=@Infamousmick
 description=A powerful system utility script for rooted Android devices
 changeBoot=false
