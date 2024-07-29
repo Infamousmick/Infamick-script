@@ -930,8 +930,8 @@ dd_backup() {
     # Execute the backup
     backup_file="/sdcard/${backup_name}.img"
     printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}$partition_name${YELLOW}"
-    printf "${INDENTN}to ${BOLD_WHITE}$partition_path $backup_file${RESET}"
-    dd if="$partition_path" of="$backup_file" bs=4M
+    printf "${INDENTN}to ${BOLD_WHITE} $backup_file${RESET}\n"
+    dd if="$partition_path" of="$backup_file" bs=4M >/dev/null 2>&1
 
     printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
     printf "${INDENT}${YELLOW}[i] Execution Successful..! ${RESET}\n"
