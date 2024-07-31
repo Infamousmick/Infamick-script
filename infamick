@@ -721,7 +721,7 @@ change_csc() {
     printf "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
 }
 
-button_mapper() {
+bixby_mapper() {
     printf "${INDENTN}${YELLOW}[i] This function will remap the Bixby button${RESET}"
     printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
     printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
@@ -941,7 +941,10 @@ dd_backup() {
 
     printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
     printf "${INDENT}${YELLOW}[i] Execution Successful..! ${RESET}\n"
+    printf "${INDENTN}${BLUE}[+] Reboot to apply the changes.${RESET}\n"
 
+}
+button_mapper() {
 }
 
 #Main logic
@@ -957,6 +960,9 @@ case "$1" in
         ;;
     boot)
         boot
+        ;;
+    buttonmap)
+        button_mapper)
         ;;
     cache)
         clear_cache
@@ -991,7 +997,7 @@ case "$1" in
         case "$2" in
             bx)
                 smg_check || return
-                button_mapper
+                bixby_mapper
                 ;;
             csc)
                 smg_check || return 
