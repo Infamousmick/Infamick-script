@@ -1120,7 +1120,7 @@ case "$1" in
     boot)
         boot
         ;;
-    buttonmap)
+    btmap)
         button_mapper
         ;;
     cache)
