@@ -852,7 +852,7 @@ bixby_mapper() {
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for Boxny Button has been updated${RESET}"
+    printf "${INDENTN}${GREEN}[+] Value for Bixby Button has been updated${RESET}"
     printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
     printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
