@@ -12,6 +12,22 @@ model=$(getprop ro.product.system.model)
 INDENT="    "
 INDENTN="\n    "
 
+reboot_quest() {
+    read -n 1 confirm_choice
+    case $confirm_choice in
+        [Yy]*)
+            printf "${INDENTN}${YELLOW}[i] Rebooting.. ${RESET}"
+            sleep 2
+            reboot
+            ;;
+        [nN])
+          printf "${INDENTN}${GREEN}[i] No reboot${RESET}\n"
+            ;;
+        *)
+            printf "${INDENT}${RED}Error: Wrong option '$1'${RESET}"
+            read -r a ;;
+    esac
+  }
 smg_check() {
             if echo "$brand" | grep -iq "samsung"; then
             export IS_SAMSUNG=1
@@ -839,7 +855,8 @@ bixby_mapper() {
     printf "${INDENTN}${GREEN}[+] Value for key 703 has been updated${RESET}"
     printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
     printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
-    printf "${INDENTN}${BLUE}[!] Reboot to apply the changes.${RESET}\n"
+    printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n)${RESET}"
+    reboot_quest
 }
 
 
