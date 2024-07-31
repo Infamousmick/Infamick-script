@@ -962,7 +962,8 @@ dd_backup() {
 
 }
 button_mapper() {
-    printf "${INDENTN}${YELLOW}[i] This function will remap universal Android buttons${RESET}"
+    printf "${INDENTN}${YELLOW}[i] This function will remap universal Android"
+    printf "${INDENTN}buttons${RESET}"
     printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
     printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
     printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
