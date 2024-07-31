@@ -859,7 +859,6 @@ bixby_mapper() {
     reboot_quest
 }
 
-
 battsettings() {
     printf "${INDENTN}${YELLOW}[i] This will redirect you to the Battery${RESET}"
     printf "${INDENTN}${YELLOW}Optimizations settings.${RESET}" ; sleep 1
