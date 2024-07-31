@@ -962,11 +962,11 @@ dd_backup() {
 
 }
 button_mapper() {
-    printf "${INDENTN}${YELLOW}[i] This function will remap universal Android buttons${RESET}\n"
-    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}\n"
-    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}\n"
-    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
-    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] This function will remap universal Android buttons${RESET}"
+    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
+    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
     read -r a
 
     file1="/system/usr/keylayout/Generic.kl"
@@ -976,10 +976,10 @@ button_mapper() {
     file=""
 
     # Chiedi all'utente quale tasto vuole rimappare
-    printf "${INDENTN}${YELLOW}[?] Which button do you want to remap?${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}1. Power (key 116)${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}2. Volume Up (key 115)${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}3. Volume Down (key 114)${RESET}\n"
+    printf "${INDENTN}${YELLOW}[?] Which button do you want to remap:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. Power (key 116)"
+    printf "${INDENTN}${BOLD_WHITE}2. Volume Up (key 115)"
+    printf "${INDENTN}${BOLD_WHITE}3. Volume Down (key 114)"
     printf "${INDENTN}${YELLOW}Enter your choice (1-3): ${RESET}"
     read -r button_choice
 
@@ -988,57 +988,63 @@ button_mapper() {
         2) key_code="115" ;;
         3) key_code="114" ;;
         *)
-            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter a number between 1 and 3.${RESET}\n"
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 3.${RESET}\n"
             return
             ;;
     esac
 
-    # Cerca nei file
-    for f in "$file1" "$file2" "$file3"; do
-        if [ -f "$f" ]; then
-            value=$(grep "key $key_code" "$f" | awk '{print $3}')
-            if [ -n "$value" ]; then
-                file="$f"
-                break
-            fi
-        fi
-    done
+    # Cerca nei file, dando priorità a Generic_internal.kl
+    if [ -f "$file2" ]; then
+        file="$file2"
+        value=$(grep "key $key_code" "$file2" | awk '{print $3}')
+    fi
+    
+    if [ -z "$value" ] && [ -f "$file1" ]; then
+        file="$file1"
+        value=$(grep "key $key_code" "$file1" | awk '{print $3}')
+    fi
+    
+    if [ -z "$value" ] && [ -f "$file3" ]; then
+        file="$file3"
+        value=$(grep "key $key_code" "$file3" | awk '{print $3}')
+    fi
 
     if [ -n "$value" ]; then
-        printf "${INDENTN}${YELLOW}[*] Current value for key $key_code: ${BOLD_WHITE}%s${RESET}\n" "$value"
+        printf "${INDENTN}${YELLOW}[*] Current value for key $key_code: ${BOLD_WHITE}%s${RESET}" "$value"
     else
-        printf "${INDENTN}${RED}[!] Value not found for key $key_code${RESET}\n"
+        printf "${INDENTN}${RED}[!] Value not found for key $key_code${RESET}"
         return
     fi
 
-    printf "${INDENTN}${YELLOW}[?] Choose new value for the button:${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}2. BACK - back gesture ${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}4. CALENDAR - open calendar app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track ${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}24. VOLUME_DOWN - sets volume down${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}25. VOLUME_MUTE - volume on/off${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up${RESET}\n"
-    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone${RESET}\n"
+    printf "${INDENTN}${YELLOW}[?] Choose new value for the button:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
+    printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
+    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
+    printf "${INDENTN}${WHITE_BOLD}4. CALENDAR - open calendar app"
+    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app"
+    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app"
+    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app"
+    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton"
+    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser"
+    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu"
+    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app"
+    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track"
+    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause"
+    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track "
+    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player"
+    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up"
+    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down"
+    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu"
+    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel"
+    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search"
+    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone"
+    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot"
+    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant"
+    printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
+    printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
+    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
+    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
     printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
     read -r choice
 
@@ -1071,17 +1077,18 @@ button_mapper() {
         26) new_value="VOLUME_UP" ;;
         27) new_value="WAKEUP" ;;
         *)
-            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter a number between 1 and 27.${RESET}\n"
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
             return
             ;;
     esac
 
-    # Aggiorna il valore
+    # Update the value
     temp_file="/data/local/tmp/temp_key_file"
     grep -v "key $key_code" "$file" > "$temp_file"
     echo "key $key_code $new_value" >> "$temp_file"
 
-    # Controlla se abbiamo i permessi di scrittura
+    # Check if we have write permission
     if ! touch "$file" 2>/dev/null; then
         printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
         su -c "cp $temp_file $file && chmod 644 $file"
@@ -1092,13 +1099,12 @@ button_mapper() {
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for key $key_code has been updated${RESET}\n"
-    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}\n" "$new_value"
+    printf "${INDENTN}${GREEN}[+] Value for key $key_code has been updated${RESET}"
+    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
     printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
     reboot_quest
 }
-
 #Main logic
 case "$1" in
     batt_b)
