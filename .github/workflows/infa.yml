@@ -1,70 +1,75 @@
-name: Upload to Telegram (Testing Version)
+name: Upload to Telegram and Latest Release
 
 on:
   workflow_dispatch:  # Allows manual workflow execution
 
 jobs:
-  upload_and_notify:
+  clone_and_upload:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get version from update.json
-        id: get_version
+      - name: Get latest release
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(release.data);
+            return release.data;
+      - name: Clone files from infatest branch
         run: |
-          VERSION=$(jq -r .version update.json)
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Set changelog
-        id: set_changelog
-        run: |
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "## ${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
-          - Added Samsung Tweaks
-            1. CSC changer
-              - Change current CSC
-            2. Deknoxer
-              - Disable or Enable knox packages
-            3. Extra Dim
-              - Open hidden Extra Dim menu
-            4. Gesture
-             - Open hidden Gestures menu
-            5. Change Network Bands
-             - Open 5G Network Bands guide
-            6. Lock Network Bands
-             - Open Network Bands settings" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
+          git fetch origin infatest
+          git checkout infatest -- .
+          git reset HEAD .github/workflows
+          git checkout HEAD -- .github/workflows
+          git checkout ${{ github.ref }}
+          git commit -m "${{ fromJson(steps.get_release.outputs.result).upload_url }} Update"
+          
       - name: Create Magisk ZIP file
         run: |
-          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
+          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+
+      - name: Upload Magisk ZIP to latest release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
+          asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
+          asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
+          asset_content_type: application/zip
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
+          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
           format: html
           disable_web_page_preview: true
           message: |
-            <b>⚠️ TESTING VERSION ⚠️</b>
-            <b>New Infamick Script ${{ steps.get_version.outputs.VERSION }} MAGISK Test Update...! 🧪</b>    
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
             
             <b>CHANGELOG:</b>
-            <pre><code>${{ steps.set_changelog.outputs.CHANGELOG }}</code></pre>
+            <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
             
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
             
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
             
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
-            
+
             <b>USAGE:</b>
             Enter terminal with root and run
             <pre><code>infamick command</code></pre>
+            
             <b>Available commands:</b>
             <pre><code>infamick batt_b</code></pre>
             Improves Battery draining
@@ -112,5 +117,3 @@ jobs:
             Calculate the SOT with 100% battery
             <pre><code>infamick temp</code></pre>
             Monitor system temperatures
-
-            <b>⚠️This is a TESTING version. Use with caution!⚠️</b>
