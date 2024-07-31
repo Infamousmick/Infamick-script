@@ -962,7 +962,7 @@ case "$1" in
         boot
         ;;
     buttonmap)
-        button_mapper)
+        button_mapper
         ;;
     cache)
         clear_cache
