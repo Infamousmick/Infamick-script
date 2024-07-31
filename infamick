@@ -852,7 +852,7 @@ bixby_mapper() {
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for key 703 has been updated${RESET}"
+    printf "${INDENTN}${GREEN}[+] Value for Boxny Button has been updated${RESET}"
     printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
     printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
@@ -978,16 +978,19 @@ button_mapper() {
 
     # Chiedi all'utente quale tasto vuole rimappare
     printf "${INDENTN}${YELLOW}[?] Which button do you want to remap:${RESET}"
-    printf "${INDENTN}${BOLD_WHITE}1. Power (key 116)"
-    printf "${INDENTN}${BOLD_WHITE}2. Volume Up (key 115)"
-    printf "${INDENTN}${BOLD_WHITE}3. Volume Down (key 114)"
+    printf "${INDENTN}${BOLD_WHITE}1. Power"
+    printf "${INDENTN}${BOLD_WHITE}2. Volume Up"
+    printf "${INDENTN}${BOLD_WHITE}3. Volume Down"
     printf "${INDENTN}${YELLOW}Enter your choice (1-3): ${RESET}"
     read -r button_choice
 
     case $button_choice in
-        1) key_code="116" ;;
-        2) key_code="115" ;;
-        3) key_code="114" ;;
+        1) key_code="116" 
+           buttonc="Power" ;;
+        2) key_code="115" 
+           buttonc="Volume Up" ;;
+        3) key_code="114" 
+           buttonc="Volume Down" ;;
         *)
             printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
             printf "${INDENTN}${RED}a number between 1 and 3.${RESET}\n"
@@ -1012,13 +1015,13 @@ button_mapper() {
     fi
 
     if [ -n "$value" ]; then
-        printf "${INDENTN}${YELLOW}[*] Current value for key $key_code: ${BOLD_WHITE}%s${RESET}" "$value"
+        printf "${INDENTN}${YELLOW}[*] Current value for $buttonc: ${BOLD_WHITE}%s${RESET}" "$value"
     else
         printf "${INDENTN}${RED}[!] Value not found for key $key_code${RESET}"
         return
     fi
 
-    printf "${INDENTN}${YELLOW}[?] Choose new value for the button:${RESET}"
+    printf "${INDENTN}${YELLOW}[?] Choose new value for the $buttonc button:${RESET}"
     printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
     printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
     printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
@@ -1100,7 +1103,7 @@ button_mapper() {
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for key $key_code has been updated${RESET}"
+    printf "${INDENTN}${GREEN}[+] Value for key $buttonc has been updated${RESET}"
     printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
     printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
