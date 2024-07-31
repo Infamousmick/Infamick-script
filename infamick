@@ -24,7 +24,7 @@ reboot_quest() {
           printf "${INDENTN}${GREEN}[i] No reboot${RESET}\n"
             ;;
         *)
-            printf "${INDENT}${RED}Error: Wrong option '$1'${RESET}"
+            printf "${INDENTN}${RED}Error: Wrong option '$1'${RESET}"
             read -r a ;;
     esac
   }
