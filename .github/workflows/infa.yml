@@ -57,27 +57,11 @@ jobs:
           git checkout tt
           git branch -D temp_infatest
 
-      - name: Create Magisk ZIP file
-        run: |
-          zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
-          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
-
-      - name: Upload Magisk ZIP to latest release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ fromJson(steps.get_release.outputs.result).upload_url }}
-          asset_path: ./Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
-          asset_name: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
-          asset_content_type: application/zip
-
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip
           format: html
           disable_web_page_preview: true
           message: |
