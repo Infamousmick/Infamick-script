@@ -4,11 +4,15 @@ on:
   workflow_dispatch:  # Allows manual workflow execution
 
 jobs:
-  clone_and_upload:
+  upload_and_notify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Assicurati di ottenere tutti i branch
 
       - name: Get latest release
         id: get_release
@@ -22,15 +26,17 @@ jobs:
             });
             console.log(release.data);
             return release.data;
-      - name: Clone files from infatest branch
+
+      - name: Clone files from infatest to tt branch
         run: |
-          git fetch origin infatest
-          git checkout infatest -- .
-          git reset HEAD .github/workflows
-          git checkout HEAD -- .github/workflows
-          git checkout ${{ github.ref }}
-          git commit -m "${{ fromJson(steps.get_release.outputs.result).upload_url }} Update"
-          
+          git config user.name "Infamousmick"
+          git config user.email "mmarchese6690@gmail.com"
+          git checkout tt
+          git checkout infatest -- $(git ls-tree -r infatest --name-only | grep -v '^.github/workflows/')
+          git add .
+          git commit -m "${{ fromJson(steps.get_release.outputs.result).tag_name }} update"
+          git push origin tt
+
       - name: Create Magisk ZIP file
         run: |
           zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
