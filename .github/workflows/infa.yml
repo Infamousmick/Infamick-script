@@ -27,7 +27,7 @@ jobs:
             console.log(release.data);
             return release.data;
 
-      - name: Clone files from infatest to tt branch
+       - name: Clone files from infatest to tt branch
         run: |
           git config user.name "Infamousmick"
           git config user.email "mmarchese6690@gmail.com"
@@ -35,27 +35,19 @@ jobs:
           # Assicuriamoci di avere l'ultimo stato di entrambi i branch
           git fetch origin
           
-          # Creiamo e passiamo al branch tt se non esiste
-          git checkout -B tt origin/tt
+          # Passiamo al branch tt
+          git checkout tt
           
-          # Creiamo un branch temporaneo basato su infatest
-          git checkout -b temp_infatest origin/infatest
-          
-          # Copiamo i file da temp_infatest a tt, escludendo .github/workflows
-          git checkout temp_infatest -- $(git ls-tree -r temp_infatest --name-only | grep -v '^.github/workflows/')
+          # Copiamo i file da infatest a tt, escludendo .github/workflows
+          git checkout origin/infatest -- $(git ls-tree -r origin/infatest --name-only | grep -v '^.github/workflows/')
           
           # Verifichiamo se ci sono modifiche da committare
-          if ! git diff --quiet; then
-            git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
             git commit -m "${{ fromJson(steps.get_release.outputs.result).tag_name }} update"
             git push origin tt
-          else
-            echo "No changes to commit"
           fi
-          
-          # Puliamo il branch temporaneo
-          git checkout tt
-          git branch -D temp_infatest
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
