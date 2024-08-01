@@ -27,7 +27,7 @@ jobs:
             console.log(release.data);
             return release.data;
 
-       - name: Clone files from infatest to tt branch
+      - name: Clone files from infatest to tt branch
         run: |
           git config user.name "Infamousmick"
           git config user.email "mmarchese6690@gmail.com"
