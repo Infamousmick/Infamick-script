@@ -1,0 +1,49 @@
+name: Update Main from Infatest
+
+on:
+  workflow_dispatch:  # Allows manual workflow execution
+
+jobs:
+  update_main:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Assicurati di ottenere tutti i branch
+
+      - name: Clone files from infatest to main branch and update version
+        env:
+          MAIL: ${{ secrets.MAIL }}
+        run: |
+          git config user.name "Infamousmick"
+          git config user.email "$MAIL"
+          
+          # Assicuriamoci di avere l'ultimo stato di entrambi i branch
+          git fetch origin
+          
+          # Passiamo al branch main
+          git checkout main
+          
+          # Copiamo i file da infatest a main, escludendo .github/workflows
+          git checkout origin/infatest -- $(git ls-tree -r origin/infatest --name-only | grep -v '^.github/workflows/')
+          
+          # Leggiamo la nuova versione da update.json DOPO aver copiato i file
+          NEW_VERSION=$(jq -r .version update.json)
+          
+          # Verifichiamo se ci sono modifiche da committare
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "$NEW_VERSION RELEASE"
+            git push origin main
+          fi
+
+      - name: Set version output
+        id: set_version
+        run: echo "::set-output name=version::$(jq -r .version update.json)"
+
+      - name: Print version
+        run: echo "Updated to version ${{ steps.set_version.outputs.version }}"
