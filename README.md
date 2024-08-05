@@ -1,4 +1,4 @@
-# Infamick Script v1.6
+# Infamick Script v2.0
 
 ## Overview
 Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for advanced users and developers.
@@ -6,12 +6,14 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 ## Features
 - **Battery Health**: Check battery health status and charging cycles
 - **Battery optimizations settings**: Open Battery optimizations settings
-- **Bixby Remapper** Show current Bixby button action and remap it"
+- **Bixby Remapper** Show current Bixby button action and remap it
 - **Boost Battery**: Improves battery draining
 - **Boost Performance**: Boost the performance of each app
 - **Boot Count Reset**: Reset system boot counters
+- **Button Mapper**: Show current Power, Volume Up and Volume Down buttons action and remap them
 - **Cache cleaner**: Trim caches multiple times
 - **Change Network Bands**: Open 5G Network Bands guide
+- **Charging settings**: Disable, Enable and show current charging status
 - **CSC Changer**: Change current CSC
 - **DD Backup**: Backup all possible partitions chosing a name
 - **Display commands**: Show, Set and Reset current display size and dpi
@@ -36,10 +38,14 @@ This script is designed to be flashed as a module using Magisk, KernelSU, or APa
 After installation, you can use the script by running `infamick` in a terminal with root access.
 
 Available commands:
-- `infamick batt_b`: Improves Battery draining
-- `infamick batt_i`: Display battery health and charging cycles
-- `infamick batt_s`: Open battery optimizations setting
+- `infamick batt boost`: Improves Battery draining
+- `infamick batt info`: Display battery health and charging cycles
+- `infamick batt opt`: Open battery optimizations setting
+- `infamick batt start`: Enable battery charging
+- `infamick batt status`: Show if charging is disabled/enabled
+- `infamick batt stop`: Disable battery charging
 - `infamick boot`: Reset boot count settings
+- `infamick btmap `:  Show current Power, Volume Up and Volume Down buttons action and remap them
 - `infamick cache`: Trim cache multiple times
 - `infamick dd`: Backup all possible partitions chosing a name
 - `infamick dsp_rs`: Reset current display size and dpi
@@ -62,7 +68,7 @@ Available commands:
 
 ## Examples
 ```bash
-infamick batt_i
+infamick batt stop
 infamick gmsd
 infamick exdim
 infamick perf

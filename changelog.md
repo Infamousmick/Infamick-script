@@ -1,4 +1,16 @@
 # Changelog for Infamick Script
+## V2.0 - Button Mapper and Charging Settings (August 06, 24)
+- Added Button Mapper
+  1. Show current actions and remap for:
+     - Volume Up
+     - Volume Down
+     - Power button
+- Added Charging Settings
+  1. Disable, Enable and show if charging is enabled/disabled
+- Battery comands:
+  1. Changed `batt_b` to `batt boost`
+  2. Changed `batt_i` to `batt info`
+  3. Changed `batt_s` to `batt opt`
 ## V1.6 - New Features (July 29, 2024)
 - Added Bixby Buttonr Remapper
   1. Show current Bixby Button action
