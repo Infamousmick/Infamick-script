@@ -53,14 +53,22 @@ jobs:
             <pre><code>infamick command</code></pre>
             
             <b>Available commands:</b>
-            <pre><code>infamick batt_b</code></pre>
+            <pre><code>infamick batt boost</code></pre>
             Improves Battery draining
-            <pre><code>infamick batt_i</code></pre>
+            <pre><code>infamick batt info</code></pre>
             Display battery health and charging cycles
-            <pre><code>infamick batt_s</code></pre>
+            <pre><code>infamick batt opt</code></pre>
             Open battery optimizations setting
+            <pre><code>infamick batt start</code></pre>
+            Enable battery charging
+            <pre><code>infamick batt status</code></pre>
+            Show if charging is disabled/enabled
+            <pre><code>infamick batt stop</code></pre>
+            Disable battery charging
             <pre><code>infamick boot</code></pre>
             Reset boot count settings
+            <pre><code>infamick btmap</code></pre>
+            Show current Power, Volume Up and Volume Down buttons action and remap them
             <pre><code>infamick cache</code></pre>
             Trim cache multiple times
             <pre><code>infamick dd</code></pre>
