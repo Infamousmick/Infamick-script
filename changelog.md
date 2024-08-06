@@ -1,4 +1,7 @@
 # Changelog for Infamick Script
+## V2.1 - SOT  Calculator fix (August 07, 24)
+- Fixed SOT Calculator input
+- Calculate SOT with hours and minutes
 ## V2.0 - Button Mapper and Charging Settings (August 06, 24)
 - Added Button Mapper
   1. Show current actions and remap for:

@@ -1,4 +1,4 @@
-# Infamick Script v2.0
+# Infamick Script v2.1
 
 ## Overview
 Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for advanced users and developers.

@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.0 (202408069)"
+    printf "\n${RED}${BOLD}2.1 (202408079)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -470,7 +470,7 @@ help_menu() {
     echo
     printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
     printf "\n            Requires:"
-    printf "\n              - Current SOT minutes value"
+    printf "\n              - Current SOT hours and minutes values"
     printf "\n              - Discharged percentage value"
     echo
     printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
@@ -487,7 +487,7 @@ help_menu() {
     printf "\n  infamick smg ntw_l"
     printf "\n  infamick temp"
     echo
-    printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly."
+    printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly.\n"
 }
 
 boot() {
@@ -544,25 +544,55 @@ gms_enable() {
 }
 
 sot_calculator() {
-printf "${INDENTN}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}${INDENTN}"
-read minutes
-printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}${INDENTN}"
-read percentage
+    while true; do
+        printf "${INDENTN}${GREEN}${BOLD}Enter hours of your current SOT:${RESET}${INDENTN}"
+        read hours
+        case $hours in
+            ''|*[!0-9]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid number for hours.${RESET}" ;;
+            *) break ;;
+        esac
+    done
 
-# Calculate estimated SOT in hours
-result=$(awk "BEGIN {printf \"%.2f\", ($minutes * 100) / ($percentage * 60)}")
+    while true; do
+        printf "${INDENT}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}${INDENTN}"
+        read minutes
+        case $minutes in
+            ''|*[!0-9]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid number for minutes.${RESET}" ;;
+            *) break ;;
+        esac
+    done
 
-# Convert result to integer hours and minutes
-hours=$(echo $result | cut -d'.' -f1)
-decimal_part=$(echo $result | cut -d'.' -f2)
-minutes=$(awk "BEGIN {printf \"%.0f\", ($decimal_part * 60) / 100}")
+    while true; do
+        printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}${INDENTN}"
+        read percentage
+        case $percentage in
+            ''|*[!0-9.]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid percentage (0-100).${RESET}" ;;
+            *)
+                if [ $(echo "$percentage > 0 && $percentage <= 100" | bc -l) -eq 1 ]; then
+                    break
+                else
+                    echo "${INDENT}${RED}${BOLD}[!] Error: Percentage must be between 0 and 100.${RESET}"
+                fi
+                ;;
+        esac
+    done
 
-# Calculate harshrate
-harshrate=$(awk "BEGIN {printf \"%.2f\", 100 / $result}")
+    # Calculate total minutes
+    total_minutes=$(( hours * 60 + minutes ))
 
+    # Calculate estimated SOT in hours
+    result=$(echo "scale=2; ($total_minutes * 100) / ($percentage * 60)" | bc)
 
-echo "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${hours}h and ${minutes}m${RESET}"
-echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
+    # Convert result to integer hours and minutes
+    estimated_hours=${result%.*}
+    decimal_part=${result#*.}
+    estimated_minutes=$(echo "scale=0; ($decimal_part * 60) / 100" | bc)
+
+    # Calculate harshrate
+    harshrate=$(echo "scale=2; 100 / $result" | bc)
+
+    echo "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${estimated_hours}h and ${estimated_minutes}m${RESET}"
+    echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
 }
 
 clear_cache() {
