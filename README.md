@@ -2,7 +2,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)
 ![Magisk](https://img.shields.io/badge/Magisk-red?logo=magisk)
 [![GitHub Release](https://img.shields.io/github/v/release/Infamousmick/Infamick-script?display_name=tag&color=%23ac53db)](https://github.com/InfamousMick/Infamick-script/releases)
-[![GitHub Downloads](https://img.shields.io/github/downloads/InfamousMick/Infamick-script/total?color=%67f0ab)](https://github.com/InfamousMick/Infamick-script)
+[![GitHub Downloads](https://img.shields.io/github/downloads/InfamousMick/Infamick-script/total?color=%67f0ab)](https://github.com/InfamousMick/Infamick-script)]
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE)
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white)](https://t.me/InfaScript)
 
