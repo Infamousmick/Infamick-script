@@ -1,0 +1,82 @@
+name: Private upload to Telegram
+
+on:
+  workflow_dispatch:  # Allows manual workflow execution
+
+jobs:
+  upload_and_notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get latest release
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(release.data);
+            return release.data;
+
+      - name: Get version from update.json
+        id: get_version
+        run: |
+            VERSION=$(jq -r .version update.json)
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set changelog
+        id: set_changelog
+        run: |
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "## ${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
+          - Added Samsung Tweaks
+            1. CSC changer
+              - Change current CSC
+            2. Deknoxer
+              - Disable or Enable knox packages
+            3. Extra Dim
+              - Open hidden Extra Dim menu
+            4. Gesture
+             - Open hidden Gestures menu
+            5. Change Network Bands
+             - Open 5G Network Bands guide
+            6. Lock Network Bands
+             - Open Network Bands settings" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+    
+      - name: Create Magisk ZIP file
+        run: |
+          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+            
+      - name: Read Telegram message
+        id: read_message
+        run: |
+          MESSAGE=$(cat .github/workflows/telegram_message.txt)
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          CHANGELOG="${{ steps.set_changelog.outputs.CHANGELOG }}"
+          REPO="${{ github.repository }}"
+          SHA="${{ github.sha }}"
+          MESSAGE="${MESSAGE//{VERSION}/$VERSION}"
+          MESSAGE="${MESSAGE//{CHANGELOG}/$CHANGELOG}"
+          MESSAGE="${MESSAGE//{REPO}/$REPO}"
+          MESSAGE="${MESSAGE//{SHA}/$SHA}"
+          MESSAGE="${MESSAGE//\\n/$'\n'}"
+          echo "MESSAGE<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$MESSAGE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PRIVATE_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
+          format: html
+          disable_web_page_preview: true
+          message: ${{ steps.read_message.outputs.MESSAGE }}

@@ -1,0 +1,64 @@
+⚠️ TESTING VERSION ⚠️
+New Infamick Script {VERSION} MAGISK Test Update...! 🧪    
+
+CHANGELOG:
+{CHANGELOG}
+
+Repository: {REPO}
+
+Commit SHA: Click here
+
+Installation : Click here
+
+USAGE:
+Enter terminal with root and run
+infamick command
+Available commands:
+infamick batt_b
+Improves Battery draining
+infamick batt_i
+Display battery health and charging cycles
+infamick batt_s
+Open battery optimizations setting
+infamick boot
+Reset boot count settings
+infamick cache
+Trim cache multiple times
+infamick dd
+Backup all possible partitions chosing a name
+infamick dsp_rs
+Reset current display size and dpi
+infamick dsp_set
+Change display size and dpi 
+infamick dsp_sw
+Show current display size and dpi
+infamick gmsd
+Disable GMS services
+infamick gmse
+Enable GMS services
+infamick info
+Show help and usage information
+infamick perf
+Boost Apps performances
+infamick smg bx
+Show current Bixby button action and remap it
+infamick smg csc
+Change current CSC
+infamick smg dex_d
+Disable knox packages
+infamick smg dex_e
+Enable knox packages
+infamick smg dim
+Open hidden Extra Dim menu
+infamick smg gest
+Open hidden Gestures menu
+infamick smg ntw_b
+Open 5G Network Bands guide
+infamick smg ntw_l
+Open Network Bands settings
+infamick sot
+Calculate the SOT with 100% battery
+infamick temp
+Monitor system temperatures
+
+⚠️This is a TESTING version. Use with caution!⚠️

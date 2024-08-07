@@ -1,0 +1,10 @@
+id=Infamick_script
+name=Infamick Script
+version=v2.1
+versionCode=202408079
+author=@Infamousmick
+description=A powerful system utility script for rooted Android devices
+changeBoot=false
+needRamdisk=false
+updateJson=https://raw.githubusercontent.com/Infamousmick/Infamick-script/main/update.json
+support=https://github.com/Infamousmick

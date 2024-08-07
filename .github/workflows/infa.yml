@@ -1,0 +1,124 @@
+name: Upload to Telegram (Testing Version)
+
+on:
+  workflow_dispatch:  # Allows manual workflow execution
+
+jobs:
+  upload_and_notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get version from update.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version update.json)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set changelog
+        id: set_changelog
+        run: |
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "## ${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
+          - Added Samsung Tweaks
+            1. CSC changer
+              - Change current CSC
+            2. Deknoxer
+              - Disable or Enable knox packages
+            3. Extra Dim
+              - Open hidden Extra Dim menu
+            4. Gesture
+             - Open hidden Gestures menu
+            5. Change Network Bands
+             - Open 5G Network Bands guide
+            6. Lock Network Bands
+             - Open Network Bands settings" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Magisk ZIP file
+        run: |
+          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
+          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
+          format: html
+          disable_web_page_preview: true
+          message: |
+            <b>⚠️ TESTING VERSION ⚠️</b>
+            <b>New Infamick Script ${{ steps.get_version.outputs.VERSION }} MAGISK Test Update...! 🧪</b>    
+            
+            <b>CHANGELOG:</b>
+            <pre><code>${{ steps.set_changelog.outputs.CHANGELOG }}</code></pre>
+            
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            
+            <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
+            
+            <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
+            
+            <b>USAGE:</b>
+            Enter terminal with root and run
+            <pre><code>infamick command</code></pre>
+            <b>Available commands:</b>
+            <pre><code>infamick batt boost</code></pre>
+            Improves Battery draining
+            <pre><code>infamick batt info</code></pre>
+            Display battery health and charging cycles
+            <pre><code>infamick batt opt</code></pre>
+            Open battery optimizations setting
+            <pre><code>infamick batt start</code></pre>
+            Enable battery charging
+            <pre><code>infamick batt status</code></pre>
+            Show if charging is disabled/enabled
+            <pre><code>infamick batt stop</code></pre>
+            Disable battery charging
+            <pre><code>infamick boot</code></pre>
+            Reset boot count settings
+            <pre><code>infamick btmap</code></pre>
+            Show current Power, Volume Up and Volume Down buttons action and remap them
+            <pre><code>infamick cache</code></pre>
+            Trim cache multiple times
+            <pre><code>infamick dd</code></pre>
+            Backup all possible partitions chosing a name
+            <pre><code>infamick dsp_rs</code></pre>
+            Reset current display size and dpi
+            <pre><code>infamick dsp_set</code></pre>
+            Change display size and dpi 
+            <pre><code>infamick dsp_sw</code></pre>
+            Show current display size and dpi
+            <pre><code>infamick gmsd</code></pre>
+            Disable GMS services
+            <pre><code>infamick gmse</code></pre>
+            Enable GMS services
+            <pre><code>infamick info</code></pre>
+            Show help and usage information
+            <pre><code>infamick perf</code></pre>
+            Boost Apps performances
+            <pre><code>infamick smg bx</code></pre>
+            Show current Bixby button action and remap it
+            <pre><code>infamick smg csc</code></pre>
+            Change current CSC
+            <pre><code>infamick smg dex_d</code></pre>
+            Disable knox packages
+            <pre><code>infamick smg dex_e</code></pre>
+            Enable knox packages
+            <pre><code>infamick smg dim</code></pre>
+            Open hidden Extra Dim menu
+            <pre><code>infamick smg gest</code></pre>
+            Open hidden Gestures menu
+            <pre><code>infamick smg ntw_b</code></pre>
+            Open 5G Network Bands guide
+            <pre><code>infamick smg ntw_l</code></pre>
+            Open Network Bands settings
+            <pre><code>infamick sot</code></pre>
+            Calculate the SOT with 100% battery
+            <pre><code>infamick temp</code></pre>
+            Monitor system temperatures
+
+            <b>⚠️This is a TESTING version. Use with caution!⚠️</b>

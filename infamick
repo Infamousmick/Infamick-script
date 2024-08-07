@@ -1,0 +1,1299 @@
+#!/system/bin/sh
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+RESET='\033[0m'
+BOLD_WHITE='\033[1;37m'
+LIGHT_YELLOW='\033[1;93m'
+brand=$(getprop ro.product.system.brand)
+model=$(getprop ro.product.system.model)
+INDENT="    "
+INDENTN="\n    "
+CHARGING_PATH="/sys/class/power_supply/battery/charging_enabled"
+
+reboot_quest() {
+    read -n 1 confirm_choice
+    case $confirm_choice in
+        [Yy]*)
+            printf "${INDENTN}${YELLOW}[i] Rebooting.. ${RESET}"
+            sleep 2
+            reboot
+            ;;
+        [nN])
+          printf "${INDENTN}${GREEN}[i] No reboot${RESET}\n"
+            ;;
+        *)
+            printf "${INDENTN}${RED}Error: Wrong option '$confirm_choice'${RESET}\n"
+            ;;
+    esac
+  }
+smg_check() {
+            if echo "$brand" | grep -iq "samsung"; then
+            export IS_SAMSUNG=1
+            export brand="$brand"
+            export model="$model"
+        else
+            export IS_SAMSUNG=0
+            export brand="$brand"
+        fi
+
+        if echo "$IS_SAMSUNG" | grep -iq "1"; then
+            printf "\n${LIGHT_YELLOW}[+] Your Device is : ${BOLD_WHITE}${model}${RESET}\n${LIGHT_YELLOW}[i] Starting Samsung Tweaks...${RESET}\n"
+            sleep 2
+            return 0
+        else
+            printf "\n${RED}[x] 'Samsung Tweaks' are not supported in a '${brand}' model 🤨\n${RESET}"
+            sleep 1
+            printf "${LIGHT_YELLOW}\n[i] Returning to Start..\n${RESET}"
+            return 1
+        fi
+}
+
+temp_check() {
+    while true; do
+        # Ottieni la temperatura della batteria
+        battery_temp_file="/sys/class/power_supply/battery/temp"
+        if [ -f "$battery_temp_file" ]; then
+            battery_temp=$(cat "$battery_temp_file")
+            battery_temp=$((battery_temp / 10))
+        else
+            battery_temp="N/A"
+        fi
+
+        # Ottieni la temperatura della CPU
+        cpu_temp_file="/sys/class/thermal/thermal_zone1/temp"
+        if [ -f "$cpu_temp_file" ]; then
+            cpu_temp=$(cat "$cpu_temp_file")
+            cpu_temp=$((cpu_temp / 1000))
+        else
+            cpu_temp="N/A"
+        fi
+
+        # Ottieni la temperatura della GPU
+        gpu_temp_file="/sys/class/thermal/thermal_zone3/temp"
+        if [ -f "$gpu_temp_file" ]; then
+            gpu_temp=$(cat "$gpu_temp_file")
+            gpu_temp=$((gpu_temp / 1000))
+        else
+            gpu_temp="N/A"
+        fi
+
+        # Usa \033[1A per muoversi su una riga e \033[K per pulire la riga
+        for i in $(seq 1 $line_count); do
+            echo -ne "\033[1A\033[K"
+        done
+
+        # Stampa le nuove temperature
+        echo -ne "${INDENTN}${BOLD}Battery temperature: ${YELLOW}${battery_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}CPU temperature: ${YELLOW}${cpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${BOLD}GPU temperature: ${YELLOW}${gpu_temp}°C${RESET}"
+        echo -ne "${INDENTN}${GREEN}${BOLD}Press ${RED}CTRL+C${GREEN} to exit temperature monitoring${RESET}\n"
+        sleep 2
+        clear
+    done
+}
+
+services=(
+"com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService"
+"com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService"
+"com.google.android.gms/.chimera.GmsIntentOperationService"
+"com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService"
+"com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService"
+"com.google.android.gms/.chimera.GmsIntentOperationService"
+"com.google.android.gms/.kids.KidSetupActivity"
+"com.google.android.gms/.kids.LockscreenActivity"
+"com.google.android.gms/.kids.LockscreenActivityV2"
+"com.google.android.gms/.kids.LockscreenUnlockActivity"
+"com.google.android.gms/.kids.ParentAccessActivity"
+"com.google.android.gms/.kids.SyncTailTrapperActivity"
+"com.google.android.gms/.kids.TransparencyActivity"
+"com.google.android.gms/.kids.chimera.RegisterProfileOwnerActivityProxy"
+"com.google.android.gms/.kids.settings.KidsSettingsActivity"
+"com.google.android.gms/.kids.settings.KidsSettingsActivityAliasSuw"
+"com.google.android.gms/.nearby.discovery.devices.DevicesListActivity"
+"com.google.android.gms/.nearby.discovery.devices.FindDeviceActivity"
+"com.google.android.gms/.nearby.discovery.fastpair.AtvConnectActivity"
+"com.google.android.gms/.nearby.discovery.fastpair.CompanionAppInstallActivity"
+"com.google.android.gms/.nearby.discovery.fastpair.HalfSheetActivity"
+"com.google.android.gms/.nearby.exposurenotification.settings.SettingsActivity"
+"com.google.android.gms/.nearby.exposurenotification.settings.SettingsActivityAlias"
+"com.google.android.gms/.nearby.exposurenotification.settings.SettingsCheckerActivity"
+"com.google.android.gms/.nearby.exposurenotification.settings.SettingsCollapsingToolbarActivity"
+"com.google.android.gms/.nearby.messages.settings.NearbyMessagesAppOptInActivity"
+"com.google.android.gms/.nearby.setup.ui.WifiConsentActivity"
+"com.google.android.gms/.nearby.sharing.ConsentsActivity"
+"com.google.android.gms/.nearby.sharing.DeviceVisibilityActivity"
+"com.google.android.gms/.nearby.sharing.InternalReceiveSurfaceActivity"
+"com.google.android.gms/.nearby.sharing.InternalShareSheetActivity"
+"com.google.android.gms/.nearby.sharing.QuickSettingsActivity"
+"com.google.android.gms/.nearby.sharing.ReceiveSurfaceActivity"
+"com.google.android.gms/.nearby.sharing.SettingsActivity"
+"com.google.android.gms/.nearby.sharing.SettingsActivityAlias"
+"com.google.android.gms/.nearby.sharing.SettingsCollapsingToolbarActivity"
+"com.google.android.gms/.nearby.sharing.SettingsCollapsingToolbarActivityAlias"
+"com.google.android.gms/.nearby.sharing.SettingsPreferenceActivity"
+"com.google.android.gms/.nearby.sharing.SettingsPreferenceActivityAlias"
+"com.google.android.gms/.nearby.sharing.SetupActivity"
+"com.google.android.gms/.nearby.sharing.ShareSheetActivity"
+"com.google.android.gms/.nearby.sharing.ShareSheetActivityAlias"
+"com.google.android.gms/.nearby.sharing.ShareSheetActivityAliasSamsungGallery"
+"com.google.android.gms/.nearby.sharing.ShareSheetActivityAliasSamsungMyFiles"
+"com.google.android.gms/.fitness.settings.FitnessSettingsActivity"
+"com.google.android.gms/.wearable.consent.PrivacySettingsActivity"
+"com.google.android.gms/.wearable.consent.TermsOfServiceActivity"
+"com.google.android.gms/.wearable.playsetup.ui.AppInstallActivity"
+"com.google.android.gms/.wearable.ui.WearableManageSpaceActivity"
+"com.google.android.gms/.feedback.FeedbackActivity"
+"com.google.android.gms/.feedback.IntentListenerFeedbackActivity"
+"com.google.android.gms/.feedback.PreviewActivity"
+"com.google.android.gms/.feedback.PreviewScreenshotActivity"
+"com.google.android.gms/.feedback.ShowTextActivity"
+"com.google.android.gms/.feedback.SuggestionsActivity"
+"com.google.android.gms/.googlehelp.contact.chat.ChatConversationActivity"
+"com.google.android.gms/.googlehelp.helpactivities.DeviceSignalsExportActivity"
+"com.google.android.gms/.googlehelp.helpactivities.ExitActivity"
+"com.google.android.gms/.googlehelp.helpactivities.HelpActivity"
+"com.google.android.gms/.googlehelp.helpactivities.OpenHelpActivity"
+"com.google.android.gms/.googlehelp.helpactivities.OpenHelpRtcActivity"
+"com.google.android.gms/.googlehelp.helpactivities.SystemAppTrampolineActivity"
+"com.google.android.gms/.googlehelp.webview.GoogleHelpRenderingApiWebViewActivity"
+"com.google.android.gms/.googlehelp.webview.GoogleHelpWebViewActivity"
+"com.google.android.gms/.ads.settings.AdsSettingsActivity"
+"com.google.android.gms/.plus.activity.AccountSignUpActivity"
+"com.google.android.gms/.plus.apps.ListAppsActivity"
+"com.google.android.gms/.plus.apps.ManageAppActivity"
+"com.google.android.gms/.plus.apps.ManageDeviceActivity"
+"com.google.android.gms/.plus.apps.ManageMomentActivity"
+"com.google.android.gms/.plus.audience.AclSelectionActivity"
+"com.google.android.gms/.plus.audience.AudienceSearchActivity"
+"com.google.android.gms/.plus.audience.CircleCreationActivity"
+"com.google.android.gms/.plus.audience.CircleSelectionActivity"
+"com.google.android.gms/.plus.audience.FaclSelectionActivity"
+"com.google.android.gms/.plus.audience.UpdateActionOnlyActivity"
+"com.google.android.gms/.plus.audience.UpdateCirclesActivity"
+"com.google.android.gms/.plus.circles.AddToCircleConsentActivity"
+"com.google.android.gms/.plus.oob.PlusActivity"
+"com.google.android.gms/.plus.oob.UpgradeAccountActivity"
+"com.google.android.gms/.plus.oob.UpgradeAccountInfoActivity"
+"com.google.android.gms/.plus.plusone.PlusOneActivity"
+"com.google.android.gms/.plus.sharebox.AddToCircleActivity"
+"com.google.android.gms/.plus.sharebox.ReplyBoxActivity"
+"com.google.android.gms/.plus.sharebox.ShareBoxActivity"
+"com.google.android.gms/.plus.ui.DpadNavigableWebViewActivity"
+"com.google.android.gms/.games.AddAccountActivity"
+"com.google.android.gms/.games.InstallPlayGamesActivity"
+"com.google.android.gms/.games.PlayGamesUpgradeActivity"
+"com.google.android.gms/.games.ui.ingame.FeatureNotAvailableActivity"
+"com.google.android.gms/.games.ui.profile.CreateProfileActivity"
+"com.google.android.gms/.games.ui.promotions.InGamePromotionsActivity"
+"com.google.android.gms/.games.ui.settings.GamesSettingsActivity"
+"com.google.android.gms/.games.ui.settingsv2.GamesSettingsActivity"
+"com.google.android.gms/.games.ui.signinflow.SignInActivity"
+"com.google.android.gms/.games.ui.upsell.InGameUiProxyActivity"
+"com.google.android.gms/.games.ui.upsell.InstallPlayGamesActivity"
+"com.google.android.gms/.games.ui.video.ScreenCaptureRequestActivity"
+"com.google.android.gms/.cast.activity.CastPopupActivity"
+"com.google.android.gms/.findmydevice.spot.deeplinks.DeepLinkActivity"
+"com.google.android.gms/.mdm.settings.FindMyDeviceSettingsActivity"
+"com.google.android.gms/.mdm.services.MdmPhoneWearableListenerService"
+"com.google.android.gms/.usagereporting.settings.UsageReportingActivity"
+"com.google.android.gms/.usagereporting.ui.UsageReportingDebugActivity"
+"com.google.android.gms/.usagereporting.ui.UsageReportingDialogActivity"
+"com.google.android.gms/.pay.deeplink.AliasAddSignUpValuablesDeepLinkActivity"
+"com.google.android.gms/.pay.deeplink.AliasSaveValuablesDeepLinkActivity"
+"com.google.android.gms/.pay.deeplink.AliasViewValuablesDetailsDeepLinkActivity"
+"com.google.android.gms/.pay.deeplink.DeepLinkActivity"
+"com.google.android.gms/.pay.main.PayActivity"
+"com.google.android.gms/.pay.main.PayOptionalActivity"
+"com.google.android.gms/.tapandpay.account.SelectAccountActivity"
+"com.google.android.gms/.tapandpay.admin.DeviceAdminPromptActivity"
+"com.google.android.gms/.tapandpay.diagnostics.TapDiagnosticsActivity"
+"com.google.android.gms/.tapandpay.issuer.RequestDeleteTokenActivity"
+"com.google.android.gms/.tapandpay.issuer.RequestSelectTokenActivity"
+"com.google.android.gms/.tapandpay.issuer.RequestTokenizeActivity"
+"com.google.android.gms/.tapandpay.keyguard.KeyguardSecurityInfoActivity"
+"com.google.android.gms/.tapandpay.settings.NotificationSettingsActivity"
+"com.google.android.gms/.tapandpay.settings.SelectOtherPaymentMethodActivity"
+"com.google.android.gms/.tapandpay.settings.SelectUntokenizedCardActivity"
+"com.google.android.gms/.tapandpay.settings.TapAndPaySettingsActivity"
+"com.google.android.gms/.tapandpay.tap.TapKeyguardActivity"
+"com.google.android.gms/.tapandpay.tap.TapUiActivity"
+"com.google.android.gms/.tapandpay.tokenization.AcceptGooglePayTosActivity"
+"com.google.android.gms/.tapandpay.tokenization.AcceptTosActivity"
+"com.google.android.gms/.tapandpay.tokenization.AddNewCardForTokenizationActivity"
+"com.google.android.gms/.tapandpay.tokenization.AddNewCardThroughBrowserActivity"
+"com.google.android.gms/.tapandpay.tokenization.EnableNfcActivity"
+"com.google.android.gms/.tapandpay.tokenization.EnterVerificationCodeActivity"
+"com.google.android.gms/.tapandpay.tokenization.NameResolutionActivity"
+"com.google.android.gms/.tapandpay.tokenization.SelectVerificationMethodActivity"
+"com.google.android.gms/.tapandpay.tokenization.SummaryActivity"
+"com.google.android.gms/.tapandpay.tokenization.TokenizePanActivity"
+"com.google.android.gms/.tapandpay.tokenization.UnsupportedCardActivity"
+"com.google.android.gms/.tapandpay.transaction.WalletTransactionDetailsActivity"
+"com.google.android.gms/.tapandpay.ui.EnableSecureKeyguardActivity"
+"com.google.android.gms/.tapandpay.ui.PromptSetupActivity"
+"com.google.android.gms/.tapandpay.ui.SecureDeviceActivity"
+"com.google.android.gms/.tapandpay.ui.ShowSecurityPromptActivity"
+"com.google.android.gms/.tapandpay.ui.TokenizationSuccessActivity"
+"com.google.android.gms/.tapandpay.ui.WarmWelcomeActivity"
+"com.google.android.gms/.tapandpay.wear.WearProxyActivity"
+"com.google.android.gms/.tapandpay.wear.WearProxyCompanionActivity"
+"com.google.android.gms/.tapandpay.wear.dialog.WearSecureKeyguardDialogActivity"
+"com.google.android.gms/.tapandpay.wear.dialog.WearTapAndPayDialogActivity"
+"com.google.android.gms/.wallet.activity.GenericDelegatorActivity"
+"com.google.android.gms/.wallet.activity.OrchestrationDelegatorActivity"
+"com.google.android.gms/.wallet.bender3.Bender3FinishRedirectProxyActivity"
+"com.google.android.gms/.wallet.common.ui.UpdateCallingAppActivity"
+"com.google.android.gms/.wallet.ib.IbPaymentRequestCompatActivity"
+"com.google.android.gms/.wallet.idcredit.IdCreditActivity"
+"com.google.android.gms/.wallet.im.ImRootActivity"
+"com.google.android.gms/.wallet.ow.ChooseAccountShimActivity"
+"com.google.android.gms/.wallet.ow.ChooseAccountShimInternalActivity"
+"com.google.android.gms/.wallet.paymentmethods.PaymentMethodsActivity"
+"com.google.android.gms/.wallet.pm.pmRootActivity"
+"com.google.android.gms/.wallet.redirect.FinishAndroidAppRedirectProxyActivity"
+"com.google.android.gms/.wallet.selector.InitializeGenericSelectorRootActivity"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardActivity"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardMainActivity"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardPortalActivity"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardReactivationActivity"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardTokenEligibleActivity"
+"com.google.android.gms/.wallet.timelineview.TimeLineViewActivity"
+"com.google.android.gms/.walletp2p.feature.completion.CompleteMoneyTransferActivity"
+"com.google.android.gms/.walletp2p.feature.transfer.TransferMoneyActivity"
+# Providers
+"com.google.android.gms/.nearby.discovery.fastpair.slice.FastPairContextualCardProvider"
+"com.google.android.gms/.nearby.discovery.fastpair.slice.FastPairSliceProvider"
+"com.google.android.gms/.nearby.sharing.SharingSliceProvider"
+"com.google.android.gms/.fitness.sync.FitnessContentProvider"
+"com.google.android.gms/.ads.adinfo.AdvertisingInfoContentProvider"
+"com.google.android.gms/.games.chimera.GamesContentProviderProxy"
+"com.google.android.gms/.games.provider.NotificationStubContentProvider"
+"com.google.android.gms/.plus.provider.PlusProvider"
+"com.google.android.gms/.phenotype.provider.ConfigurationProvider"
+"com.google.android.gms/.wallet.setupwizard.PaymentsSetupWizardSuggestionStateProvider"
+# Receivers
+"com.google.android.gms/.kids.account.receiver.ProfileOwnerReceiver"
+"com.google.android.gms/.nearby.discovery.fastpair.slice.FastPairContextualCardProvider"
+"com.google.android.gms/.googlehelp.GcmBroadcastReceiver"
+"com.google.android.gms/.ads.config.FlagsReceiver"
+"com.google.android.gms/.analytics.AnalyticsReceiver"
+"com.google.android.gms/.games.chimera.GamesSystemBroadcastReceiverProxy"
+"com.google.android.gms/.games.chimera.InternalIntentReceiverProxy"
+"com.google.android.gms/.phenotype.service.FlagOverrideReceiver"
+"com.google.android.gms/com.google.android.libraries.phenotype.client.stable.AccountRemovedBroadcastReceiver"
+"com.google.android.gms/.pay.notifications.GcmBroadcastReceiver"
+"com.google.android.gms/.tapandpay.admin.TpDeviceAdminReceiver"
+"com.google.android.gms/.tapandpay.notifications.GcmBroadcastReceiver"
+"com.google.android.gms/.stats.service.DropBoxEntryAddedReceiver"
+# Services
+"com.google.android.gms/.kids.GcmReceiverService"
+"com.google.android.gms/.kids.JobService"
+"com.google.android.gms/.kids.SecondaryLockscreenService"
+"com.google.android.gms/.kids.SupervisionService"
+"com.google.android.gms/.kids.chimera.KidsServiceProxy"
+"com.google.android.gms/.nearby.bootstrap.service.NearbyBootstrapService"
+"com.google.android.gms/.nearby.connection.service.NearbyConnectionsAndroidService"
+"com.google.android.gms/.nearby.discovery.service.DiscoveryService"
+"com.google.android.gms/.nearby.exposurenotification.WakeUpService"
+"com.google.android.gms/.nearby.exposurenotification.service.ExposureMatchingService"
+"com.google.android.gms/.nearby.exposurenotification.service.ExposureMatchingTriggerService"
+"com.google.android.gms/.nearby.exposurenotification.service.ExposureNotificationInternalService"
+"com.google.android.gms/.nearby.fastpair.service.WearableDataListenerService"
+"com.google.android.gms/.nearby.mediums.nearfieldcommunication.NfcAdvertisingService"
+"com.google.android.gms/.nearby.messages.debug.DebugPokeService"
+"com.google.android.gms/.nearby.messages.offline.OfflineCachingService"
+"com.google.android.gms/.nearby.messages.service.NearbyMessagesService"
+"com.google.android.gms/.nearby.sharing.DirectShareService"
+"com.google.android.gms/.nearby.sharing.ReceiveSurfaceService"
+"com.google.android.gms/.nearby.sharing.SharingSyncService"
+"com.google.android.gms/.nearby.sharing.SharingTileService"
+"com.google.android.gms/.chimera.CarBoundBrokerService"
+"com.google.android.gms/.chimera.CastPersistentBoundBrokerService"
+"com.google.android.gms/.fitness.cache.DataUpdateListenerCacheService"
+"com.google.android.gms/.fitness.sensors.sample.CollectSensorService"
+"com.google.android.gms/.fitness.service.ble.FitBleBroker"
+"com.google.android.gms/.fitness.service.config.FitConfigBroker"
+"com.google.android.gms/.fitness.service.goals.FitGoalsBroker"
+"com.google.android.gms/.fitness.service.history.FitHistoryBroker"
+"com.google.android.gms/.fitness.service.internal.FitInternalBroker"
+"com.google.android.gms/.fitness.service.proxy.FitProxyBroker"
+"com.google.android.gms/.fitness.service.recording.FitRecordingBroker"
+"com.google.android.gms/.fitness.service.sensors.FitSensorsBroker"
+"com.google.android.gms/.fitness.service.sessions.FitSessionsBroker"
+"com.google.android.gms/.fitness.service.wearable.WearableSyncAccountService"
+"com.google.android.gms/.fitness.service.wearable.WearableSyncConfigService"
+"com.google.android.gms/.fitness.service.wearable.WearableSyncConnectionService"
+"com.google.android.gms/.fitness.service.wearable.WearableSyncMessageService"
+"com.google.android.gms/.fitness.sync.FitnessSyncAdapterService"
+"com.google.android.gms/.fitness.sync.SyncGcmTaskService"
+"com.google.android.gms/.fitness.wearables.WearableSyncService"
+"com.google.android.gms/.wearable.service.WearableService"
+"com.google.android.gms/.feedback.FeedbackAsyncService"
+"com.google.android.gms/.feedback.LegacyBugReportService"
+"com.google.android.gms/.feedback.OfflineReportSendTaskService"
+"com.google.android.gms/.googlehelp.contact.chat.ChatRequestAndConversationService"
+"com.google.android.gms/.googlehelp.gcm.InvalidateGcmTokenGcmTaskService"
+"com.google.android.gms/.googlehelp.metrics.ReportBatchedMetricsGcmTaskService"
+"com.google.android.gms/.googlehelp.service.GoogleHelpService"
+"com.google.android.gms/.ads.AdRequestBrokerService"
+"com.google.android.gms/.ads.GservicesValueBrokerService"
+"com.google.android.gms/.ads.cache.CacheBrokerService"
+"com.google.android.gms/.ads.identifier.service.AdvertisingIdNotificationService"
+"com.google.android.gms/.ads.identifier.service.AdvertisingIdService"
+"com.google.android.gms/.ads.jams.NegotiationService"
+"com.google.android.gms/.ads.measurement.GmpConversionTrackingBrokerService"
+"com.google.android.gms/.ads.social.GcmSchedulerWakeupService"
+"com.google.android.gms/.analytics.AnalyticsService"
+"com.google.android.gms/.analytics.AnalyticsTaskService"
+"com.google.android.gms/.analytics.internal.PlayLogReportingService"
+"com.google.android.gms/.analytics.service.AnalyticsService"
+"com.google.android.gms/.plus.service.DefaultIntentService"
+"com.google.android.gms/.plus.service.ImageIntentService"
+"com.google.android.gms/.plus.service.OfflineActionSyncAdapterService"
+"com.google.android.gms/.plus.service.PlusService"
+"com.google.android.gms/.games.chimera.GamesAndroidServiceProxy"
+"com.google.android.gms/.games.chimera.GamesAsyncServiceProxy"
+"com.google.android.gms/.games.chimera.GamesSignInIntentServiceProxy"
+"com.google.android.gms/.games.chimera.GamesSignInServiceProxy"
+"com.google.android.gms/.games.chimera.GamesSyncServiceMainProxy"
+"com.google.android.gms/.games.chimera.GamesSyncServiceNotificationProxy"
+"com.google.android.gms/.games.chimera.GamesUploadServiceProxy"
+"com.google.android.gms/.games.chimera.RoomAndroidServiceProxy"
+"com.google.android.gms/.games.chimera.SnapshotEventServiceProxy"
+"com.google.android.gms/.photos.autobackup.service.AutoBackupService"
+"com.google.android.gms/.measurement.service.MeasurementBrokerService"
+"com.google.android.gms/.cast.media.CastMediaRoute2ProviderService"
+"com.google.android.gms/.cast.media.CastMediaRoute2ProviderService_Isolated"
+"com.google.android.gms/.cast.media.CastMediaRoute2ProviderService_Persistent"
+"com.google.android.gms/.cast.media.CastMediaRouteProviderService"
+"com.google.android.gms/.cast.media.CastMediaRouteProviderService_Isolated"
+"com.google.android.gms/.cast.media.CastMediaRouteProviderService_Persistent"
+"com.google.android.gms/.cast.media.CastRemoteDisplayProviderService"
+"com.google.android.gms/.cast.media.CastRemoteDisplayProviderService_Isolated"
+"com.google.android.gms/.cast.media.CastRemoteDisplayProviderService_Persistent"
+"com.google.android.gms/.cast.service.CastPersistentService"
+"com.google.android.gms/.cast.service.CastPersistentService_Isolated"
+"com.google.android.gms/.cast.service.CastPersistentService_Persistent"
+"com.google.android.gms/.cast.service.CastSocketMultiplexerLifeCycleService"
+"com.google.android.gms/.cast.service.CastSocketMultiplexerLifeCycleService_Isolated"
+"com.google.android.gms/.cast.service.CastSocketMultiplexerLifeCycleService_Persistent"
+"com.google.android.gms/.chimera.GmsIntentOperationService ## bug log flood"
+"com.google.android.gms/.common.config.PhenotypeCheckinService"
+"com.google.android.gms/.phenotype.gcm.GcmReceiverService"
+"com.google.android.gms/.phenotype.service.sync.PackageUpdateTaskService"
+"com.google.android.gms/.phenotype.service.sync.PhenotypeConfigurator"
+"com.google.android.gms/com.google.android.libraries.phenotype.registration.PhenotypeMetadataHolderService"
+"com.google.android.gms/.usagereporting.service.UsageReportingIntentService"
+"com.google.android.gms/.pay.gcmtask.PayGcmTaskService"
+"com.google.android.gms/.pay.hce.service.PayHceService"
+"com.google.android.gms/.pay.notifications.PayNotificationService"
+"com.google.android.gms/.pay.security.storagekey.service.StorageKeyCacheService"
+"com.google.android.gms/.tapandpay.gcmtask.TapAndPayGcmTaskService"
+"com.google.android.gms/.tapandpay.globalactions.QuickAccessWalletService"
+"com.google.android.gms/.tapandpay.hce.service.TpHceService"
+"com.google.android.gms/.tapandpay.security.StorageKeyCacheService"
+"com.google.android.gms/.tapandpay.tokenization.TokenizePanService"
+"com.google.android.gms/.tapandpay.wear.WearProxyService"
+"com.google.android.gms/.wallet.service.PaymentService"
+"com.google.android.gms/.wallet.service.WalletGcmTaskService"
+"com.google.android.gms/.wallet.service.address.AddressService"
+"com.google.android.gms/.backup.stats.BackupStatsService"
+"com.google.android.gms/.common.stats.StatsUploadService"
+"com.google.android.gms/.common.stats.net.NetworkReportService"
+"com.google.android.gms/.stats.PlatformStatsCollectorService"
+"com.google.android.gms/.stats.service.DropBoxEntryAddedService"
+"com.google.android.gms/.chimera.GmsIntentOperationService"
+)
+help_menu() {
+    echo
+    printf "\n${BOLD}infamick - System Utility Script${RESET}"
+    printf "\n${RED}${BOLD}2.1 (202408079)"
+    echo
+    printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
+    echo
+    printf "\n${YELLOW}Available commands:${RESET}"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}boost${RESET}   - Improves battery draining"
+        printf "\n                 Run only while charging at 100"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}info${RESET}    - Display battery health and"
+    printf "\n                 charging cycles"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}opt${RESET}     - Open battery optimizations setting"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}start${RESET}   - Enable battery charging"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}status${RESET}  - Show if charging is disabled/enabled"
+    printf "\n  ${BOLD}batt${RESET} ${BLUE}${BOLD}stop${RESET}    - Disable battery charging"
+    echo
+    printf "\n  ${BOLD}boot${RESET}    - Reset boot count settings"
+    printf "\n            Sets global boot_count and"
+    printf "\n            Phenotype_boot_count to 0"
+    echo
+    printf "\n  ${BOLD}btmap${RESET}   - Show current Power, Volume Up and Volume"
+    printf "\n            Down buttons action and remap them"
+    echo
+    printf "\n  ${BOLD}cache${RESET}   - Trim cache multiple times"
+    echo
+    printf "\n  ${BOLD}dd${RESET}      - Backup all possible partitions"
+    printf "\n            chosing a name"
+    echo
+    printf "\n  ${BOLD}dsp_rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
+    printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
+    echo
+    printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
+    printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
+    echo
+    printf "\n  ${BOLD}info${RESET}    - Display this help message"
+    printf "\n  ${BOLD}--help${RESET}  - Alias for info"
+    printf "\n  ${BOLD}-h${RESET}      - Alias for info"
+    echo
+    printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}bx${RESET}    - Show current Bixby button action and"
+    printf "\n              remap it"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}csc${RESET}   - Change current CSC"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_d${RESET} - Disable knox packages"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dex_e${RESET} - Dnable knox packages"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}dim${RESET}   - Open hidden Extra Dim menu"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}gest${RESET}  - Open hidden Gestures menu"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_b${RESET} - Open 5G Network Bands guide"
+    echo
+    printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
+    echo
+    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
+    printf "\n            Requires:"
+    printf "\n              - Current SOT hours and minutes values"
+    printf "\n              - Discharged percentage value"
+    echo
+    printf "\n  ${BOLD}temp${RESET}    - Monitor system temperatures"
+    printf "\n            Displays real-time temperatures for"
+    printf "\n            Battery, CPU, and GPU"
+    printf "\n            Press CTRL+C to exit temperature monitoring"
+    echo
+    printf "\n${GREEN}Examples:${RESET}"
+    printf "\n  infamick batt stop"
+    printf "\n  infamick gmsd"
+    printf "\n  infamick exdim"
+    printf "\n  infamick perf"
+    printf "\n  infamick smg dim"
+    printf "\n  infamick smg ntw_l"
+    printf "\n  infamick temp"
+    echo
+    printf "\n${YELLOW}Note:${RESET} This script requires root access to function properly.\n"
+}
+
+boot() {
+    settings put global boot_count 0
+    settings put global Phenotype_boot_count 0
+    printf "${INDENTN}${GREEN}[i]Boot count resetted successfully.${RESET}\n"
+}
+
+boost_app() {
+    printf "${INDENTN}${YELLOW}[i]Boosting apps${RESET}\n"
+    cmd package compile -m speed-profile -a
+    printf "${INDENT}${GREEN}[i]Done${RESET}\n"
+}
+
+boost_battery() {
+    printf "${INDENTN}${YELLOW}[i]Boosting battery${RESET}\n"
+    if cmd package bg-dexopt-job >/dev/null 2>&1; then
+        printf "${INDENTN}${GREEN}[i]Done${RESET}\n"
+    else
+        printf "${INDENTN}${RED}[!]Failure${RESET}\n"
+        printf "${INDENTN}${YELLOW}[i]Please charge your phone to 100%%${RESET}\n"
+    fi
+}
+
+battinfo() {
+
+    battery_info=$(/system/bin/dumpsys battery)
+    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+
+    # Dividi il valore di mSavedBatteryUsage per 100
+    cycles=$((cycles_raw / 100))
+    printf "${INDENTN}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
+    printf "${INDENTN}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
+    exit 0
+}
+
+gms_disable() {
+    printf "${INDENTN}${YELLOW}[i]Disabling GMS${RESET}\n"
+    sleep 2
+    for service in "${services[@]}"; do
+        pm disable "$service"
+    done
+    printf "${INDENT}${GREEN}[i]GMS disable process completed.${RESET}\n"
+}
+
+gms_enable() {
+    printf "${INDENTN}${YELLOW}[i]Enabling GMS${RESET}\n"
+    sleep 2
+    for service in "${services[@]}"; do
+        pm enable "$service"
+    done
+    printf "${INDENT}${GREEN}[i]GMS enable process completed.${RESET}\n"
+}
+
+sot_calculator() {
+    while true; do
+        printf "${INDENTN}${GREEN}${BOLD}Enter hours of your current SOT:${RESET}${INDENTN}"
+        read hours
+        case $hours in
+            ''|*[!0-9]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid number for hours.${RESET}" ;;
+            *) break ;;
+        esac
+    done
+
+    while true; do
+        printf "${INDENT}${GREEN}${BOLD}Enter minutes of your current SOT:${RESET}${INDENTN}"
+        read minutes
+        case $minutes in
+            ''|*[!0-9]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid number for minutes.${RESET}" ;;
+            *) break ;;
+        esac
+    done
+
+    while true; do
+        printf "${INDENT}${GREEN}${BOLD}Enter the discharged percentage:${RESET}${INDENTN}"
+        read percentage
+        case $percentage in
+            ''|*[!0-9.]*) echo "${INDENT}${RED}${BOLD}[!] Error: Please enter a valid percentage (0-100).${RESET}" ;;
+            *)
+                if [ $(echo "$percentage > 0 && $percentage <= 100" | bc -l) -eq 1 ]; then
+                    break
+                else
+                    echo "${INDENT}${RED}${BOLD}[!] Error: Percentage must be between 0 and 100.${RESET}"
+                fi
+                ;;
+        esac
+    done
+
+    # Calculate total minutes
+    total_minutes=$(( hours * 60 + minutes ))
+
+    # Calculate estimated SOT in hours
+    result=$(echo "scale=2; ($total_minutes * 100) / ($percentage * 60)" | bc)
+
+    # Convert result to integer hours and minutes
+    estimated_hours=${result%.*}
+    decimal_part=${result#*.}
+    estimated_minutes=$(echo "scale=0; ($decimal_part * 60) / 100" | bc)
+
+    # Calculate harshrate
+    harshrate=$(echo "scale=2; 100 / $result" | bc)
+
+    echo "${INDENT}${BOLD}Estimated SOT with 100% battery: ${YELLOW}${BOLD}${estimated_hours}h and ${estimated_minutes}m${RESET}"
+    echo "${INDENT}${BOLD}Harshrate: ${YELLOW}${BOLD}${harshrate}%/hr${RESET}"
+}
+
+clear_cache() {
+    num_iterations=44
+    error_occurred=false
+    printf "${INDENTN}${YELLOW}[i]Clearing cache\n"
+    for i in $(seq 1 $num_iterations); do
+        pm trim-caches 999999999999999999
+        
+        # Check if the command was successful
+        if [ $? -ne 0 ]; then
+            # An error occurred while executing the command
+            printf "${INDENT}${RED}Error: Command pm trim-caches failed.${RESET}"
+            error_occurred=true
+            break
+        fi
+        
+        if [ $i -eq 22 ]; then
+            printf "${INDENT}${YELLOW}[i]Please wait ...${RESET}\n"
+        fi
+        
+        # Progress counter
+        progress=$((100 * i / num_iterations))
+        # Print the progress counter
+        echo -n -e "\r    ${GREEN}["
+        for j in $(seq 1 $((progress / 2))); do
+            echo -n "="
+        done
+        printf ">%02d%%]${RESET}" $progress
+    done
+    
+    if [ "$error_occurred" = false ]; then
+        sleep 2
+        clear
+        printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+    fi
+}
+smg_ntw() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}"
+    printf "${INDENTN}${YELLOW}menu.${RESET}"
+    sleep 2
+    printf "${INDENTN}${YELLOW}[i] Refer to the guide below for better ${RESET}"
+    printf "${INDENTN}${YELLOW}understanding, then come back again.${RESET}"
+    sleep 2
+    nohup am start -a android.intent.action.VIEW -d https://t.me/SamsungTweaks/221 >/dev/null 2>&1 &
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+    am broadcast -a com.samsung.android.action.SECRET_CODE -d android_secret_code://27663368378 -n com.sec.android.RilServiceModeApp/.SecKeyStringBroadcastReceiver > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+smg_band() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Service mode'${RESET}\n"
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 2
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+    am start com.samsung.android.app.telephonyui/.hiddennetworksetting.MainActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+
+extradim() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Extra Dim' menu.${RESET}\n" ; sleep 1
+    printf "${INDENT}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$ReduceBrightColorsSettingsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+gestures() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the 'Gesture Settigns'${RESET}\n" 
+    printf "${INDENT}${YELLOW}menu.${RESET}"
+    sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$GestureNavigationSettingsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+# Example usage:
+# infamick_sot 30 50
+
+disable_package() {
+    package_name="$1"
+    if pm disable-user --user 0 "$package_name" > /dev/null 2>&1; then
+        printf "${INDENT}${BOLD}${GREEN}[+] Successfully disabled: ${package_name}${RESET}\n"
+    else
+        printf "${INDENT}${BOLD}${RED}[-] Failed to disable: ${package_name}${RESET}\n"
+    fi
+}
+
+
+enable_package() {
+    package_name="$1"
+    if pm enable "$package_name" > /dev/null 2>&1; then
+        printf "${INDENT}${BOLD}${GREEN}[+] Successfully enabled: ${package_name}${RESET}\n"
+    else
+        printf "${INDENT}${BOLD}${RED}[-] Failed to enable: ${package_name}${RESET}\n"
+    fi
+}
+
+deknox_disable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${INDENTN}${YELLOW}[i] Starting Knox disable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        disable_package "$package"
+    done
+
+    printf "${INDENTN}${YELLOW}[i] Knox disable process completed.${RESET}\n"
+}
+
+deknox_enable() {
+    knox_packages=(
+        "com.samsung.android.knox.analytics.uploader"
+        "com.samsung.android.bbc.bbcagent"
+        "com.knox.vpn.proxyhandler"
+        "com.samsung.android.knox.containercore"
+        "com.samsung.knox.keychain"
+        "com.sec.enterprise.knox.attestation"
+        "com.sec.enterprise.knox.cloudmdm.smdms"
+        "com.samsung.android.knox.kpecore"
+        "com.samsung.android.knox.pushmanager"
+        "com.samsung.knox.securefolder"
+    )
+
+    printf "${INDENTN}${YELLOW}[i] Starting Knox enable process...${RESET}\n"
+
+    for package in "${knox_packages[@]}"; do
+        enable_package "$package"
+    done
+
+    printf "${INDENTN}${YELLOW}[i] Knox enable process completed.${RESET}\n"
+}
+change_csc() {
+    printf "${INDENTN}${YELLOW}[i] Always check /optics or /product to ensure${RESET}"
+    printf "${INDENTN}${YELLOW}the required CSC folder is available.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] If you choose the wrong CSC code, the entire CSC${RESET}"
+    printf "${INDENTN}${YELLOW}features will break.${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    current_csc=$(cat /efs/imei/mps_code.dat)
+    printf "${INDENTN}${YELLOW}[*] Your Current CSC : ${BOLD_WHITE}%s${RESET}\n" "$current_csc"
+    printf "${INDENT}${YELLOW}[?] Enter your Desired CSC: ${RESET}"
+    read -r csc_code
+    if [ -z "$csc_code" ] || [[ "$csc_code" == *" "* ]]; then
+        printf "${INDENT}${RED}[!] Error: Invalid CSC code. Please enter a valid code.${RESET}\n\n"
+        exit 1
+        return
+        fi
+
+            # Check for simple letters in CSC code
+    if [[ "$csc_code" != *[!\ ]* ]]; then
+        printf "${INDENT}${RED}[!] Error: CSC code should contain at least one non-space character.${RESET}\n\n"
+        exit 1
+        return
+    fi
+
+    # Update the CSC code
+    printf "${INDENT}"
+
+    # To printf "\n%.0s" {1..100} ; clear the current values
+    > /efs/imei/mps_code.dat ; > /efs/imei/omcnw_code.dat
+    echo "$csc_code" > /efs/imei/mps_code.dat ; echo "$csc_code" > /efs/imei/omcnw_code.dat
+    printf "${INDENT}${GREEN}[+] CSC has been updated to: ${BOLD_WHITE}%s${RESET}\n\n" "$csc_code"
+    printf "${INDENT}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+}
+
+bixby_mapper() {
+    printf "${INDENTN}${YELLOW}[i] This function will remap the Bixby button${RESET}"
+    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
+    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    file1="/system/usr/keylayout/Generic.kl"
+    file2="/system/usr/keylayout/Generic_internal.kl"
+    file3="/system/usr/keylayout/gpio_keys.kl"
+    value=""
+    file=""
+
+    # Cerca nei file
+    for f in "$file1" "$file2" "$file3"; do
+        if [ -f "$f" ]; then
+            value=$(grep "key 703" "$f" | awk '{print $3}')
+            if [ -n "$value" ]; then
+                file="$f"
+                break
+            fi
+        fi
+    done
+
+    if [ -n "$value" ]; then
+        printf "${INDENTN}${YELLOW}[*] Current value for Bixby button: ${BOLD_WHITE}%s${RESET}" "$value"
+    else
+        printf "${INDENTN}${RED}[!] Value not found for Bixby button${RESET}"
+        return
+    fi
+
+    printf "${INDENTN}${YELLOW}[?] Choose new value for Bixby button:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
+    printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
+    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
+    printf "${INDENTN}${WHITE_BOLD}4. CALENDAR - open calendar app"
+    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app"
+    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app"
+    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app"
+    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton"
+    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser"
+    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu"
+    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app"
+    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track"
+    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause"
+    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track "
+    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player"
+    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up"
+    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down"
+    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu"
+    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel"
+    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search"
+    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone"
+    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot"
+    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant"
+    printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
+    printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
+    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
+    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
+    read -r choice
+
+    case $choice in
+        1) new_value="APP_SWITCH" ;;
+        2) new_value="BACK" ;;
+        3) new_value="CALCULATOR" ;;
+        4) new_value="CALENDAR" ;;
+        5) new_value="CALL" ;;
+        6) new_value="CAMERA" ;;
+        7) new_value="CONTACTS" ;;
+        8) new_value="HOME" ;;
+        9) new_value="EXPLORER" ;;
+        10) new_value="MENU" ;;
+        11) new_value="MESSAGE" ;;
+        12) new_value="MEDIA_NEXT" ;;
+        13) new_value="MEDIA_PLAY_PAUSE" ;;
+        14) new_value="MEDIA_PREVIOUS" ;;
+        15) new_value="MUSIC" ;;
+        16) new_value="PAGE_UP" ;;
+        17) new_value="PAGE_DOWN" ;;
+        18) new_value="POWER" ;;
+        19) new_value="QPANEL_ON_OFF" ;;
+        20) new_value="SEARCH" ;;
+        21) new_value="SLEEP" ;;
+        22) new_value="SYSRQ" ;;
+        23) new_value="VOICE_ASSIST" ;;
+        24) new_value="VOLUME_DOWN" ;;
+        25) new_value="VOLUME_MUTE" ;;
+        26) new_value="VOLUME_UP" ;;
+        27) new_value="WAKEUP" ;;
+                        
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
+            return
+            ;;
+    esac
+
+    # Update the value
+    temp_file="/data/local/tmp/temp_key_file"
+    grep -v "key 703" "$file" > "$temp_file"
+    echo "key 703 $new_value" >> "$temp_file"
+
+    # Check if we have write permission
+    if ! touch "$file" 2>/dev/null; then
+        printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
+        su -c "cp $temp_file $file && chmod 644 $file"
+    else
+        cp "$temp_file" "$file"
+        chmod 644 "$file"
+    fi
+
+    rm "$temp_file"
+
+    printf "${INDENTN}${GREEN}[+] Value for Bixby Button has been updated${RESET}"
+    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
+    printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+    printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
+    reboot_quest
+}
+
+battsettings() {
+    printf "${INDENTN}${YELLOW}[i] This will redirect you to the Battery${RESET}"
+    printf "${INDENTN}${YELLOW}Optimizations settings.${RESET}" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    am force-stop com.android.settings > /dev/null 2>&1
+    am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
+    printf "${INDENT}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
+}
+display_reset() {
+    printf "${INDENTN}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a  
+    wm size reset
+    wm density reset
+    printf "${INDENT}${GREEN}${BOLD}\n[+] Execution Succeed..! \n${RESET}"
+}
+display_see() {
+    wm_size_physycal=$(wm size | awk '/Physical size:/ {print $3}')
+    wm_size_override=$(wm size | awk '/Override size:/ {print $3}')
+    dpi=$(wm density | awk '{print $3}')
+    printf "${INDENTN}${GREEN}[i]Your screen resolution is"
+    printf "${INDENTN}${BLUE}${BOLD}Physical size: $wm_size_physycal${RESET}"
+    printf "${INDENTN}${BLUE}${BOLD}Override size: $wm_size_override${RESET}"
+    printf "${INDENTN}${BLUE}${BOLD}Dpi: $dpi${RESET}\n"
+}
+display_set() {
+    printf "${INDENT}${YELLOW}[i] Choose Screen resolution ${BLUE}${BOLD}width${WHITE} x ${BLUE}height${RESET}${INDENT}"
+    read -r screenres
+    printf "${INDENT}${YELLOW}[i] Choose Dpi${RESET}${INDENT}"
+    read -r dpisize
+    printf "${INDENT}${YELLOW}[i] Press ENTER to apply new Screen Resolution${RESET}\n"
+    wm size $screenres
+    wm density $dpisize
+}
+
+dd_backup() {
+    printf "${INDENTN}${YELLOW}[i] This script will backup a partition.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Make sure you have enough space on /sdcard.${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    # List of possible partition directories
+    possible_partitions="/dev/block/by-name /dev/block/sdcard /dev/block/by-num /dev/block/bootdevice/by-name /dev/block/bootdevice/sdcard /dev/block/bootdevice/by-num /dev/block/platform/soc/1da4000.ufshc/by-name"
+
+    # Function to find partitions
+    find_partitions() {
+        for dir in $possible_partitions; do
+            if [ -d "$dir" ]; then
+                ls "$dir"
+            fi
+        done
+    }
+
+    # Find all partitions
+    all_partitions=$(find_partitions)
+
+    # Check if partitions were found
+    if [ -z "$all_partitions" ]; then
+        printf "${INDENTN}${RED}[!] Error: No partitions found in the specified directories.${RESET}"
+        return 1
+    fi
+
+    # Show found partitions
+    printf "${INDENTN}${YELLOW}[*] Partitions found:${RESET}"
+    printf "${INDENT}${BOLD_WHITE}%s${RESET}\n" "$all_partitions"
+
+    # Ask user which partition to backup
+    printf "${INDENTN}${YELLOW}[?] Enter the name of the partition"
+    printf "${INDENTN}you want to backup: ${RESET}"
+    read -r partition_name
+
+    # Find the full path of the partition
+    partition_path=""
+    for dir in $possible_partitions; do
+        if [ -e "$dir/$partition_name" ]; then
+            partition_path="$dir/$partition_name"
+            break
+        fi
+    done
+
+    if [ -z "$partition_path" ]; then
+        printf "${INDENT}${RED}[!] Error: Partition not found.${RESET}\n\n"
+        return 1
+    fi
+
+    # Ask user for the backup file name
+    printf "${INDENT}${YELLOW}[?] Enter the name for the backup file"
+    printf "${INDENTN}(without extension): ${RESET}"
+    read -r backup_name
+
+    # Execute the backup
+    backup_file="/sdcard/${backup_name}.img"
+    printf "${INDENT}${YELLOW}[*] Backing up ${BOLD_WHITE}$partition_name${YELLOW}"
+    printf "${INDENTN}to ${BOLD_WHITE} $backup_file${RESET}\n"
+    dd if="$partition_path" of="$backup_file" bs=4M >/dev/null 2>&1
+
+    printf "${INDENT}${GREEN}[+] Backup completed.${RESET}\n\n"
+    printf "${INDENT}${YELLOW}[i] Execution Successful..! ${RESET}\n"
+
+}
+button_mapper() {
+    printf "${INDENTN}${YELLOW}[i] This function will remap universal Android"
+    printf "${INDENTN}buttons${RESET}"
+    printf "${INDENTN}${YELLOW}[i] in Generic.kl, Generic_internal.kl, or${RESET}"
+    printf "${INDENTN}${YELLOW}gpio_keys.kl${RESET}"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}"
+    read -r a
+
+    file1="/system/usr/keylayout/Generic.kl"
+    file2="/system/usr/keylayout/Generic_internal.kl"
+    file3="/system/usr/keylayout/gpio_keys.kl"
+    value=""
+    file=""
+
+    # Chiedi all'utente quale tasto vuole rimappare
+    printf "${INDENTN}${YELLOW}[?] Which button do you want to remap:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. Power"
+    printf "${INDENTN}${BOLD_WHITE}2. Volume Up"
+    printf "${INDENTN}${BOLD_WHITE}3. Volume Down"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-3): ${RESET}"
+    read -r button_choice
+
+    case $button_choice in
+        1) key_code="116" 
+           buttonc="Power" ;;
+        2) key_code="115" 
+           buttonc="Volume Up" ;;
+        3) key_code="114" 
+           buttonc="Volume Down" ;;
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 3.${RESET}\n"
+            return
+            ;;
+    esac
+
+    # Cerca nei file, dando priorità a Generic_internal.kl
+    if [ -f "$file2" ]; then
+        file="$file2"
+        value=$(grep "key $key_code" "$file2" | awk '{print $3}')
+    fi
+    
+    if [ -z "$value" ] && [ -f "$file1" ]; then
+        file="$file1"
+        value=$(grep "key $key_code" "$file1" | awk '{print $3}')
+    fi
+    
+    if [ -z "$value" ] && [ -f "$file3" ]; then
+        file="$file3"
+        value=$(grep "key $key_code" "$file3" | awk '{print $3}')
+    fi
+
+    if [ -n "$value" ]; then
+        printf "${INDENTN}${YELLOW}[*] Current value for $buttonc: ${BOLD_WHITE}%s${RESET}" "$value"
+    else
+        printf "${INDENTN}${RED}[!] Value not found for key $key_code${RESET}"
+        return
+    fi
+
+    printf "${INDENTN}${YELLOW}[?] Choose new value for the $buttonc button:${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}1. APP_SWITCH - Recent apps button"
+    printf "${INDENTN}${WHITE_BOLD}2. BACK - back gesture "
+    printf "${INDENTN}${BOLD_WHITE}3. CALCULATOR - open calculator app"
+    printf "${INDENTN}${WHITE_BOLD}4. CALENDAR - open calendar app"
+    printf "${INDENTN}${BOLD_WHITE}5. CALL - open call app"
+    printf "${INDENTN}${BOLD_WHITE}6. CAMERA - starts camera app"
+    printf "${INDENTN}${BOLD_WHITE}7. CONTACTS - open contacts app"
+    printf "${INDENTN}${BOLD_WHITE}8. HOME - Homebutton"
+    printf "${INDENTN}${BOLD_WHITE}9. EXPLORER - Internet-browser"
+    printf "${INDENTN}${BOLD_WHITE}10. MENU - menu"
+    printf "${INDENTN}${BOLD_WHITE}11. MESSAGE - open message app"
+    printf "${INDENTN}${BOLD_WHITE}12. MEDIA_NEXT - next track"
+    printf "${INDENTN}${BOLD_WHITE}13. MEDIA_PLAY_PAUSE - play/pause"
+    printf "${INDENTN}${BOLD_WHITE}14. MEDIA_PREVIOUS - previous track "
+    printf "${INDENTN}${BOLD_WHITE}15. MUSIC - starts your favorite music player"
+    printf "${INDENTN}${BOLD_WHITE}16. PAGE_UP -  page up"
+    printf "${INDENTN}${BOLD_WHITE}17. PAGE_DOWN -  page down"
+    printf "${INDENTN}${BOLD_WHITE}18. POWER - Powermenu"
+    printf "${INDENTN}${BOLD_WHITE}19. QPANEL_ON_OFF - Notification panel"
+    printf "${INDENTN}${BOLD_WHITE}20. SEARCH - search"
+    printf "${INDENTN}${BOLD_WHITE}21. SLEEP -  sleep phone"
+    printf "${INDENTN}${BOLD_WHITE}22. SYSRQ - screenshot"
+    printf "${INDENTN}${BOLD_WHITE}23. VOICE_ASSIST - default voice assistant"
+    printf "${INDENTN}${WHITE_BOLD}24. VOLUME_DOWN - sets volume down"
+    printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
+    printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
+    printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
+    read -r choice
+
+    case $choice in
+        1) new_value="APP_SWITCH" ;;
+        2) new_value="BACK" ;;
+        3) new_value="CALCULATOR" ;;
+        4) new_value="CALENDAR" ;;
+        5) new_value="CALL" ;;
+        6) new_value="CAMERA" ;;
+        7) new_value="CONTACTS" ;;
+        8) new_value="HOME" ;;
+        9) new_value="EXPLORER" ;;
+        10) new_value="MENU" ;;
+        11) new_value="MESSAGE" ;;
+        12) new_value="MEDIA_NEXT" ;;
+        13) new_value="MEDIA_PLAY_PAUSE" ;;
+        14) new_value="MEDIA_PREVIOUS" ;;
+        15) new_value="MUSIC" ;;
+        16) new_value="PAGE_UP" ;;
+        17) new_value="PAGE_DOWN" ;;
+        18) new_value="POWER" ;;
+        19) new_value="QPANEL_ON_OFF" ;;
+        20) new_value="SEARCH" ;;
+        21) new_value="SLEEP" ;;
+        22) new_value="SYSRQ" ;;
+        23) new_value="VOICE_ASSIST" ;;
+        24) new_value="VOLUME_DOWN" ;;
+        25) new_value="VOLUME_MUTE" ;;
+        26) new_value="VOLUME_UP" ;;
+        27) new_value="WAKEUP" ;;
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
+            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
+            return
+            ;;
+    esac
+
+    # Update the value
+    temp_file="/data/local/tmp/temp_key_file"
+    grep -v "key $key_code" "$file" > "$temp_file"
+    echo "key $key_code $new_value" >> "$temp_file"
+
+    # Check if we have write permission
+    if ! touch "$file" 2>/dev/null; then
+        printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
+        su -c "cp $temp_file $file && chmod 644 $file"
+    else
+        cp "$temp_file" "$file"
+        chmod 644 "$file"
+    fi
+
+    rm "$temp_file"
+
+    printf "${INDENTN}${GREEN}[+] Value for key $buttonc has been updated${RESET}"
+    printf "${INDENTN}${GREEN}to: ${BOLD_WHITE}%s${RESET}" "$new_value"
+    printf "${INDENTN}${YELLOW}[i] Execution Succeed..! ${RESET}\n"
+    printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
+    reboot_quest
+}
+
+check_charging() {
+    if [ -f "$CHARGING_PATH" ]; then
+        status=$(cat "$CHARGING_PATH")
+        if [ "$status" -eq 1 ]; then
+            printf "${INDENTN}${GREEN}[i] Charging is currently enabled.${RESET}\n"
+        else
+            printf "${INDENTN}${RED}[i] Charging is currently disabled.${RESET}\n"
+        fi
+    else
+        printf "${INDENTN}${RED}[!] Error: Charging status file not found."
+        exit 1
+    fi
+}
+
+set_charging() {
+    if [ -f "$CHARGING_PATH" ]; then
+        echo "$1" > "$CHARGING_PATH"
+        if [ $? -eq 0 ]; then
+            printf "${INDENTN}${GREEN}[+] Charging has been $2.${RESET}\n"
+        else
+            printf "${INDENTN}${RED}[!] Error: Failed to $2 charging.${RESET}\n"
+        fi
+    else
+        printf "[!] Error: Charging control file not found."
+        exit 1
+    fi
+}
+#Main logic
+case "$1" in
+    batt)
+        if [ -z "$2" ]; then
+            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+        fi
+        case "$2" in
+            boost)
+            boost_battery
+            ;;
+            info)
+            battinfo
+            ;;
+            opt)
+            battsettings
+            ;;
+            start)
+            set_charging 1 "enabled"
+            ;;
+            status)
+            check_charging
+            ;;
+            stop)
+            set_charging 0 "disabled"
+            ;;
+            *)
+                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+                exit 1
+                ;;
+            esac
+        ;;     
+    boot)
+        boot
+        ;;
+    btmap)
+        button_mapper
+        ;;
+    cache)
+        clear_cache
+        ;;
+    dd)
+        dd_backup
+        ;;
+    dsp_rs)
+        display_reset
+        ;;
+    dps_set)
+        display_set
+        ;;
+    dsp_sw)
+        display_see
+        ;;
+    gmsd)
+        gms_disable
+        ;;
+    gmse)
+        gms_enable
+        ;;
+    perf)
+        boost_app
+        ;;
+    smg)
+        if [ -z "$2" ]; then
+            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+            exit 1
+        fi
+        case "$2" in
+            bx)
+                smg_check || return
+                bixby_mapper
+                ;;
+            csc)
+                smg_check || return 
+                change_csc
+                ;;
+            dex_d)
+                smg_check || return 
+                deknox_disable
+                ;;
+            dex_e)
+                smg_check || return 
+                deknox_enable
+                ;;
+            dim)
+                smg_check || return 
+                extradim
+                ;;
+            gest)
+                smg_check || return 
+                gestures
+                ;;
+            ntw_b)
+                smg_check || return 
+                smg_ntw
+                ;;
+            ntw_l)
+                smg_check || return 
+                smg_band
+                ;;
+            *)
+                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+                exit 1
+                ;;
+            esac
+        ;;
+    sot)
+        sot_calculator
+        ;;
+    temp)
+        temp_check
+        ;;
+    info|--help|-h)
+        help_menu
+        ;;
+    *)
+        printf "${INDENT}${RED}Error: Unknown command '$1'${RESET}"
+        printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+        exit 1
+        ;;
+esac
