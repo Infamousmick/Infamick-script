@@ -36,9 +36,9 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 This script is designed to be flashed as a module using Magisk, KernelSU, or APatch. 
 
 1. Download the latest release zip file [here](https://github.com/Infamousmick/Infamick-script/releases).
-2. Flash the zip file through Magisk, KernelSU, or APatch in recovery mode.
+2. Flash the zip file through Magisk, KernelSU, or APatch.
 3. Reboot your device.
-4. To update u can find them into Magisk/KSU/Apatch app
+4. To update check into Magisk/KSU/Apatch app
 
 ## Usage
 After installation, you can use the script by running `infamick` in a terminal with root access.
