@@ -1177,7 +1177,7 @@ case "$1" in
     batt)
         if [ -z "$2" ]; then
             printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
-            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
             exit 1
         fi
         case "$2" in
@@ -1201,7 +1201,7 @@ case "$1" in
             ;;
             *)
                 printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
-                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+                printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
                 exit 1
                 ;;
             esac
@@ -1239,7 +1239,7 @@ case "$1" in
     smg)
         if [ -z "$2" ]; then
             printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
-            printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+            printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
             exit 1
         fi
         case "$2" in
@@ -1277,7 +1277,7 @@ case "$1" in
                 ;;
             *)
                 printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
-                printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+                printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
                 exit 1
                 ;;
             esac
@@ -1293,7 +1293,7 @@ case "$1" in
         ;;
     *)
         printf "${INDENT}${RED}Error: Unknown command '$1'${RESET}"
-        printf "${INDENT}Use '${BOLD}infamick info${RESET}' for usage information."
+        printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
         exit 1
         ;;
 esac
