@@ -468,7 +468,7 @@ help_menu() {
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
-    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100% battery"
+    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100 battery"
     printf "\n            Requires:"
     printf "\n              - Current SOT hours and minutes values"
     printf "\n              - Discharged percentage value"
