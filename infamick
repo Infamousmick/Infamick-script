@@ -1294,6 +1294,7 @@ case "$1" in
             oneui)
                 smg_check || return
                 fix_oneui
+                ;;
             *)
                 printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
                 printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
