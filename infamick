@@ -1194,7 +1194,7 @@ fix_datausage() {
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
     am start -n com.android.settings/.Settings\$UsageAccessSettingsActivity -a android.intent.action.VIEW -d package:com.samsung.android.app.routines > /dev/null 2>&1
-    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     read -r a 
 }
 
@@ -1246,8 +1246,6 @@ fix_smgdrain(){
     if [ -z $( am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1) ]; then
          am start -n com.samsung.android.sm_cn/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1
     fi
-    
-
 }
 
 fix_gms(){
