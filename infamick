@@ -1190,7 +1190,6 @@ fix_datausage() {
     printf "${INDENTN}${YELLOW}Health Manager Service', 'Media Storage','Package"
     printf "${INDENTN}${YELLOW}installation','User Settings'"
     printf "${INDENTN}${YELLOW}'Permission checker app'."
-    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
     am start -n com.android.settings/.Settings\$UsageAccessSettingsActivity -a android.intent.action.VIEW -d package:com.samsung.android.app.routines > /dev/null 2>&1
@@ -1233,7 +1232,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[3a] and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for Samsung Device Care."
     #Samsung Device care settings
-    printf "${INDENTN}${YELLOW}[i]I'll show u what to do next redirecting"
+    printf "${INDENTN}${YELLOW}\n[i]I'll show u what to do next redirecting"
     printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info."
     printf "${INDENTN}${YELLOW} U have to:"
     printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want"
@@ -1241,7 +1240,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[2] Put to DEEP sleep all the apps that u don't need"
     printf "${INDENTN}${YELLOW} to receive notifications"
     printf "${INDENTN}${YELLOW}[3] Disable Adaptive Battery"
-    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
+    printf "${INDENTN}${YELLOW}\nEnjoy :)${RESET}\n"
     read -r a
     if [ -z $( am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1) ]; then
          am start -n com.samsung.android.sm_cn/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1
@@ -1292,7 +1291,7 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for Google Play Services,"
     printf "${INDENTN}${YELLOW}Google Play Store and Android System webview"
-    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
+    printf "${INDENTN}${YELLOW}\nEnjoy :)${RESET}\n"
    }
 fix_oneui() {
 #Oneui Launcher
@@ -1315,7 +1314,7 @@ fix_oneui() {
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
     printf "${INDENTN}${YELLOW}and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
-    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
+    printf "${INDENTN}${YELLOW}\nEnjoy :)${RESET}\n"
 }
 
 
