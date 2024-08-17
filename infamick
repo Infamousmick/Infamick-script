@@ -1232,7 +1232,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[3a] and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for Samsung Device Care."
     #Samsung Device care settings
-    printf "${INDENTN}${YELLOW}\n[i]I'll show u what to do next redirecting"
+    printf "\n${INDENTN}${YELLOW}[i]I'll show u what to do next redirecting"
     printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info."
     printf "${INDENTN}${YELLOW} U have to:"
     printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want"
