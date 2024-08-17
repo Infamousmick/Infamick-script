@@ -1291,9 +1291,9 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
     printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
-    printf "${INDENTN}${YELLOW}[1] and reboot system"
+    printf "${INDENTN}${YELLOW}and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for Google Play Services,"
-    printf "${INDENTN}${YELLOW}[1] Google Play Store and Android System webview"
+    printf "${INDENTN}${YELLOW}Google Play Store and Android System webview"
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
    }
 fix_oneui() {
@@ -1312,10 +1312,10 @@ fix_oneui() {
 #After steps
     printf "${INDENTN}${YELLOW}Now do this steps:"
     printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
-    printf "${INDENTN}${YELLOW}[1] Clear the cache in the recovery"
+    printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
     printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
-    printf "${INDENTN}${YELLOW} and reboot system"
+    printf "${INDENTN}${YELLOW}and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
 }
