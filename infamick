@@ -1172,6 +1172,52 @@ set_charging() {
         exit 1
     fi
 }
+
+fix_gms(){
+#Google PLay Services
+    printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Google Play Services"
+    printf "${INDENTN}app info. U have to:"
+    printf "${INDENTN}[1] Clear app cache"
+    printf "${INDENTN}[2] Clear app data"
+    printf "${INDENTN}[3] Uninstall updates"
+    printf "${INDENTN}[4] Force stop the app"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
+    read -r a
+    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.gms > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
+#Googlee Services Framework
+    printf "${INDENTN}${YELLOW}[i]As second I'll redirect u to Google Services"
+    printf "${INDENTN}${YELLOW}Framework app info. U have to:"
+    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "${INDENTN}${YELLOW}[2] Clear app data"
+    printf "${INDENTN}${YELLOW}[3] Force stop the app"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
+    read -r a
+    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.gsf > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
+#Android System Webview
+    printf "${INDENTN}${YELLOW}[i]As last I'll redirect u to Android System"
+    printf "${INDENTN}${YELLOW}Webview app info. U have to:"
+    printf "${INDENTN}${YELLOW}[1] Clear app cache2"
+    printf "${INDENTN}${YELLOW}[2] Clear app data"
+    printf "${INDENTN}${YELLOW}[3] Uninstall updates"
+    printf "${INDENTN}${YELLOW}[4] Force stop the app"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
+    read -r a
+    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.webview > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
+    printf "${INDENTN}${YELLOW}[i]Now do this steps:"
+    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
+    printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Rsepair apps"
+    printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache and reboot system"
+    printf "${INDENTN}${YELLOW}[4] Check for updates for Google Play Services, Google Play Store and Android System webview"
+    printf "${INDENTN}${YELLOW}[1]Enjoy :)${RESET}"
+   }
+
 #Main logic
 case "$1" in
     batt)
@@ -1226,6 +1272,34 @@ case "$1" in
         ;;
     dsp_sw)
         display_see
+        ;;
+    fix)
+            if [ -z "$2" ]; then
+            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
+            exit 1
+        fi
+        case "$2" in
+            appdrain)
+                smg_check || return
+                fix_appdrain
+                ;;
+            datausage)
+                smg_check || return
+                fix_datausage
+                ;;
+            gms)
+                fix_gms
+                ;;
+            oneui)
+                smg_check || return
+                fix_oneui
+            *)
+                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
+                exit 1
+                ;;
+            esac
         ;;
     gmsd)
         gms_disable
