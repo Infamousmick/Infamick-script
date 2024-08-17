@@ -24,8 +24,8 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **DD Backup**: Backup all possible partitions chosing a name
 - **Display commands**: Show, Set and Reset current display size and dpi
 - **Deknoxer**:  Disable or Enable knox packages
-- **Extra Dim**: Open hidden Extra Dim menu
 - **Drain Fixer**: Fixes various drain settings
+- **Extra Dim**: Open hidden Extra Dim menu
 - **Gesture**: Open hidden Gestures menu
 - **GMS servives** : Disable or Enable GMS services
 - **Lock Network Bands**: Open Network Band settings
