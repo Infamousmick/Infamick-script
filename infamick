@@ -1176,49 +1176,49 @@ set_charging() {
 fix_appdrain(){
 #Samsung Device Care
     printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Samsung Device Care"
-    printf "${INDENTN}${YELLOW}app info${RESET}. U have to:"
+    printf "${INDENTN}${YELLOW}app info. U have to:"
     printf "${INDENTN}${YELLOW}[1] Clear app cache"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Uninstall updates" 
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
-    if [ -z $(su -c am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.lool > /dev/null 2>&1) ]; then
-        su -c am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.sm_cn > /dev/null 2>&1
+    if [ -z $(am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.lool > /dev/null 2>&1) ]; then
+         am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.sm_cn > /dev/null 2>&1
     fi
-    printf "${txtbgred}${BOLD}Press \"Enter\" when u have done${RESET}"
-    read -r a
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
     #Samsung Device Health Service
-    printf "\n${RESET}${txtbgblu}${BOLD}As second I'll redirect u to Samsung Device\nHealth Service app info${RESET}\n${txtbggrn}${BOLD}U have to:\n1. Clear app cache\n2. Clear app data\n3. Force stop the app${RESET}\n
-    ${txtinv}${BOLD}Press ENTER to redirect...${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]As second I'll redirect u to Samsung Device"
+    printf "${INDENTN}${YELLOW}Health Service app info. U have to:"
+    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "${INDENTN}${YELLOW}[2] Clear app data"
+    printf "${INDENTN}${YELLOW}[3] Force stop the app"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
-    if [ $sudocheck -eq 1 ]; then
-    su -c am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.sdhms
-    clear
-    else
-    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.sdhms
-    clear
-    fi
-    printf "${txtbgred}${BOLD}Press \"Enter\" when u have done${RESET}"
-    read -r a
+    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.sdhms > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
 #After steps
-    printf "\n${RESET}${txtbgblu}${BOLD}Now do this steps:${RESET}\n${txtbggrn}${BOLD}1. Reboot to recovery\n2. Clear the cache in the recovery\n3a. If u are on the stock Recovery do Repair apps\n3b. If u are on TWRP clear also dalvick cache and reboot system\n4. Check for updates for Samsung Device Care.${RESET}\n"
-    printf "${RED}Press \"Enter\" to return to the 'FIX Drain' menu again${RESET}" ; read -r a ; printf "\n%.0s" {1..100} ; clear; start
+    printf "${INDENTN}${YELLOW}[i]Now do this steps:"
+    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
+    printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
+    printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
+    printf "${INDENTN}${YELLOW}[3a] and reboot system"
+    printf "${INDENTN}${YELLOW}[4] Check for updates for Samsung Device Care."
     #Samsung Device care settings
-    printf "\n${RESET}${txtbgblu}${BOLD}I'll show u what to do next redirecting\nu to Samsung Device Health Service app info${RESET}\n${txtbggrn}${BOLD}U have to:\n1. Put in NORMAL sleep all the apps that u want to receive notifications\n2. Put to DEEP sleep all the apps that u don't need to receive notifications\n3. Disable Adaptive Battery${RESET}\n${txtbgblu}${BOLD}Enjoy :)${RESET}
-    ${txtinv}${BOLD}Press ENTER to redirect...${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]I'll show u what to do next redirecting"
+    printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info. U have to:"
+    printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want to receive notifications"
+    printf "${INDENTN}${YELLOW}[2] Put to DEEP sleep all the apps that u don't need to receive notifications"
+    printf "${INDENTN}${YELLOW}[3] Disable Adaptive Battery"
+    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     read -r a
-    if [ $sudocheck -eq 1 ]; then
-    su -c am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity
-    clear
-    else
-    am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity
-    clear
+    if [ -z $( am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1) ]; then
+         am start -n com.samsung.android.sm_cn/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1
     fi
-    printf "\n${RESET}${txtbgred}${BOLD}Press ENTER when u want to return to FIX DRAIN menu...${RESET}\n"
-    read -r a
-    clear
-    start
+    
 
 }
 
@@ -1266,7 +1266,7 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}[1] and reboot system"
     printf "${INDENTN}${YELLOW}[4] Check for updates for Google Play Services,"
     printf "${INDENTN}${YELLOW}[1] Google Play Store and Android System webview"
-    printf "${INDENTN}${YELLOW}[1]Enjoy :)${RESET}\n"
+    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
    }
 
 #Main logic
