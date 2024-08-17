@@ -1181,11 +1181,13 @@ set_charging() {
 }
 fix_datausage() {
     #Access data usage
-    printf "${INDENTN}${YELLOW}[i]As first I'll redirect u to Access Data Usage settings"
+    printf "${INDENTN}${YELLOW}[i]As first I'll redirect u to Access Data"
+    printf "${INDENTN}${YELLOW}Usage settings"
     printf "${INDENTN}${YELLOW}U have to:"
     printf "${INDENTN}${YELLOW}[1] Untick all apps"
-    printf "${INDENTN}${YELLOW}[2] Tick only those apps: 'Shell', 'Telephone services',"
-    printf "${INDENTN}${YELLOW}'Samsung Device Health Manager Service', 'Media Storage','Package installation','User Settings'"
+    printf "${INDENTN}${YELLOW}[2] Tick only those apps: 'Shell',"
+    printf "${INDENTN}${YELLOW}'Telephone services','Samsung Device'"
+    printf "${INDENTN}${YELLOW}'Health Manager Service', 'Media Storage','Packageinstallation','User Settings'"
     printf "${INDENTN}${YELLOW}[i]'Permission checker app'."
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
