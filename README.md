@@ -25,6 +25,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **Display commands**: Show, Set and Reset current display size and dpi
 - **Deknoxer**:  Disable or Enable knox packages
 - **Extra Dim**: Open hidden Extra Dim menu
+- **Drain Fixer**: Fixes various drain settings
 - **Gesture**: Open hidden Gestures menu
 - **GMS servives** : Disable or Enable GMS services
 - **Lock Network Bands**: Open Network Band settings
@@ -57,6 +58,10 @@ Available commands:
 - `infamick dsp_rs`: Reset current display size and dpi
 - `infamick dsp_set`: Change display size and dpi 
 - `infamick dsp_sw`: Show current display size and dpi
+- `infamick fix datausage`: Fix data usage settings drain
+- `infamick fix gms`: Fix GMS drain
+- `infamick fix oneui`: Fix Oneui drain
+- `infamick fix smgcare`: Fix general apps drain in Samsung Device Care
 - `infamick gmsd`: Disable GMS services
 - `infamick gmse`: Enable GMS services
 - `infamick info`: Show help and usage information

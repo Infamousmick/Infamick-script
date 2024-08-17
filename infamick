@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.1 (202408079)"
+    printf "\n${RED}${BOLD}2.2 (202408189)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -440,6 +440,11 @@ help_menu() {
     printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
     echo
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}datausage${RESET}     - Fix data usage settings drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}gms${RESET}           - Fix GMS drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}oneui${RESET}         - Fix Oneui drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}smgcare${RESET}       - Fix general apps drain in Samsung Device Care"
+    echo
     printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
     printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
     echo
@@ -468,7 +473,8 @@ help_menu() {
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}ntw_l${RESET} - Open Network Bands settings"
     echo
-    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100 battery"
+    printf "\n  ${BOLD}sot${RESET}     - Calculate how SOT is possible with 100"
+    printf "\n            battery"
     printf "\n            Requires:"
     printf "\n              - Current SOT hours and minutes values"
     printf "\n              - Discharged percentage value"
@@ -1172,8 +1178,23 @@ set_charging() {
         exit 1
     fi
 }
+fix_datausage() {
+    #Access data usage
+    printf "${INDENTN}${YELLOW}[i]As first I'll redirect u to Access Data Usage settings"
+    printf "${INDENTN}${YELLOW}U have to:"
+    printf "${INDENTN}${YELLOW}[1] Untick all apps"
+    printf "${INDENTN}${YELLOW}[2] Tick only those apps: 'Shell', 'Telephone services',"
+    printf "${INDENTN}${YELLOW}'Samsung Device Health Manager Service', 'Media Storage','Package installation','User Settings'"
+    printf "${INDENTN}${YELLOW}[i]'Permission checker app'."
+    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
+    read -r a
+    am start -n com.android.settings/.Settings\$UsageAccessSettingsActivity -a android.intent.action.VIEW -d package:com.samsung.android.app.routines > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
+}
 
-fix_appdrain(){
+fix_smgdrain(){
 #Samsung Device Care
     printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Samsung Device Care"
     printf "${INDENTN}${YELLOW}app info. U have to:"
@@ -1209,9 +1230,12 @@ fix_appdrain(){
     printf "${INDENTN}${YELLOW}[4] Check for updates for Samsung Device Care."
     #Samsung Device care settings
     printf "${INDENTN}${YELLOW}[i]I'll show u what to do next redirecting"
-    printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want to receive notifications"
-    printf "${INDENTN}${YELLOW}[2] Put to DEEP sleep all the apps that u don't need to receive notifications"
+    printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info."
+    printf "${INDENTN}${YELLOW} U have to:"
+    printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want"
+    printf "${INDENTN}${YELLOW} to receive notifications"
+    printf "${INDENTN}${YELLOW}[2] Put to DEEP sleep all the apps that u don't need"
+    printf "${INDENTN}${YELLOW} to receive notifications"
     printf "${INDENTN}${YELLOW}[3] Disable Adaptive Battery"
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     read -r a
@@ -1268,6 +1292,30 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}[1] Google Play Store and Android System webview"
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
    }
+fix_oneui() {
+#Oneui Launcher
+    printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Oneui"
+    printf "${INDENTN}${YELLOW}Launcher app info. U have to:"
+    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "${INDENTN}${YELLOW}[2] Clear app data"
+    printf "${INDENTN}${YELLOW}[3] Uninstall updates"
+    printf "${INDENTN}${YELLOW}[4] Force stop the app"
+    printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
+    read -r a 
+    am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.app.launcher > /dev/null 2>&1
+    printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
+    read -r a 
+#After steps
+    printf "${INDENTN}${YELLOW}Now do this steps:"
+    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "${INDENTN}${YELLOW}[1] Clear the cache in the recovery"
+    printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
+    printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
+    printf "${INDENTN}${YELLOW} and reboot system"
+    printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
+    printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
+}
+
 
 #Main logic
 case "$1" in
@@ -1331,10 +1379,6 @@ case "$1" in
             exit 1
         fi
         case "$2" in
-            appdrain)
-                smg_check || return
-                fix_appdrain
-                ;;
             datausage)
                 smg_check || return
                 fix_datausage
@@ -1346,6 +1390,10 @@ case "$1" in
                 smg_check || return
                 fix_oneui
                 ;;
+            smgcare)
+                smg_check || return
+                fix_smgdrain
+                ;;        
             *)
                 printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
                 printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"

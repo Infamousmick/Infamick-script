@@ -1,4 +1,10 @@
 # Changelog for Infamick Script
+## V2.2 - Drain Fixer (August 18, 24)
+- Added Drain Fixer
+  1. Fix data usage settings drain
+  2. Fix GMS drain
+  3. Fix Oneui drain
+  4. Fix general apps drain in Samsung Device Care
 ## V2.1 - SOT  Calculator fix (August 07, 24)
 - Fixed SOT Calculator input
 - Calculate SOT with hours and minutes
