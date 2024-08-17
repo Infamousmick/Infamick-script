@@ -1,7 +1,13 @@
-# Infamick Script v2.1
+# Infamick Script
+![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)
+![Magisk](https://img.shields.io/badge/Magisk-red?logo=magisk)
+[![GitHub Release](https://img.shields.io/github/v/release/Infamousmick/Infamick-script?display_name=tag&color=%23ac53db)](https://github.com/InfamousMick/Infamick-script/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/InfamousMick/Infamick-script/total?color=%67f0ab)](https://github.com/InfamousMick/Infamick-script/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE)
+[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white)](https://t.me/InfaScript)
 
 ## Overview
-Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for advanced users and developers.
+Infamick is a powerful system utility script for rooted Android devices. It provides easy access to various system information and settings, making it an essential tool for all users.
 
 ## Features
 - **Battery Health**: Check battery health status and charging cycles
@@ -18,6 +24,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **DD Backup**: Backup all possible partitions chosing a name
 - **Display commands**: Show, Set and Reset current display size and dpi
 - **Deknoxer**:  Disable or Enable knox packages
+- **Drain Fixer**: Fixes various drain settings
 - **Extra Dim**: Open hidden Extra Dim menu
 - **Gesture**: Open hidden Gestures menu
 - **GMS servives** : Disable or Enable GMS services
@@ -30,9 +37,9 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 This script is designed to be flashed as a module using Magisk, KernelSU, or APatch. 
 
 1. Download the latest release zip file [here](https://github.com/Infamousmick/Infamick-script/releases).
-2. Flash the zip file through Magisk, KernelSU, or APatch in recovery mode.
+2. Flash the zip file through Magisk, KernelSU, or APatch.
 3. Reboot your device.
-4. To update u can find them into Magisk/KSU/Apatch app
+4. To update check into Magisk/KSU/Apatch app
 
 ## Usage
 After installation, you can use the script by running `infamick` in a terminal with root access.
@@ -51,6 +58,10 @@ Available commands:
 - `infamick dsp_rs`: Reset current display size and dpi
 - `infamick dsp_set`: Change display size and dpi 
 - `infamick dsp_sw`: Show current display size and dpi
+- `infamick fix datausage`: Fix data usage settings drain
+- `infamick fix gms`: Fix GMS drain
+- `infamick fix oneui`: Fix Oneui drain
+- `infamick fix smgcare`: Fix general apps drain in Samsung Device Care
 - `infamick gmsd`: Disable GMS services
 - `infamick gmse`: Enable GMS services
 - `infamick info`: Show help and usage information
