@@ -440,10 +440,11 @@ help_menu() {
     printf "\n  ${BOLD}dsp_set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp_sw${RESET}  - Show current display size and dpi"
     echo
-    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}datausage${RESET}     - Fix data usage settings drain"
-    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}gms${RESET}           - Fix GMS drain"
-    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}oneui${RESET}         - Fix Oneui drain"
-    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}smgcare${RESET}       - Fix general apps drain in Samsung Device Care"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}datausage${RESET}  - Fix data usage settings drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}gms${RESET}        - Fix GMS drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}oneui${RESET}      - Fix Oneui drain"
+    printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}smgcare${RESET}    - Fix general apps drain in"
+    printf "\n                   Samsung Device Care"
     echo
     printf "\n  ${BOLD}gmsd${RESET}    - Disables GMS services"
     printf "\n  ${BOLD}gmse${RESET}    - Enables GMS services"
