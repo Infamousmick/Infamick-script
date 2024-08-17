@@ -92,6 +92,14 @@ jobs:
             Change display size and dpi 
             <pre><code>infamick dsp_sw</code></pre>
             Show current display size and dpi
+            <pre><code>infamick fix datausage</code></pre>
+            Fix data usage settings drain
+            <pre><code>infamick fix gms</code></pre>
+            Fix GMS drain
+            <pre><code>infamick fix oneui</code></pre>
+            Fix Oneui drain
+            <pre><code>infamick fix smgcare</code></pre>
+            Fix general apps drain in Samsung Device care
             <pre><code>infamick gmsd</code></pre>
             Disable GMS services
             <pre><code>infamick gmse</code></pre>
