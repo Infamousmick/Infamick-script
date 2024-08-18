@@ -1,5 +1,10 @@
 # Changelog for Infamick Script
-## V2.3 - Bixby Button Remapper (August 18,24)
+## V2.4 - SELinux (August 18, 24)
+- Added SELinux function
+  1. Set SELinux state to Permissive
+  2. Set SELinux state to Enforcing
+  3. Show current SELinux state
+## V2.3 - Bixby Button Remapper (August 18, 24)
 - Added WINK option in Bixby Button Remapper
 ## V2.2 - Drain Fixer (August 18, 24)
 - Added Drain Fixer
