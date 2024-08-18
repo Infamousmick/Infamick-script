@@ -1,4 +1,10 @@
 # Changelog for Infamick Script
+## V2.5 - Fixes (August 19, 24)
+- Added SELinux info
+- Updated Display commands
+  1. Changed `infamick dsp_rs` to `infamick dsp rs`
+  2. Changed `infamick dsp_set` to `infamick dsp set`
+  3. Changed `infamick dsp_sw` to `infamick dsp sw`
 ## V2.4 - SELinux (August 18, 24)
 - Added SELinux function
   1. Set SELinux state to Permissive

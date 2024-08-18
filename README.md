@@ -56,9 +56,9 @@ Available commands:
 - `infamick btmap `:  Show current Power, Volume Up and Volume Down buttons action and remap them
 - `infamick cache`: Trim cache multiple times
 - `infamick dd`: Backup all possible partitions chosing a name
-- `infamick dsp_rs`: Reset current display size and dpi
-- `infamick dsp_set`: Change display size and dpi 
-- `infamick dsp_sw`: Show current display size and dpi
+- `infamick dsp rs`: Reset current display size and dpi
+- `infamick dsp set`: Change display size and dpi 
+- `infamick dsp sw`: Show current display size and dpi
 - `infamick fix datausage`: Fix data usage settings drain
 - `infamick fix gms`: Fix GMS drain
 - `infamick fix oneui`: Fix Oneui drain
