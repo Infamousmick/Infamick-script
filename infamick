@@ -1318,7 +1318,42 @@ fix_oneui() {
     printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
     printf "\n${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
 }
+floating_features() {
+  printf "${INDENTN}${YELLOW}[i] This function will modify the floating_features.xml file${RESET}\n"
+  printf "${INDENTN}${YELLOW}[i] Please choose an option to add to the file:${RESET}\n"
 
+  # Options to add to the file
+  options=("ADD_FLOATING_FEATURE_1" "ADD_FLOATING_FEATURE_2" "ADD_FLOATING_FEATURE_3")
+
+  # Print the options
+  for ((i=0; i<${#options[@]}; i++)); do
+    printf "${INDENTN}${BOLD_WHITE}%d. %s${RESET}\n" $(($i+1)) "${options[i]}"
+  done
+
+  # Ask the user to choose an option
+  printf "${INDENTN}${YELLOW}Enter your choice (1-%d): ${RESET}" ${#options[@]}
+  read -r choice
+
+  # Check if the choice is valid
+  if [[ $choice -gt 0 && $choice -le ${#options[@]} ]]; then
+    # Add the chosen option to the file
+    case $choice in
+      1) new_value="ADD_FLOATING_FEATURE_1" ;;
+      2) new_value="ADD_FLOATING_FEATURE_2" ;;
+      3) new_value="ADD_FLOATING_FEATURE_3" ;;
+    esac
+
+    # Update the file
+    temp_file="/data/local/tmp/temp_xml_file"
+    sed -i "/<floating_features>/a\<${new_value}\>/" "/system/etc/floating_features.xml" > "$temp_file"
+    cp "$temp_file" "/system/etc/floating_features.xml"
+    rm "$temp_file"
+
+    printf "${INDENTN}${GREEN}[+] Floating feature added successfully${RESET}\n"
+  else
+    printf "${INDENTN}${RED}[!] Invalid choice. Please try again${RESET}\n"
+  fi
+}
 
 #Main logic
 case "$1" in
@@ -1403,6 +1438,9 @@ case "$1" in
                 exit 1
                 ;;
             esac
+        ;;
+    float)
+        floating_features
         ;;
     gmsd)
         gms_disable
