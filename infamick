@@ -1470,7 +1470,7 @@ case "$1" in
             esac
         ;;
     float)
-        floating_features
+        floating_feature
         ;;
     gmsd)
         gms_disable
