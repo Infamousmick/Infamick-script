@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.2 (202408189)"
+    printf "\n${RED}${BOLD}2.3 (202408191)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -840,7 +840,8 @@ bixby_mapper() {
     printf "${INDENTN}${WHITE_BOLD}25. VOLUME_MUTE - volume on/off"
     printf "${INDENTN}${BOLD_WHITE}26. VOLUME_UP - sets volume up"
     printf "${INDENTN}${BOLD_WHITE}27. WAKEUP - wakeup phone"
-    printf "${INDENTN}${YELLOW}Enter your choice (1-27): ${RESET}"
+    printf "${INDENTN}${BOLD_WHITE}28. WINK - Default"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-28): ${RESET}"
     read -r choice
 
     case $choice in
@@ -871,10 +872,11 @@ bixby_mapper() {
         25) new_value="VOLUME_MUTE" ;;
         26) new_value="VOLUME_UP" ;;
         27) new_value="WAKEUP" ;;
+        28) new_value="WINK" ;;
                         
         *)
             printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter${RESET}"
-            printf "${INDENTN}${RED}a number between 1 and 27.${RESET}\n"
+            printf "${INDENTN}${RED}a number between 1 and 28.${RESET}\n"
             return
             ;;
     esac

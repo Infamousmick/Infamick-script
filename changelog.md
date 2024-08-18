@@ -1,4 +1,6 @@
 # Changelog for Infamick Script
+## V2.3 - Bixby Button Remapper (August 18,24)
+- Added WINK option in Bixby Button Remapper
 ## V2.2 - Drain Fixer (August 18, 24)
 - Added Drain Fixer
   1. Fix data usage settings drain
@@ -21,7 +23,7 @@
   2. Changed `batt_i` to `batt info`
   3. Changed `batt_s` to `batt opt`
 ## V1.6 - New Features (July 29, 2024)
-- Added Bixby Buttonr Remapper
+- Added Bixby Button Remapper
   1. Show current Bixby Button action
   2. Remap Bixby Button
 - Added DD Backup
