@@ -1319,57 +1319,69 @@ fix_oneui() {
     printf "\n${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
 }
 floating_features() {
-    echo "[i] This function will modify the floating_features.xml file"
-    echo "[i] Please choose an option to add to the file:"
-    
-    # Options to add to the file
-    options="ADD_FLOATING_FEATURE_1 ADD_FLOATING_FEATURE_2 ADD_FLOATING_FEATURE_3"
-    
-    # Print the options
-    i=1
-    for option in $options; do
-        echo "$i. $option"
-        i=$((i + 1))
-    done
-    
-    # Ask the user to choose an option
-    echo -n "Enter your choice (1-3): "
-    read choice
-    
-    # Check if the choice is valid
-    if [ "$choice" -ge 1 ] && [ "$choice" -le 3 ]; then
-        # Add the chosen option to the file
-        case $choice in
-            1) new_value="ADD_FLOATING_FEATURE_1" ;;
-            2) new_value="ADD_FLOATING_FEATURE_2" ;;
-            3) new_value="ADD_FLOATING_FEATURE_3" ;;
-        esac
-        
-        # Update the file
-        temp_file="/data/local/tmp/temp_xml_file"
-        sed "/<floating_features>/a\\    <${new_value}>" "/system/etc/floating_features.xml" > "$temp_file"
-        
-        # Ensure the system partition is mounted as read-write
-        mount -o rw,remount /system
-        
-        # Copy the modified file back to the system partition
-        cp "$temp_file" "/system/etc/floating_features.xml"
-        
-        # Set proper permissions
-        chmod 644 "/system/etc/floating_features.xml"
-        
-        # Remove the temporary file
-        rm "$temp_file"
-        
-        # Remount system as read-only
-        mount -o ro,remount /system
-        
-        echo "[+] Floating feature added successfully"
-    else
-        echo "[!] Invalid choice. Please try again"
-    fi
-}
+    printf "${INDENTN}${YELLOW}[i] This function will modify floating_features.xml${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] in /system/etc/floating_features.xml${RESET}\n"
+    printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
+    read -r a
 
+    file="/system/etc/floating_features.xml"
+
+    if [ ! -f "$file" ]; then
+        printf "${INDENTN}${RED}[!] Error: floating_features.xml not found${RESET}\n"
+        return
+    fi
+
+    printf "${INDENTN}${YELLOW}[?] Choose a feature to modify:${RESET}\n"
+    printf "${INDENTN}${BOLD_WHITE}1. SEC_FLOATING_FEATURE_SETTINGS_SUPPORT_FINGERPRINT_GESTURE${RESET}\n"
+    printf "${INDENTN}${BOLD_WHITE}2. SEC_FLOATING_FEATURE_FRAMEWORK_SUPPORT_SILENTY_RINGING${RESET}\n"
+    printf "${INDENTN}${BOLD_WHITE}3. SEC_FLOATING_FEATURE_LAUNCHER_SUPPORT_CLOCK_ROTAT${RESET}\n"
+    printf "${INDENTN}${YELLOW}Enter your choice (1-3): ${RESET}"
+    read -r choice
+
+    case $choice in
+        1) feature="SEC_FLOATING_FEATURE_SETTINGS_SUPPORT_FINGERPRINT_GESTURE" ;;
+        2) feature="SEC_FLOATING_FEATURE_FRAMEWORK_SUPPORT_SILENTY_RINGING" ;;
+        3) feature="SEC_FLOATING_FEATURE_LAUNCHER_SUPPORT_CLOCK_ROTAT" ;;
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid choice. Please enter a number between 1 and 3.${RESET}\n"
+            return
+            ;;
+    esac
+
+    current_value=$(grep "$feature" "$file" | sed -n 's/.*value="\([^"]*\)".*/\1/p')
+    printf "${INDENTN}${YELLOW}[*] Current value for %s: ${BOLD_WHITE}%s${RESET}\n" "$feature" "$current_value"
+
+    printf "${INDENTN}${YELLOW}[?] Enter new value (true/false): ${RESET}"
+    read -r new_value
+
+    if [ "$new_value" != "true" ] && [ "$new_value" != "false" ]; then
+        printf "${INDENTN}${RED}[!] Error: Invalid value. Please enter 'true' or 'false'.${RESET}\n"
+        return
+    fi
+
+    # Create a temporary file
+    temp_file="/data/local/tmp/temp_floating_features.xml"
+
+    # Update the value
+    sed "s/\($feature\" value=\"\)[^\"]*\"/\1$new_value\"/" "$file" > "$temp_file"
+
+    # Check if we have write permission
+    if ! touch "$file" 2>/dev/null; then
+        printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
+        su -c "cp $temp_file $file && chmod 644 $file"
+    else
+        cp "$temp_file" "$file"
+        chmod 644 "$file"
+    fi
+
+    rm "$temp_file"
+
+    printf "${INDENTN}${GREEN}[+] Value for %s has been updated to: ${BOLD_WHITE}%s${RESET}\n" "$feature" "$new_value"
+    printf "${INDENTN}${YELLOW}[i] Execution Succeeded..! ${RESET}\n"
+    printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
+    reboot_quest
+}
 #Main logic
 case "$1" in
     batt)
