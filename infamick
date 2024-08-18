@@ -1323,19 +1323,21 @@ floating_features() {
     echo "[i] Please choose an option to add to the file:"
     
     # Options to add to the file
-    options=("ADD_FLOATING_FEATURE_1" "ADD_FLOATING_FEATURE_2" "ADD_FLOATING_FEATURE_3")
+    options="ADD_FLOATING_FEATURE_1 ADD_FLOATING_FEATURE_2 ADD_FLOATING_FEATURE_3"
     
     # Print the options
-    for ((i=0; i<${#options[@]}; i++)); do
-        echo "$((i+1)). ${options[i]}"
+    i=1
+    for option in $options; do
+        echo "$i. $option"
+        i=$((i + 1))
     done
     
     # Ask the user to choose an option
-    echo -n "Enter your choice (1-${#options[@]}): "
+    echo -n "Enter your choice (1-3): "
     read choice
     
     # Check if the choice is valid
-    if [[ $choice -gt 0 && $choice -le ${#options[@]} ]]; then
+    if [ "$choice" -ge 1 ] && [ "$choice" -le 3 ]; then
         # Add the chosen option to the file
         case $choice in
             1) new_value="ADD_FLOATING_FEATURE_1" ;;
