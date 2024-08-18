@@ -436,7 +436,7 @@ help_menu() {
     printf "\n  ${BOLD}dd${RESET}      - Backup all possible partitions"
     printf "\n            chosing a name"
     echo
-    printf "\n  ${BOLD}dsp} ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
     printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}sw${RESET}  - Show current display size and dpi"
     echo
@@ -1394,14 +1394,27 @@ case "$1" in
     dd)
         dd_backup
         ;;
-    dsp_rs)
-        display_reset
-        ;;
-    dps_set)
-        display_set
-        ;;
-    dsp_sw)
-        display_see
+    dsp)
+        if [ -z "$2" ]; then
+            printf "${INDENT}${RED}Error: Need second argument '$1' '$2'${RESET}"
+            printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
+            exit 1
+        fi
+        case "$2" in
+            rs)
+            display_reset
+            ;;
+            set)
+            display_reset;;
+            sw)
+            display_see
+            ;;
+            *)
+                printf "${INDENT}${RED}Error: Unknown command '$1' '$2'${RESET}"
+                printf "${INDENTN}Use '${BOLD}infamick info${RESET}' for usage information.\n"
+                exit 1
+                ;;
+            esac
         ;;
     fix)
             if [ -z "$2" ]; then
