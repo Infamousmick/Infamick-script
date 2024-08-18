@@ -1318,9 +1318,9 @@ fix_oneui() {
     printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
     printf "\n${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
 }
-floating_features() {
-    printf "${INDENTN}${YELLOW}[i] This function will modify floating_features.xml${RESET}\n"
-    printf "${INDENTN}${YELLOW}[i] in /system/etc/floating_features.xml${RESET}\n"
+modify_floating_feature() {
+    printf "${INDENTN}${YELLOW}[i] This function will modify floating_feature.xml${RESET}\n"
+    printf "${INDENTN}${YELLOW}[i] in /system/etc/floating_feature.xml${RESET}\n"
     printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
@@ -1328,7 +1328,7 @@ floating_features() {
     file="/system/etc/floating_feature.xml"
 
     if [ ! -f "$file" ]; then
-        printf "${INDENTN}${RED}[!] Error: floating_features.xml not found${RESET}\n"
+        printf "${INDENTN}${RED}[!] Error: floating_feature.xml not found${RESET}\n"
         return
     fi
 
@@ -1361,24 +1361,27 @@ floating_features() {
     fi
 
     # Create a temporary file
-    temp_file="/data/local/tmp/temp_floating_features.xml"
+    temp_file="/data/local/tmp/temp_floating_feature.xml"
 
     # Update the value
     sed "s/\($feature\" value=\"\)[^\"]*\"/\1$new_value\"/" "$file" > "$temp_file"
 
-    # Check if we have write permission
-    if ! touch "$file" 2>/dev/null; then
-        printf "${INDENTN}${YELLOW}[!] No write permission. Trying with 'su' command...${RESET}\n"
-        su -c "cp $temp_file $file && chmod 644 $file"
+    # Apply changes using su
+    if su -c "mount -o rw,remount /system"; then
+        if su -c "cp $temp_file $file"; then
+            su -c "chmod 644 $file"
+            su -c "mount -o ro,remount /system"
+            printf "${INDENTN}${GREEN}[+] Value for %s has been updated to: ${BOLD_WHITE}%s${RESET}\n" "$feature" "$new_value"
+            printf "${INDENTN}${YELLOW}[i] Execution Succeeded..! ${RESET}\n"
+        else
+            printf "${INDENTN}${RED}[!] Failed to copy the modified file.${RESET}\n"
+        fi
     else
-        cp "$temp_file" "$file"
-        chmod 644 "$file"
+        printf "${INDENTN}${RED}[!] Failed to remount /system as writable.${RESET}\n"
     fi
 
     rm "$temp_file"
 
-    printf "${INDENTN}${GREEN}[+] Value for %s has been updated to: ${BOLD_WHITE}%s${RESET}\n" "$feature" "$new_value"
-    printf "${INDENTN}${YELLOW}[i] Execution Succeeded..! ${RESET}\n"
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
     reboot_quest
 }
