@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.4 (202408192)"
+    printf "\n${RED}${BOLD}2.5 (202408193)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -436,9 +436,9 @@ help_menu() {
     printf "\n  ${BOLD}dd${RESET}      - Backup all possible partitions"
     printf "\n            chosing a name"
     echo
-    printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
-    printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}set${RESET} - Change display size and dpi "
-    printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}sw${RESET}  - Show current display size and dpi"
+    printf "\n  ${BOLD}dsp ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp ${BLUE}${BOLD}set${RESET} - Change display size and dpi "
+    printf "\n  ${BOLD}dsp ${BLUE}${BOLD}sw${RESET}  - Show current display size and dpi"
     echo
     printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}datausage${RESET}  - Fix data usage settings drain"
     printf "\n  ${BOLD}fix${RESET} ${BLUE}${BOLD}gms${RESET}        - Fix GMS drain"
