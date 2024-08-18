@@ -1190,7 +1190,7 @@ fix_datausage() {
     printf "${INDENTN}${YELLOW}[i]As first I'll redirect u to Access Data"
     printf "${INDENTN}${YELLOW}Usage settings"
     printf "${INDENTN}${YELLOW}U have to:"
-    printf "${INDENTN}${YELLOW}[1] Untick all apps"
+    printf "\n${INDENTN}${YELLOW}[1] Untick all apps"
     printf "${INDENTN}${YELLOW}[2] Tick only those apps: 'Shell',"
     printf "${INDENTN}${YELLOW}'Telephone services','Samsung Device"
     printf "${INDENTN}${YELLOW}Health Manager Service', 'Media Storage','Package"
@@ -1207,7 +1207,7 @@ fix_smgdrain(){
 #Samsung Device Care
     printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Samsung Device Care"
     printf "${INDENTN}${YELLOW}app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "\n${INDENTN}${YELLOW}[1] Clear app cache"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Uninstall updates" 
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
@@ -1221,7 +1221,7 @@ fix_smgdrain(){
     #Samsung Device Health Service
     printf "${INDENTN}${YELLOW}[i]As second I'll redirect u to Samsung Device"
     printf "${INDENTN}${YELLOW}Health Service app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "\n${INDENTN}${YELLOW}[1] Clear app cache"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
@@ -1231,7 +1231,7 @@ fix_smgdrain(){
     read -r a 
 #After steps
     printf "${INDENTN}${YELLOW}[i]Now do this steps:"
-    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "\n${INDENTN}${YELLOW}[1] Reboot to recovery"
     printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
     printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
@@ -1241,7 +1241,7 @@ fix_smgdrain(){
     printf "\n${INDENTN}${YELLOW}[i]I'll show u what to do next redirecting"
     printf "${INDENTN}${YELLOW}you to Samsung Device Health Service app info."
     printf "${INDENTN}${YELLOW}U have to:"
-    printf "${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want"
+    printf "\n${INDENTN}${YELLOW}[1] Put in NORMAL sleep all the apps that u want"
     printf "${INDENTN}${YELLOW}to receive notifications"
     printf "${INDENTN}${YELLOW}[2] Put to DEEP sleep all the apps that u don't need"
     printf "${INDENTN}${YELLOW}to receive notifications"
@@ -1257,7 +1257,7 @@ fix_gms(){
 #Google PLay Services
     printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Google Play Services"
     printf "${INDENTN}app info. U have to:"
-    printf "${INDENTN}[1] Clear app cache"
+    printf "\n${INDENTN}[1] Clear app cache"
     printf "${INDENTN}[2] Clear app data"
     printf "${INDENTN}[3] Uninstall updates"
     printf "${INDENTN}[4] Force stop the app"
@@ -1269,7 +1269,7 @@ fix_gms(){
 #Googlee Services Framework
     printf "${INDENTN}${YELLOW}[i]As second I'll redirect u to Google Services"
     printf "${INDENTN}${YELLOW}Framework app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "\n${INDENTN}${YELLOW}[1] Clear app cache"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
@@ -1280,7 +1280,7 @@ fix_gms(){
 #Android System Webview
     printf "${INDENTN}${YELLOW}[i]As last I'll redirect u to Android System"
     printf "${INDENTN}${YELLOW}Webview app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Clear app cache2"
+    printf "\n${INDENTN}${YELLOW}[1] Clear app cache2"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Uninstall updates"
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
@@ -1290,7 +1290,7 @@ fix_gms(){
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
     printf "${INDENTN}${YELLOW}[i]Now do this steps:"
-    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "\n${INDENTN}${YELLOW}[1] Reboot to recovery"
     printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
     printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
@@ -1303,7 +1303,7 @@ fix_oneui() {
 #Oneui Launcher
     printf "${INDENTN}${YELLOW}[i] As first I'll redirect u to Oneui"
     printf "${INDENTN}${YELLOW}Launcher app info. U have to:"
-    printf "${INDENTN}${YELLOW}[1] Clear app cache"
+    printf "\n${INDENTN}${YELLOW}[1] Clear app cache"
     printf "${INDENTN}${YELLOW}[2] Clear app data"
     printf "${INDENTN}${YELLOW}[3] Uninstall updates"
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
@@ -1314,7 +1314,7 @@ fix_oneui() {
     read -r a 
 #After steps
     printf "${INDENTN}${YELLOW}Now do this steps:"
-    printf "${INDENTN}${YELLOW}[1] Reboot to recovery"
+    printf "\n${INDENTN}${YELLOW}[1] Reboot to recovery"
     printf "${INDENTN}${YELLOW}[2] Clear the cache in the recovery"
     printf "${INDENTN}${YELLOW}[3a] If u are on the stock Recovery do Repair apps"
     printf "${INDENTN}${YELLOW}[3b] If u are on TWRP clear also dalvick cache"
