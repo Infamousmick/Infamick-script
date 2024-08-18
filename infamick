@@ -1399,7 +1399,7 @@ manage_selinux() {
             printf "${INDENTN}${GREEN}[+] SELinux has been set to Enforcing.${RESET}\n"
             ;;
         get)
-            printf "${INDENTN}${YELLOW}[*] Current SELinux status: ${BOLD_WHITE}%s${RESET}" "$(getenforce)\n"
+            printf "${INDENTN}${YELLOW}[*] Current SELinux status: ${BOLD_WHITE}%s${RESET}" "$(getenforce)"
             ;;
         *)
             printf "${INDENTN}${RED}[!] Error: Invalid SELinux option. Please use 0, 1, or 'get'.${RESET}\n"
