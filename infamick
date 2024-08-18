@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.3 (202408191)"
+    printf "\n${RED}${BOLD}2.4 (202408192)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -454,6 +454,10 @@ help_menu() {
     printf "\n  ${BOLD}-h${RESET}      - Alias for info"
     echo
     printf "\n  ${BOLD}perf${RESET}    - Boost all apps"
+    echo
+    printf "\n  ${BOLD}selinux${RESET} ${BLUE}${BOLD}0${RESET}    - Set SELinux state to Permissive"
+    printf "\n  ${BOLD}selinux${RESET} ${BLUE}${BOLD}1${RESET}    - Set SELinux state to Enforcing"
+    printf "\n  ${BOLD}selinux${RESET} ${BOLD}${BLUE}get${RESET}  - Show current SELinux state" 
     echo
     printf "\n  ${BOLD}smg${RESET} ${BLUE}${BOLD}<2ndcommand>${RESET}  ${YELLOW}${BOLD}Samsung Tweaks${RESET}" 
     echo

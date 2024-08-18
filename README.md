@@ -29,6 +29,7 @@ Infamick is a powerful system utility script for rooted Android devices. It prov
 - **Gesture**: Open hidden Gestures menu
 - **GMS servives** : Disable or Enable GMS services
 - **Lock Network Bands**: Open Network Band settings
+- **SELinux state**: Mod to Permissive/Enforcing or show current SELinux state
 - **SOT Calculator**: Calculate the SOT with 100% battery
 - **Temperature Monitoring**: Real-time display of battery, CPU, and GPU temperatures
 - **User-Friendly Interface**: Color-coded output for better readability
@@ -66,6 +67,9 @@ Available commands:
 - `infamick gmse`: Enable GMS services
 - `infamick info`: Show help and usage information
 - `infamick perf`: Boost Apps perfomances
+- `infamick selinux 0`: Set SELinux state to Permissive
+- `infamick selinux 1`: Set SELinux state to Enforcing
+- `infamick selinux get`: Show current SELinux state
 - `infamick smg bx`: Show current Bixby button action and remap it
 - `infamick smg csc`: Change current CSC
 - `infamick smg dex_d`: Disable knox packages
