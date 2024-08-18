@@ -436,7 +436,7 @@ help_menu() {
     printf "\n  ${BOLD}dd${RESET}      - Backup all possible partitions"
     printf "\n            chosing a name"
     echo
-    printf "\n  ${BOLD}dsp ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
+    printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}rs${RESET}  - Reset current display size and dpi"
     printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}set${RESET} - Change display size and dpi "
     printf "\n  ${BOLD}dsp  ${BLUE}${BOLD}sw${RESET}  - Show current display size and dpi"
     echo
