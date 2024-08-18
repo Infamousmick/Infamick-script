@@ -1325,7 +1325,7 @@ floating_features() {
     printf "${INDENTN}${YELLOW}[i] Press ENTER when you are ready${RESET}\n"
     read -r a
 
-    file="/system/etc/floating_features.xml"
+    file="/system/etc/floating_feature.xml"
 
     if [ ! -f "$file" ]; then
         printf "${INDENTN}${RED}[!] Error: floating_features.xml not found${RESET}\n"
