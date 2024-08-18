@@ -1318,7 +1318,7 @@ fix_oneui() {
     printf "${INDENTN}${YELLOW}[4] Check for updates for OneUI in Galaxy store"
     printf "\n${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
 }
-modify_floating_feature() {
+floating_feature() {
     printf "${INDENTN}${YELLOW}[i] This function will modify floating_feature.xml${RESET}\n"
     printf "${INDENTN}${YELLOW}[i] in /system/etc/floating_feature.xml${RESET}\n"
     printf "${INDENTN}${RED}[i] DO AT YOUR OWN RISK..!${RESET}\n"
