@@ -1324,7 +1324,7 @@ fix_oneui() {
 }
 
 manage_selinux() {
-printf "${INDENTN}${YELLOW}[i] In stock exynos kernels we cant change SELinux ${INDENTN}    to permissive by default cause in exynos SELinux${INDENTN}    status is forced to enforcing.${INDENTN}[i] You should install a kernel which has${INDENTN}    a switchable SELinux\n"
+printf "${INDENTN}${YELLOW}[i] In stock exynos kernels we cant change SELinux ${INDENTN}    to permissive by default cause in exynos SELinux${INDENTN}    status is forced to enforcing.\n${INDENTN}[i] You should install a kernel which has${INDENTN}    a switchable SELinux\n"
     case "$1" in
         0)
             printf "${INDENTN}${YELLOW}[i] Setting SELinux to Permissive...${RESET}"
