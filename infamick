@@ -1394,7 +1394,7 @@ manage_selinux() {
             printf "${INDENTN}${GREEN}[+] SELinux has been set to Permissive.${RESET}\n"
             ;;
         1)
-            printf "${INDENTN}${YELLOW}[i] Setting SELinux to Enforcing...${RESET}\n"
+            printf "${INDENTN}${YELLOW}[i] Setting SELinux to Enforcing...${RESET}"
             setenforce 1
             printf "${INDENTN}${GREEN}[+] SELinux has been set to Enforcing.${RESET}\n"
             ;;
