@@ -1385,6 +1385,31 @@ floating_feature() {
     printf "${INDENTN}${BLUE}[!] Reboot to apply the changes? (Y/n): ${RESET}"
     reboot_quest
 }
+
+manage_selinux() {
+    case "$1" in
+        0)
+            printf "${INDENTN}${YELLOW}[i] Setting SELinux to Permissive...${RESET}"
+            setenforce 0
+            printf "${INDENTN}${GREEN}[+] SELinux has been set to Permissive.${RESET}\n"
+            ;;
+        1)
+            printf "${INDENTN}${YELLOW}[i] Setting SELinux to Enforcing...${RESET}\n"
+            setenforce 1
+            printf "${INDENTN}${GREEN}[+] SELinux has been set to Enforcing.${RESET}\n"
+            ;;
+        get)
+            printf "${INDENTN}${YELLOW}[*] Current SELinux status: ${BOLD_WHITE}%s${RESET}" "$(getenforce)\n"
+            ;;
+        *)
+            printf "${INDENTN}${RED}[!] Error: Invalid SELinux option. Please use 0, 1, or 'get'.${RESET}\n"
+            exit 1
+            ;;
+    esac
+
+    printf "${INDENTN}${YELLOW}[i] Operation completed successfully.${RESET}\n"
+}
+
 #Main logic
 case "$1" in
     batt)
@@ -1480,6 +1505,9 @@ case "$1" in
         ;;
     perf)
         boost_app
+        ;;
+    selinux)
+        manage_selinux "$2"
         ;;
     smg)
         if [ -z "$2" ]; then
