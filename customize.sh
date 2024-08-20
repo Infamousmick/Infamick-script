@@ -8,13 +8,16 @@ VERCODE=`grep_prop versionCode $MODPATH/module.prop`
 ui_print "  ID: $MODID"
 ui_print "  Version: $VER"
 ui_print "  VersionCode: $VERCODE"
-if [ "$KSU" == true ]; then
-ui_print "  KSUVersion: $KSU_VER"
-ui_print "  KSUVersionCode: $KSU_VER_CODE"
-ui_print "  KSUKernelVersionCode: $KSU_KERNEL_VER_CODE"
+if [ "$KSU" = "true" ]; then
+ui_print "  KernelSUVersion=$KSU_KERNEL_VER_CODE (kernel) + $KSU_VER_CODE (ksud)" 
+elif [ "$APATCH" = "true" ]; then
+APATCH_VER=$(cat "/data/adb/ap/version")
+ui_print "  APatchVersion=$APATCH_VER" 
 else
-ui_print "  MagiskVersion: $MAGISK_VER"
-ui_print "  MagiskVersionCode: $MAGISK_VER_CODE"
+ui_print "  Magisk=Installed" 
+ui_print "  suVersion=$(su -v)" 
+ui_print "  MagiskVersion=$(magisk -v)" 
+ui_print "  MagiskVersionCode=$(magisk -V)" 
 fi
 ui_print " "
 
