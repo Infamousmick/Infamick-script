@@ -915,7 +915,7 @@ battsettings() {
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
-    printf "${INDENT}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENTN}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
 }
 display_reset() {
     printf "${INDENTN}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
