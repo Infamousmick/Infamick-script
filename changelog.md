@@ -1,4 +1,9 @@
 # Changelog for Infamick Script
+## V2.6 - Fixes (August 24, 24)
+- Fix Magisk installation
+- Fix Battery info
+  1. Added new battery info (health and cycles) directory
+- Fix some Drain Fixer issues
 ## V2.5 - Fixes (August 19, 24)
 - Added SELinux info
 - Updated Display commands

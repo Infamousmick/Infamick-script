@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.5 (202408193)"
+    printf "\n${RED}${BOLD}2.6 (202408241)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
