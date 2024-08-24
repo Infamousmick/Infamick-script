@@ -410,7 +410,7 @@ services=(
 help_menu() {
     echo
     printf "\n${BOLD}infamick - System Utility Script${RESET}"
-    printf "\n${RED}${BOLD}2.5 (202408193)"
+    printf "\n${RED}${BOLD}2.6 (202408241)"
     echo
     printf "\n${GREEN}Usage:${RESET} infamick ${BOLD}<command> ${BLUE}${BOLD}<2ndcommand>${RESET}"
     echo
@@ -524,13 +524,26 @@ boost_battery() {
 }
 
 battinfo() {
+    # Cerca prima la percentuale in /sec/FactoryApp/bsoh
+    if [ -f "/sec/FactoryApp/bsoh" ]; then
+        health=$(cat /sec/FactoryApp/bsoh)
+    else
+        # Se il file non esiste, usa dumpsys battery
+        battery_info=$(/system/bin/dumpsys battery)
+        health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    fi
 
-    battery_info=$(/system/bin/dumpsys battery)
-    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
-    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+    # Cerca i cicli di carica in /efs/FactoryApp/batt_discharge_level
+    if [ -f "/efs/FactoryApp/batt_discharge_level" ]; then
+        cycles_raw=$(cat /efs/FactoryApp/batt_discharge_level)
+        cycles=$((cycles_raw / 100))
+    else
+        # Se il file non esiste, usa dumpsys battery
+        battery_info=${battery_info:-$(/system/bin/dumpsys battery)}
+        cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+        cycles=$((cycles_raw / 100))
+    fi
 
-    # Dividi il valore di mSavedBatteryUsage per 100
-    cycles=$((cycles_raw / 100))
     printf "${INDENTN}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
     printf "${INDENTN}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
     exit 0
@@ -915,7 +928,7 @@ battsettings() {
     read -r a  
     am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$HighPowerApplicationsActivity > /dev/null 2>&1
-    printf "${INDENT}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
+    printf "${INDENTN}${GREEN}${BOLD}[+] Execution Succeed..! \n${RESET}"
 }
 display_reset() {
     printf "${INDENTN}${YELLOW}[i] This will reset your dislay settings.${RESET}" ; sleep 1
@@ -1198,6 +1211,7 @@ fix_datausage() {
     printf "${INDENTN}${YELLOW}'Permission checker app'."
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.Settings\$UsageAccessSettingsActivity -a android.intent.action.VIEW -d package:com.samsung.android.app.routines > /dev/null 2>&1
     printf "${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     read -r a 
@@ -1213,6 +1227,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     if [ -z $(am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.lool > /dev/null 2>&1) ]; then
          am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.samsung.android.sm_cn > /dev/null 2>&1
     fi
@@ -1226,6 +1241,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[3] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.sdhms > /dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
@@ -1248,6 +1264,7 @@ fix_smgdrain(){
     printf "${INDENTN}${YELLOW}[3] Disable Adaptive Battery"
     printf "\n${INDENTN}${YELLOW}Enjoy :)${RESET}\n"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     if [ -z $( am start -n com.samsung.android.lool/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1) ]; then
          am start -n com.samsung.android.sm_cn/com.samsung.android.sm.battery.ui.BatteryActivity > /dev/null 2>&1
     fi
@@ -1263,6 +1280,7 @@ fix_gms(){
     printf "${INDENTN}[4] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.gms > /dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
@@ -1274,6 +1292,7 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}[3] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.gsf > /dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
@@ -1286,6 +1305,7 @@ fix_gms(){
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.google.android.webview > /dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
@@ -1309,6 +1329,8 @@ fix_oneui() {
     printf "${INDENTN}${YELLOW}[4] Force stop the app"
     printf "${INDENTN}${YELLOW}[i]Press ENTER to redirect...${RESET}"
     read -r a 
+    am force-stop com.android.settings > /dev/null 2>&1
+    am force-stop com.android.settings > /dev/null 2>&1
     am start -n com.android.settings/.applications.InstalledAppDetailsTop -a android.intent.action.VIEW -d package:com.sec.android.app.launcher > /dev/null 2>&1
     printf "${INDENTN}${GREEN}[i]Press ENTER when u have done${RESET}" 
     read -r a 
