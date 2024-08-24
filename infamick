@@ -524,13 +524,26 @@ boost_battery() {
 }
 
 battinfo() {
+    # Cerca prima la percentuale in /sec/FactoryApp/bsoh
+    if [ -f "/sec/FactoryApp/bsoh" ]; then
+        health=$(cat /sec/FactoryApp/bsoh)
+    else
+        # Se il file non esiste, usa dumpsys battery
+        battery_info=$(/system/bin/dumpsys battery)
+        health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
+    fi
 
-    battery_info=$(/system/bin/dumpsys battery)
-    health=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryAsoc: \([^,]*\).*/\1/p')
-    cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+    # Cerca i cicli di carica in /efs/FactoryApp/batt_discharge_level
+    if [ -f "/efs/FactoryApp/batt_discharge_level" ]; then
+        cycles_raw=$(cat /efs/FactoryApp/batt_discharge_level)
+        cycles=$((cycles_raw / 100))
+    else
+        # Se il file non esiste, usa dumpsys battery
+        battery_info=${battery_info:-$(/system/bin/dumpsys battery)}
+        cycles_raw=$(echo "$battery_info" | sed -n 's/.*mSavedBatteryUsage: \([^,]*\).*/\1/p')
+        cycles=$((cycles_raw / 100))
+    fi
 
-    # Dividi il valore di mSavedBatteryUsage per 100
-    cycles=$((cycles_raw / 100))
     printf "${INDENTN}${GREEN}[i] Your Battery health is ${RED}${BOLD}$health${RESET}"
     printf "${INDENTN}${GREEN}[i] Your battery charging cycles are ${RED}${BOLD}$cycles${RESET}\n"
     exit 0
