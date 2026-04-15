@@ -48,7 +48,7 @@ ADDON() {
 FINALIZE() {
     ui_print "- Finalizing installation"
 
-    # Clean up
+    # Clean up obsolete files
     ui_print "  Cleaning obsolete files"
     find $MODPATH/* -maxdepth 0 \
     ! -name 'module.prop' \
@@ -57,10 +57,15 @@ FINALIZE() {
     ! -name 'system' \
     -exec rm -rf {} \;
 
-    # Settings dir and file permission
-    ui_print "  Settings permissions"
-    set_perm_recursive $MODPATH 0 0 0755 0755
-    set_perm $MODPATH/system/bin/infamick 0 2000 0755
+    ui_print "  Applying surgical permissions & fixing line endings"
+   
+    sed -i 's/\r$//' $MODPATH/system/bin/infamick
+
+    # KSU Fix 2: Uso dei comandi nativi invece di set_perm (che su KSU può fallire silenziosamente)
+    chown 0:0 $MODPATH/system/bin
+    chmod 0755 $MODPATH/system/bin
+    chown 0:2000 $MODPATH/system/bin/infamick
+    chmod 0755 $MODPATH/system/bin/infamick
 }
 
 # Final adjustment

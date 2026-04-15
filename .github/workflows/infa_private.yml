@@ -1,33 +1,46 @@
-name: Private to Telegram and Latest Release
+name: Private to Telegram and Latest Pre-Release
 
 on:
-  workflow_dispatch:  # Allows manual workflow execution
+  workflow_dispatch: # Allows manual workflow execution
 
 jobs:
   upload_and_notify:
     runs-on: ubuntu-latest
     steps:
+      # Upgrade a v4 per evitare il runtime deprecato di Node.js
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Get latest release
+      - name: Get latest Pre-release
         id: get_release
-        uses: actions/github-script@v6
+        # Upgrade a v7 per supporto Node 20
+        uses: actions/github-script@v7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const release = await github.rest.repos.getLatestRelease({
+            // Recupera la lista delle release recenti (include stabili e pre-release)
+            const response = await github.rest.repos.listReleases({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              per_page: 10
             });
-            console.log(release.data);
-            return release.data;
+
+            // Filtra l'array per trovare la pre-release più recente
+            const preRelease = response.data.find(r => r.prerelease === true);
+
+            if (!preRelease) {
+              // Fail-safe: interrompe la pipeline se non ci sono pre-release
+              core.setFailed("Nessuna Pre-Release trovata nel repository.");
+              return;
+            }
+
+            console.log(`Pre-release trovata: ${preRelease.tag_name}`);
+            return preRelease;
 
       - name: Create Magisk ZIP file
         run: |
           zip -r Infamick-script-${{ fromJson(steps.get_release.outputs.result).tag_name }}_MAGISK.zip \
           changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
-
 
       - name: Notify Telegram
         uses: appleboy/telegram-action@master
@@ -37,19 +50,19 @@ jobs:
           format: html
           disable_web_page_preview: true
           message: |
-            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK Update...! 🎉</b>    
-            
+            <b>New Infamick Script ${{ fromJson(steps.get_release.outputs.result).tag_name }} MAGISK (Pre-Release) Update...! 🎉</b>    
+
             <b>CHANGELOG:</b>
             <pre><code>${{ fromJson(steps.get_release.outputs.result).body }}</code></pre>
-            
+
             <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
-            
+
             <b>Commit SHA:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">Click here</a>
-            
+
             <b>Installation :</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#installation">Click here</a>
 
             <b>Usage:</b> <a href="https://github.com/Infamousmick/Infamick-script?tab=readme-ov-file#usage">Click here</a>
 
-            <b>Download:</b> <a href="${{ fromJson(steps.get_release.outputs.result).html_url }}">Latest Release</a>
+            <b>Download:</b> <a href="${{ fromJson(steps.get_release.outputs.result).html_url }}">Download Latest Pre-Release</a>
 
             <b>InfaChannel:</b> <a href="https://t.me/InfaScript">Join here</a>

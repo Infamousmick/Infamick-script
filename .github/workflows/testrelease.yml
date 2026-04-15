@@ -1,70 +1,78 @@
 name: Upload Test Release
+
 on:
-  workflow_dispatch:  # Allows manual workflow execution
+  workflow_dispatch: # Allows manual workflow execution
 
 jobs:
   upload_and_notify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Permesso tassativo per creare Release e Tag
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4 # Aggiornato a v4 (Node 20)
 
       - name: Get version from update.json
         id: get_version
         run: |
           VERSION=$(jq -r .version update.json)
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Set changelog
-        id: set_changelog
+      - name: Parse dynamic changelog
+        id: prep_changelog
         run: |
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "## ${{ steps.get_version.outputs.VERSION }} - Samsung Tweaks (July 26, 2024)
-          - Added Samsung Tweaks
-          1. CSC changer
-          - Change current CSC
-          2. Deknoxer
-          - Disable or Enable knox packages
-          3. Extra Dim
-          - Open hidden Extra Dim menu
-          4. Gesture
-          - Open hidden Gestures menu
-          5. Change Network Bands
-          - Open 5G Network Bands guide
-          6. Lock Network Bands
-          - Open Network Bands settings" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # 1. Parsing chirurgico con AWK:
+          # Cerca il primo header "## ", stampa tutto finché non incontra il secondo "## "
+          awk '/^## /{ if (p) exit; p=1 } p' changelog.md > raw_changelog.txt
 
-      - name: Create and push tag
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git tag -a "Test-${{ steps.get_version.outputs.VERSION }}" -m "Test release ${{ steps.get_version.outputs.VERSION }}"
-          git push origin "Test-${{ steps.get_version.outputs.VERSION }}"
+          # 2. Pulizia estetica: Rimuove "## " dalla prima riga (come in foto)
+          sed 's/^## //g' raw_changelog.txt > current_changelog.txt
+
+          # 3. Mappatura sicura multiriga per Telegram (evita escape errors)
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "CHANGELOG<<$EOF" >> $GITHUB_ENV
+          cat current_changelog.txt >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
 
       - name: Create Magisk ZIP file
         run: |
-          zip -r Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip \
-          changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+          ZIP_NAME="Infamick-script-${{ env.VERSION }}_MAGISK_TEST.zip"
+          # Includiamo 'common' come da tua alberatura
+          zip -r $ZIP_NAME changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-      - name: Create Test Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Test Pre-Release
+        uses: softprops/action-gh-release@v2 # Action unificata moderna (crea release + upload asset + attach source code)
         with:
-          tag_name: Test-${{ steps.get_version.outputs.VERSION }}
-          release_name: Test Release ${{ steps.get_version.outputs.VERSION }}
-          body: ${{ steps.set_changelog.outputs.CHANGELOG }}
-          draft: false
+          tag_name: Test-${{ env.VERSION }}.${{ github.run_number }} # Tag univoco per evitare collisioni nei test ripetuti
+          name: Prerelease ${{ env.VERSION }}
+          body_path: current_changelog.txt
           prerelease: true
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+          files: ${{ env.ZIP_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify Telegram (Message)
+        uses: appleboy/telegram-action@master
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
-          asset_name: Infamick-script-${{ steps.get_version.outputs.VERSION }}_MAGISK_TEST.zip
-          asset_content_type: application/zip
+          to: ${{ secrets.TELEGRAM_PRIVATE_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          disable_web_page_preview: true
+          message: |
+            <b>New Infamick Script ${{ env.VERSION }} (Pre-Release) Test...! 🛠️</b>    
+
+            <b>CHANGELOG:</b>
+            <pre><code>${{ env.CHANGELOG }}</code></pre>
+
+            <b>Repository:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <b>Release:</b> <a href="https://github.com/${{ github.repository }}/releases/tag/Test-${{ env.VERSION }}.${{ github.run_number }}">View on GitHub</a>
+
+      - name: Upload ZIP to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PRIVATE_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: ${{ env.ZIP_NAME }}
+          message: "📦 ZIP Modulo di Test - Prerelease ${{ env.VERSION }}"
