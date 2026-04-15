@@ -37,9 +37,12 @@ jobs:
 
       - name: Create Magisk ZIP file
         run: |
+          # Pattern Systemless nativo: creiamo la struttura PRIMA di zippare
+          mkdir -p system/bin
+          mv infamick system/bin/
+
           ZIP_NAME="Infamick-script-${{ env.VERSION }}_MAGISK_TEST.zip"
-          # Includiamo 'common' come da tua alberatura
-          zip -r $ZIP_NAME changelog.md common customize.sh infamick META-INF module.prop README.md uninstall.sh
+          zip -r $ZIP_NAME changelog.md common customize.sh system META-INF module.prop README.md uninstall.sh
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
       - name: Create Test Pre-Release

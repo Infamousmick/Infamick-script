@@ -1,79 +1,30 @@
-#!/data/adb/magisk/busybox sh
 set -o standalone
-
 set -x
-# Check root environment
-VER=`grep_prop version $MODPATH/module.prop`
-VERCODE=`grep_prop versionCode $MODPATH/module.prop`
 
-ui_print "  ID: $MODID"
-ui_print "  Version: $VER"
-ui_print "  VersionCode: $VERCODE"
+ui_print "- Installing Infamick script systemless-ly"
 
-if [ "$KSU" = "true" ]; then
-    ui_print "  KernelSUVersion=$KSU_KERNEL_VER_CODE (kernel) + $KSU_VER_CODE (ksud)" 
-elif [ "$APATCH" = "true" ]; then
-    APATCH_VER=$(cat "/data/adb/ap/version")
-    ui_print "  APatchVersion=$APATCH_VER" 
-else
-    ui_print "  Magisk=Installed" 
-    ui_print "  suVersion=$(su -v)" 
-    ui_print "  MagiskVersion=$(magisk -v)" 
-    ui_print "  MagiskVersionCode=$(magisk -V)" 
-fi
-ui_print " "
+# Symlink temporaneo per esecuzione immediata post-flash (senza riavvio)
+ln -sf $MODPATH/system/bin/infamick /data/local/tmp/infamick
+chmod 0755 /data/local/tmp/infamick
+ui_print "  -> You can run it immediately via: /data/local/tmp/infamick"
 
-# Check Android API
-[ $API -ge 23 ] ||
- abort "- Unsupported API version: $API"
+ui_print "- Finalizing installation & applying surgical permissions"
 
-# Patch the XML and place the modified one to the original directory
-{
-NULL="/dev/null"
-}
+# Pulizia di tutto ciò che non serve all'engine root (modulo più pulito)
+find $MODPATH/* -maxdepth 0 \
+! -name 'module.prop' \
+! -name 'post-fs-data.sh' \
+! -name 'service.sh' \
+! -name 'system' \
+-exec rm -rf {} \;
 
-# Additional add-on for check gms status
-ADDON() {
-    ui_print "- Installing Infamick script"
-    mkdir -p $MODPATH/system/bin 
-    mv -f $MODPATH/infamick $MODPATH/system/bin/infamick
+# KSU/APatch/Magisk Fix: Bonifica CRLF e applicazione permessi nativi
+sed -i 's/\r$//' $MODPATH/system/bin/infamick
 
-    # Temporary symlink to use infamick immediately without reboot
-    ln -sf $MODPATH/system/bin/infamick /data/local/tmp/infamick
-    chmod 755 /data/local/tmp/infamick
-    ui_print "  -> You can run it immediately via: /data/local/tmp/infamick"
+chown -R 0:0 $MODPATH/system
+chmod -R 0755 $MODPATH/system
 
-}
+chown 0:2000 $MODPATH/system/bin/infamick
+chmod 0755 $MODPATH/system/bin/infamick
 
-FINALIZE() {
-    ui_print "- Finalizing installation"
-
-    # Clean up obsolete files
-    ui_print "  Cleaning obsolete files"
-    find $MODPATH/* -maxdepth 0 \
-    ! -name 'module.prop' \
-    ! -name 'post-fs-data.sh' \
-    ! -name 'service.sh' \
-    ! -name 'system' \
-    -exec rm -rf {} \;
-
-    ui_print "  Applying surgical permissions & fixing line endings"
-    
-    sed -i 's/\r$//' $MODPATH/system/bin/infamick
-    chown -R 0:0 $MODPATH/system
-    chmod -R 0755 $MODPATH/system
-    
-    # 3. Permessi specifici per l'eseguibile (Shell GID)
-    chown 0:2000 $MODPATH/system/bin/infamick
-    chmod 0755 $MODPATH/system/bin/infamick
-}
-
-# Final adjustment
-ADDON && FINALIZE
-
-ui_print "Installation completed!"
-ui_print "You can now (without reboot) run the command:"
-ui_print "  /data/local/tmp/infamick"
-ui_print "After reboot use 'infamick' command to run the script."
-ui_print " "
-ui_print "Enjoy!"
+ui_print "- Installation completed! Reboot to apply OverlayFS."
