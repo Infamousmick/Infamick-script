@@ -58,12 +58,12 @@ FINALIZE() {
     -exec rm -rf {} \;
 
     ui_print "  Applying surgical permissions & fixing line endings"
-   
+    
     sed -i 's/\r$//' $MODPATH/system/bin/infamick
-
-    # KSU Fix 2: Uso dei comandi nativi invece di set_perm (che su KSU può fallire silenziosamente)
-    chown 0:0 $MODPATH/system/bin
-    chmod 0755 $MODPATH/system/bin
+    chown -R 0:0 $MODPATH/system
+    chmod -R 0755 $MODPATH/system
+    
+    # 3. Permessi specifici per l'eseguibile (Shell GID)
     chown 0:2000 $MODPATH/system/bin/infamick
     chmod 0755 $MODPATH/system/bin/infamick
 }
